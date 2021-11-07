@@ -68,3 +68,30 @@ This section has moved here: [https://facebook.github.io/create-react-app/docs/d
 ### `yarn build` fails to minify
 
 This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+
+## Project structure
+
+```
+cinema_frontend
+├─ public
+├─ src
+│  ├─ assets
+│  │  ├─ images // constants app images
+│  │  └─ styles // constants gloable styles
+│  ├─ auth  // constants conect to firebase
+│  ├─ components
+│  │  ├─ constants
+│  │  ├─ Layout // constants Layout app
+│  │  ├─ atoms // smallest components, can be re-used normally
+│  │  ├─ molecules // bigger than atoms component => can contain multiple atoms components
+│  │  └─ organisms // bigger than molecules component => can contain multiple molecules & atoms components
+│  ├─ config  // constants app config
+│  ├─ hooks  // constants custom hooks
+│  ├─ redux // using redux Toolkit
+│  │  ├─ slices // constants slices in redux Toolkit
+│  │  └─ store // config store redux
+│  ├─ serivces // constants all serivces call apis
+│  └─ views // constants all page in app
+
+
+```
