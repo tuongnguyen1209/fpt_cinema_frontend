@@ -1,7 +1,12 @@
-import axiosClient from "./serivces/axios.client";
+import Views from "./views";
+import { BrowserRouter as Router } from "react-router-dom";
 
 function App() {
-  return <div className="App">hello word!</div>;
+  return (
+    <Router>
+      <Views />
+    </Router>
+  );
 }
 
 export default App;
