@@ -2,6 +2,9 @@
 export const URL_API = "";
 
 export const APP_SITE_MENU = [
-  { name: "Home", url: "" },
-  { name: "Home", url: "" },
+  { name: "Trang chủ", url: "" },
+  { name: "Phim", url: "" },
+  { name: "Góc điện ảnh", url: "" },
+  { name: "Hỗ trợ", url: "" },
+  { name: "Thành viên", url: "" },
 ];
