@@ -3,7 +3,6 @@ import {
   InstagramFilled,
   TwitterCircleFilled,
 } from "@ant-design/icons";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import React from "react";
 import { WrapFooter } from "./footer.style";
 
