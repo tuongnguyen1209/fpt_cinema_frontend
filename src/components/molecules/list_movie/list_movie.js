@@ -7,12 +7,28 @@ const { Meta } = Card;
 
 function MovieCPN() {
     const [listMovie, setListMovie] = useState([])
+
+    const [state, setState] = useState("span")
+    const [state2, setState2] = useState("span2")
+    const ChangeBtn = () => {
+        setState("span")
+        setState2("span2")
+        fetch('https://6189cf9d34b4f400177c425b.mockapi.io/movie')
+        .then(response => response.json())
+        .then(json => setListMovie(json))
+    }
+    const ChangeBtn2 = () => {
+        setState2("span")
+        setState("span2")
+        fetch('https://6189cf9d34b4f400177c425b.mockapi.io/listBlog')
+        .then(response => response.json())
+        .then(json => setListMovie(json))
+    } 
     
-    console.log(listMovie)
     useEffect(() => {
-      fetch('https://6189cf9d34b4f400177c425b.mockapi.io/movie')
-      .then(response => response.json())
-      .then(json => setListMovie(json))
+        fetch('https://6189cf9d34b4f400177c425b.mockapi.io/movie')
+        .then(response => response.json())
+        .then(json => setListMovie(json))
     }, [])
     return (
         <ListMovieStyle >
@@ -20,8 +36,8 @@ function MovieCPN() {
             <div className="row-movie">
 
                 <div className="title">
-                    <span><a href="www.facebook.com">PHIM ĐANG CHIẾU</a></span>
-                    <span className="span2"><a href="www.facebook.com">PHIM SẮP CHIẾU</a></span>
+                    <span className={state} ><a onClick={ChangeBtn}>PHIM ĐANG CHIẾU</a></span>
+                    <span className={state2} ><a onClick={ChangeBtn2}>PHIM SẮP CHIẾU</a></span>
                     <div className="line">
                     <div className="line1"></div>
                     <div className="line2"></div>

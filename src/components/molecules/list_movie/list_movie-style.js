@@ -2,7 +2,7 @@ import styled from "styled-components";
 
 export const ListMovieStyle = styled.div`
     .row-movie {
-        
+        transition: all 0.5s;
     }
     .title {
         padding: 50px 0px 50px 0px;
