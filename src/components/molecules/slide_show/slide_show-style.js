@@ -15,7 +15,7 @@ export const SlideShowStyle = styled.div`
         height: 360px;
         width: 350px;
         position: absolute;
-        bottom: 35%;
+        bottom: 32%;
         right: 5%;
         display: flex;
         box-shadow: 2px 2px 2px black;

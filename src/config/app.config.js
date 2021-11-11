@@ -3,6 +3,7 @@ export const URL_API = "";
 
 export const APP_SITE_MENU = [
   { name: "Trang chủ", url: "" },
+  {name: "Đặt vé", url: ""},
   {
     name: "Phim",
     url: "",

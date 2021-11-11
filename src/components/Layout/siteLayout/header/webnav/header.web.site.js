@@ -29,7 +29,7 @@ const HeaderWebSite = () => {
     <HeaderCustom>
       <Row>
         <Col span={16} className="wrap-logo">
-          <h2 className="logo">CINEMA</h2>
+          <h2 className="logo">POLY CINEMA</h2>
         </Col>
         <Col span={4} className="searchwrap">
           <Input.Search placeholder="Tìm kiếm phim" />

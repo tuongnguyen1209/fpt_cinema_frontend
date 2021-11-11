@@ -15,6 +15,8 @@ function SlideItem({props}) {
         setIsModalVisible(false);
     }
 
+    
+
     return (
         <div className="img-slideshow">
             <img className="carousel-style" src={props.banner} alt="banner" />

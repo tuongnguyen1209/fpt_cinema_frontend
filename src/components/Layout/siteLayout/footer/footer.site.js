@@ -15,7 +15,7 @@ const FooterSite = () => {
         <FacebookFilled />
       </div>
       <div>
-        <h2 className="logo">CINEMA</h2>
+        <h2 className="logo">POLY CINEMA</h2>
       </div>
       <div>© Copyright 2021</div>
     </WrapFooter>
