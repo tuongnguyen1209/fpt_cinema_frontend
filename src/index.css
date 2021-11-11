@@ -15,6 +15,21 @@ code {
   box-sizing: border-box;
 }
 
+.line {
+  height: 4px;
+  width: 400px;
+  display: flex;
+}
+.line1 {
+  height: 50%;
+  width: 30%;
+  background: #d68227;
+}
+.line2 {
+  height: 50%;
+  width: 70%;
+  background: gray;
+}
 .logo {
   color: #e61610;
   font-size: 28px;
