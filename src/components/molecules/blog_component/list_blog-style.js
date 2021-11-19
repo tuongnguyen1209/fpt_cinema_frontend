@@ -25,6 +25,10 @@ export const ListBlogStyle = styled.div`
         font-size: 1rem;
         padding: 2px 25px;
     }
+    .img-blog {
+        width: 220px;
+        height: 150px;
+    }
     .content-card h4 {
         font-size: 1em;
     }

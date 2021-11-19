@@ -8,6 +8,10 @@ export const SlideShowStyle = styled.div`
         line-height: 160px;
         text-align: center;
         background: #364d79;
+    }
+    .carousel-div {
+        height: 500px;
+        width: 100%;
         position: relative;
     }
     .box-buy-ticket {
@@ -15,8 +19,8 @@ export const SlideShowStyle = styled.div`
         height: 360px;
         width: 350px;
         position: absolute;
-        bottom: 35%;
-        right: 5%;
+        bottom: 80px;
+        right: 70px;
         display: flex;
         box-shadow: 2px 2px 2px black;
         padding: 50px 15px;
@@ -81,4 +85,5 @@ export const SlideShowStyle = styled.div`
             opacity: 1;
         }
     }
+
 `

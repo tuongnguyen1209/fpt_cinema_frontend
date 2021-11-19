@@ -28,9 +28,11 @@ function Views() {
   return (
     <>
       <Switch>
+ 
         <PrivateRoute path={ADMIN_PREFIX_PATH} isAuthenticated={true}>
           <Admin />
         </PrivateRoute>
+ 
         <Route path="/">
           <Site />
         </Route>

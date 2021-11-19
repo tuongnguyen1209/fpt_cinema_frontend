@@ -21,11 +21,22 @@ export const ListMovieStyle = styled.div`
         color: black;
     }
     .meta-title {
-        padding: 5px;
+        padding: 0px;
         background: #f0f2f5;
     }
     .box-card {
         background: #f0f2f5;
+        width: 400;
+        height: 343.5; 
+        position: relative;
+    }
+    .ant-col {
+        margin-bottom: 20px;
+    }
+    .flex-card {
+        display: flex;
+        justify-content: space-between;
+        flex-wrap: wrap;
     }
     .row-movie .box-card:hover .img-mask {
         opacity: 1;
@@ -44,7 +55,7 @@ export const ListMovieStyle = styled.div`
         cursor: pointer;
         opacity: 0;
         transition: opacity 0.3s;
-        height: 78%;
+        height: 73%;
     }
     .img-mask button {
         display: inline-block;

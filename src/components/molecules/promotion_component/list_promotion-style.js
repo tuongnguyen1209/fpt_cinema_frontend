@@ -12,8 +12,18 @@ export const ListPromotionStyle = styled.div`
     .promotion-card {
         margin-top: 25px;
     }
+    .flex-item {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: space-between;
+    }
     .box-card {
         position: relative;
+        width: 280px;
+        margin-bottom: 10px;
+    }
+    .img-promotion {
+        width: 280px;
     }
     .img-mask-promotion_card {
         position: absolute;

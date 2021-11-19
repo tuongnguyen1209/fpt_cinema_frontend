@@ -16,7 +16,8 @@ export const HeaderCustom = styled.div`
   }
   .wrap-login {
     display: flex;
-    justify-content: center;
+    justify-content: flex-start;
+    padding-left: 10px;
     align-items: center;
   }
   .menu-site {
@@ -24,10 +25,13 @@ export const HeaderCustom = styled.div`
     .menu-item {
       width: 150px;
       text-align: center;
-      border-left: 1px solid white;
+      border-left: 1px solid rgba(255,255,255,0.2);
       display: flex;
       justify-content: center;
-      font-size: 18px;
+      font-size: 14px;
+      text-transform: uppercase;
+      height: 50px;
+      align-items: center;
       :hover {
         background-color: #ff6624;
       }

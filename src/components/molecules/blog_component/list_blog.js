@@ -1,16 +1,29 @@
 import { EyeTwoTone, LikeTwoTone, StarTwoTone } from '@ant-design/icons';
-import { Image } from 'antd';
 import React, { useEffect, useState } from "react";
 import { ListBlogStyle } from './list_blog-style';
+import { URL_API } from '../../../config/app.config';
+import { Link } from 'react-router-dom';
+
+const axios = require('axios');
 
 function BlogCPN() {
 
     const [listBlogBl, setListBlogBl] = useState([])
     console.log(listBlogBl)
     useEffect(() => {
-      fetch('https://6189cf9d34b4f400177c425b.mockapi.io/listBlog')
-      .then(response => response.json())
-      .then(json => setListBlogBl(json))
+        axios({
+            method: 'get',
+            url: `${URL_API}listBlog`,
+          })
+          .then(function (response) {
+            // handle success
+            setListBlogBl(response.data);
+          }).catch(
+            function (error) {
+              console.log('DONT GET DATA MOVIE!')
+              return Promise.reject(error)
+            }
+          )
     }, [])
     
     return (
@@ -25,11 +38,11 @@ function BlogCPN() {
                 <div className="container-blog">
                     {listBlogBl.map((item, index) => (
                         <div className="blog-card" key={index}>
-                        <a href={item.href}>
-                            <Image width={220} height={150} src={item.img} preview={false} alt={String}/>
-                        </a>
+                            <Link to={item.href}>
+                                <img className="img-blog" src={item.img} alt="img"/>
+                            </Link>
                         <div className="content-card">
-                        <h4>{item.title}</h4>
+                            <h4 className="title-content">{item.title}</h4>
                         <p className="icon">
                             <span><LikeTwoTone /> {item.like_count}</span>
                             <span><EyeTwoTone /> {item.view_count}</span>
@@ -49,11 +62,11 @@ function BlogCPN() {
                 <div className="container-blog">
                     {listBlogBl.map((item, index) => (
                         <div className="blog-card" key={index}>
-                        <a href={item.href}>
-                            <Image width={220} height={150} src={item.img} preview={false} alt={String}/>
-                        </a>
+                            <Link to={item.href}>
+                                <img className="img-blog" src={item.img} alt="img"/>
+                            </Link>
                         <div className="content-card">
-                        <h4>{item.title}</h4>
+                        <h4 className="title-content">{item.title}</h4>
                         <p className="icon">
                             <span><LikeTwoTone /> {item.like_count}</span>
                             <span><EyeTwoTone /> {item.view_count}</span>

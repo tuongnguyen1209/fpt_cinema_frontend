@@ -1,9 +1,9 @@
 import React from "react";
-import BlogCPN from '../../../components/molecules/list_blog/list_blog';
-import MovieCPN from '../../../components/molecules/list_movie/list_movie';
-import PromotionCPN from '../../../components/molecules/list_promotion/list_promotion';
-import RuleCPN from "../../../components/molecules/list_rule/list_rule";
-import Slideshow from "../../../components/molecules/slide_show/slide_show";
+import BlogCPN from '../../../components/molecules/blog_component/list_blog';
+import MovieCPN from '../../../components/molecules/movie_component/list_movie';
+import PromotionCPN from '../../../components/molecules/promotion_component/list_promotion';
+import RuleCPN from "../../../components/molecules/rule_component/list_rule";
+import Slideshow from "../../../components/molecules/slide_show_component/slide_show";
 import { HomePage } from "./HomeSytle";
 
 
