@@ -6,7 +6,8 @@ function Views() {
   return (
     <>
       <Switch>
-        <Route path="/admin"></Route>
+        <Route path="/admin">
+        </Route>
         <Route path="/">
           <Site />
         </Route>

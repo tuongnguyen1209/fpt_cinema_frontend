@@ -6,7 +6,7 @@ function RuleCPN() {
         <ListRuleStyle>
     
             <div className="row-rule">
-                <span className="title-blog">CINEMA</span>
+                <span className="title-blog">CINEMA POLY</span>
                 <div className="line"><div className="line1"></div></div>
 
                 <div className="content-rule">

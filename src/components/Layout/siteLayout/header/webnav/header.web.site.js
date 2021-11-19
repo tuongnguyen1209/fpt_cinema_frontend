@@ -1,9 +1,11 @@
 import { DownOutlined } from "@ant-design/icons";
 import { Button, Col, Dropdown, Input, Menu, Row } from "antd";
-import React from "react";
+import React ,{ useState } from "react";
 import { Link } from "react-router-dom";
 import { APP_SITE_MENU } from "../../../../../config/app.config";
+import Login from "../../../../molecules/modal-login/login";
 import { HeaderCustom } from "./Customheader.syle";
+
 
 const menuUserLogin = () => {
   return (
@@ -25,16 +27,27 @@ const menuUserLogin = () => {
 const HeaderWebSite = () => {
   const isLogin = false;
 
+  const [closeModal, setCloseModal] = useState("hide-modal");
+
+
+  const handleCloseModal = () => {
+      setCloseModal("hide-modal")
+
+  } 
+  const handleOpenModal = () => {
+      setCloseModal("modal")
+  }
+
   return (
     <HeaderCustom>
       <Row>
-        <Col span={16} className="wrap-logo">
+        <Col span={17} className="wrap-logo">
           <h2 className="logo">POLY CINEMA</h2>
         </Col>
         <Col span={4} className="searchwrap">
           <Input.Search placeholder="Tìm kiếm phim" />
         </Col>
-        <Col span={4} className="wrap-login">
+        <Col span={3} className="wrap-login">
           {isLogin ? (
             <>
               <Dropdown overlay={menuUserLogin}>
@@ -44,7 +57,7 @@ const HeaderWebSite = () => {
               </Dropdown>
             </>
           ) : (
-            <Button className="btn-login" type="primary" size="large">
+            <Button className="btn-login" type="primary" size="large" onClick={handleOpenModal}>
               Đăng nhập
             </Button>
           )}
@@ -80,6 +93,8 @@ const HeaderWebSite = () => {
           </Menu>
         </Col>
       </Row>
+
+      {<Login closeModal={closeModal} handleCloseModal={handleCloseModal}  setCloseModal={setCloseModal}/>}
     </HeaderCustom>
   );
 };

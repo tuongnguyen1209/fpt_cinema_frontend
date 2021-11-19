@@ -16,7 +16,8 @@ export const HeaderCustom = styled.div`
   }
   .wrap-login {
     display: flex;
-    justify-content: center;
+    justify-content: flex-start;
+    padding-left: 10px;
     align-items: center;
   }
   .menu-site {
