@@ -1,9 +1,11 @@
 import axios from "axios";
 import queryString from "query-string";
+import { URL_API } from "../config/app.config";
 
 // set up default config for http request here
 // please have a look at here `https://www.npmjs.com/package/axios#request-config` for full list of configs
 const axiosClient = axios.create({
+  baseURL: URL_API,
   headers: {
     "Content-Type": "application/json",
   },
@@ -30,8 +32,9 @@ axiosClient.interceptors.response.use(
   },
   (error) => {
     // Handle errors
-    if (error.response.data) throw error.response.data;
-    else throw error.response;
+    // if (error.response.data) throw error.response.data;
+    // else
+    throw error.response;
   }
 );
 
