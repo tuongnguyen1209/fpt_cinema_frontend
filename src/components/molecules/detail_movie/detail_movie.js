@@ -1,17 +1,34 @@
 import { HistoryOutlined, PlayCircleFilled, StarOutlined } from '@ant-design/icons';
 import { Breadcrumb, DatePicker, Input, Modal, Rate, Select } from 'antd';
 import moment from 'moment';
-import React, { useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { Link } from "react-router-dom";
 import MovieCPN from '../movie_component/list_movie';
 import { DetailMovieCPNStyle } from "./detail_movieStyle";
-
+import MovieService from '../../../serivces/movie.service';
 
 
 const { Option } = Select;
 const dateFormat = 'YYYY-MM-DD';
 
+
 const DetailMovieCPN = () => {
+
+    const [listMovie, setListMovie] = useState([]);
+    
+    useEffect(() => {
+      const fetchMovieList = async () => {
+        try {
+          const response = await MovieService.getAllMovie();
+          console.log(response);
+          setListMovie(response.movie);
+        }catch (error) {
+          console.log("Failed to fetch movie list: ",error);
+        }
+      }
+      fetchMovieList();
+
+    },[])
 
     // bật tắt đánh giá  
     const [toggleStar, setToggleStar] = useState(false);
@@ -70,27 +87,27 @@ const DetailMovieCPN = () => {
                         <div className="box-detail">
                             
                             <div className="img-traller">
-                                <img src="https://www.galaxycine.vn/media/2021/10/29/300_1635497907475.jpg" alt="123"/>
+                                <img src={listMovie[0].image} alt="123"/>
                                 <PlayCircleFilled className="btn-play" onClick={showModal}/>
                                 <Modal title="abc" width={610} visible={isModalVisible} onCancel={handleCancel} footer={null}>   
-                                    <p><iframe ref={iframeRef} title="YTB" width="100%" height="315" src={'https://www.youtube.com/embed/UIHO6QXj0ms?enablejsapi=1&playerapiid=ytplayer'} frameBorder="0"></iframe></p>
+                                    <p><iframe ref={iframeRef} title="YTB" width="100%" height="315" src={listMovie[0].traller} frameBorder="0"></iframe></p>
                                 </Modal> 
                             </div>
 
                             <div className="content_detail">
-                                <h4>THE CONJURING: THE DEVIL MADE ME DO IT</h4>
-                                <p>THE CONJURING: MA XUI QUỶ KHIẾN</p>
+                                <h4>{listMovie[0].name}</h4>
+                                <p>{listMovie[0].image}</p>
                                 <div className="rate_star">
                                     <span>5/5 <StarOutlined /></span><button className="btn_rate_star" onClick={handleToggleStar}>Đánh giá</button>{ toggleStar ? <Rate allowHalf defaultValue={2.5} /> : ""} 
                                 </div>
                                 <div className="info_movie">
-                                    <p>Time: <span><HistoryOutlined /> 120 phút</span></p>
+                                    <p>Time: <span><HistoryOutlined /> {listMovie[0].time} phút</span></p>
                                     <p>Nhà sản xuất: <span>New Lane Cinema</span></p>
-                                    <p>Quốc gia: <span>Mỹ</span></p>
-                                    <p>Đạo diễn: <span>Micheal Chaves</span></p>
-                                    <p>Diễn viên: <span>Vera Farmiga, Patrick Wilson</span></p>
-                                    <p>Thể loại: <span>Kinh dị</span></p>
-                                    <p>Ngày: <span>29/10/2021</span></p>
+                                    <p>Quốc gia: <span>{listMovie[0].country}</span></p>
+                                    <p>Đạo diễn: <span>{listMovie[0].dirctor}</span></p>
+                                    <p>Diễn viên: <span>{listMovie[0].actor}</span></p>
+                                    <p>Thể loại: <span>{listMovie[0].category}</span></p>
+                                    <p>Ngày: <span>{listMovie[0].datestart}</span></p>
                                 </div>
                             </div>  
                         </div>
@@ -99,10 +116,7 @@ const DetailMovieCPN = () => {
                           <h3>Nội dung phim</h3>
                           <div className="line"><span className="line1"></span></div>
                           <p>
-                            <b>The Conjuring: The Devil Made Me Do It</b> tiếp tục kể về một vụ án có thật từng làm chấn động thế giới.<br></br> <br></br> 
-                            Arne đã sát hại Alan Bono, một quản lý cũi nhốt động vật có mối quan hệ thân thiết với anh ta. 
-                            Tuy nhiên, kẻ sát nhân và những người thân khẳng định rằng "chính ma quỷ đã dẫn dắt làm việc này". <br></br><br></br>
-                            Phim mới <b>The Conjuring: The Devil Made Me Do It</b> ra mắt tại các rạp chiếu phim từ 05.11.2021.  
+                            {listMovie[0].content} 
                           </p>
                         </div>
 

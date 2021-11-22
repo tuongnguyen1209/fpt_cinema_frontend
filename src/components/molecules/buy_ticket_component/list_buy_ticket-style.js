@@ -41,8 +41,8 @@ export const ListBuyTicketStyle = styled.div`
         }
         .panel {
             background: #dc4c18;
-            text-align: center;
             border-bottom: none;
+            text-align: center;
         }
         .panel-box {
             width: 100%;
@@ -51,7 +51,14 @@ export const ListBuyTicketStyle = styled.div`
             display: flex;
             cursor: pointer;
             border-bottom: 1px solid rgba(0,0,0,0.1);
-
+            flex-wrap: wrap;
+            h4 {
+                width: 75%;
+                padding: 5px;
+                span {
+                    color: rgba(0,0,0,0.7);
+                }
+            }
         }
         /* .ant-collapse > .ant-collapse-item {
             border-bottom: none;
@@ -65,17 +72,32 @@ export const ListBuyTicketStyle = styled.div`
             border-bottom: 1px solid rgba(0,0,0,0.1);
             font-size: 0.86rem;
         }
+        .panel-box-session {
+            width: 100%;
+            padding: 15px 10px;
+            text-align: left;
+            display: flex;
+            border-bottom: 1px solid rgba(0,0,0,0.1);
+            font-size: 0.86rem;
+        }
         .session_box {
             font-size: 0.9rem;
             .row_show_time {
                 display: flex;
                 justify-content: space-around;
                 align-items: center;
-                span {
+                .box_time {
                     margin-left: 20px;
                     border: 1px solid rgba(0,0,0,0.3);
                     font-size: 0.9rem;
                     padding: 3px 12px;
+                    cursor: pointer;
+                    color: black;
+                    &:hover {
+                        background-color: #dc4c18;
+                        color: white;
+                        border-color: #dc4c18;
+                    }
                 }
             }    
         }
@@ -85,10 +107,6 @@ export const ListBuyTicketStyle = styled.div`
         }
         .ant-collapse > .ant-collapse-item > .ant-collapse-header .ant-collapse-arrow {
             display: none;
-        }
-        .content {
-            padding: 0px 10px;
-            font-size: 0.8rem;
         }
     }
 `;

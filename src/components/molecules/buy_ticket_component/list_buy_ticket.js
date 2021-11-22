@@ -1,8 +1,8 @@
 import { Collapse } from 'antd';
 import React, { useEffect, useState } from "react";
-import { ListBuyTicketStyle } from "./list_buy_ticket-style";
-import { URL_API } from '../../../config/app.config';
 import { Link } from 'react-router-dom';
+import { ListBuyTicketStyle } from "./list_buy_ticket-style";
+import MovieService from '../../../serivces/movie.service';
 
 const { Panel } = Collapse;
 const axios = require('axios');
@@ -26,27 +26,33 @@ const BuyTicketCPN  = () =>  {
     const [listMovie, setlistMovie] = useState([])
   
     useEffect(() => {
-        axios({
-            method: 'get',
-            url: `${URL_API}movie`,
-          })
-          .then(function (response) {
-            // handle success
-            setlistMovie(response.data);
-          }).catch(
-            function (error) {
-              console.log('DONT GET DATA MOVIE!')
-              return Promise.reject(error)
+        const fetchMovieList = async () => {
+            try {
+              const response = await MovieService.getAllMovie();
+              console.log(response);
+              setlistMovie(response.movie);
+            }catch (error) {
+              console.log("Failed to fetch movie list: ",error);
             }
-          )
+          }
+          fetchMovieList();
     }, [])
 
     // event handle showrap
-    
+    const resetStyleTicket = () => {
+        if(!document.getElementById('styleTicket')){
+            return;
+        }else {
+            document.getElementById('styleTicket').style.backgroundColor = "white";
+            document.getElementById('styleTicket').removeAttribute('id');
+        }
+    }
     const [rap, setRap] = useState(["Vui lòng chọn rạp"])
     const handleShowrap = e => {
-        e.target.parentNode.style.backgroundColor = "rgba(223, 228, 234,1.0)";
-        e.target.parentNode.style.color = "#ff6348";
+        resetStyleTicket();
+        e.target.parentElement.style.backgroundColor = "rgba(223, 228, 234,1.0)";
+        e.target.parentElement.setAttribute("id" , "styleTicket");
+ 
         axios({
             method: 'get',
             url: 'https://618ca5c8ded7fb0017bb9657.mockapi.io/rap',
@@ -63,6 +69,16 @@ const BuyTicketCPN  = () =>  {
         
     }
     // event handle showtime
+
+    const resetStyleRap = () => {
+        if(!document.getElementById('resetStyleRap')){
+            return;
+        }else {
+            document.getElementById('resetStyleRap').style.backgroundColor = "white";
+            document.getElementById('resetStyleRap').removeAttribute('id');
+        }
+    }
+
     console.log(rap);
     const [check, setCheck] = useState(false)
 
@@ -71,8 +87,9 @@ const BuyTicketCPN  = () =>  {
             if(rap.length < 2) {
                 alert("Bạn phải chọn phim")
             }else {
+                resetStyleRap();
                 e.target.style.backgroundColor = "rgba(223, 228, 234,1.0)";
-                e.target.style.color = "#ff6348";
+                e.target.setAttribute("id" , "resetStyleRap");
                 axios({
                     method: 'get',
                     url: 'https://618ca5c8ded7fb0017bb9657.mockapi.io/session',
@@ -88,13 +105,20 @@ const BuyTicketCPN  = () =>  {
                     }
                   )
             }
+            handleLogin();
         }
         
         
     // login
-
+    const [linkPage, setLinkPage] = useState() // nếu chưa đăng nhập chuyển đến trang login || chuyển đến trang chọn vé và đồ ăn
+    const Login = true;
     const handleLogin = () => {
-        alert("HIỆN TRANG LOGIN")
+        if(Login) {
+            setLinkPage("bookticket-food");
+        }
+        else {
+            setLinkPage("login");
+        }
     }
 
     return (
@@ -113,13 +137,10 @@ const BuyTicketCPN  = () =>  {
                     <Collapse defaultActiveKey={['1']} accordion={true}>
                         <Panel className="panel"  header="CHỌN PHIM" key="1">
                             {listMovie.map((item,index) => (
-                            <div className="collapse" key={index}>
-                                <div className="panel-box"  onClick={handleShowrap}>
-                                    <img src={item.thumbnail} width="70px" height="50px" alt="img"/>
-                                    <div className="content">
-                                        <h4> {item.title}</h4>
-                                        <p>{item.description}</p>
-                                    </div>
+                            <div className="collapse" key={index} onClick={handleShowrap}>
+                                <div className="panel-box" >
+                                    <img src={item.image} width="70px" height="50px" alt="img"/>                                   
+                                    <h4>{item.name}<br></br><span>{item.name_vn}</span></h4>
                                 </div>
                             </div>
                             ))}
@@ -146,10 +167,12 @@ const BuyTicketCPN  = () =>  {
                         <Panel className="panel" header="CHỌN SUẤT" key="1">
                             {time.map((item,index) => (
                                 <div key={index}>
-                                    <div className="panel-box-rap" onClick={handleLogin}> 
+                                    <div className="panel-box-session"> 
                                         { check ?(<div className="session_box">
                                                     <p>{item.days}, {item.Date}</p>
-                                                    <p className="row_show_time">{item.category_ticket} <span>{item.show_time[0]}</span> <span>{item.show_time[1]}</span> <span>{item.show_time[2]}</span> </p> 
+                                                    <p className="row_show_time">{item.category_ticket} 
+                                                        <Link to={linkPage}><span className="box_time" onClick={handleLogin}>{item.show_time[0]}</span></Link> 
+                                                    </p> 
                                         </div>) : "Vui lòng chọn suất chiếu"}                                    
 
                                     </div>
