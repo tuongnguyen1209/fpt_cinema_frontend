@@ -1,30 +1,37 @@
 import { EyeTwoTone, LikeTwoTone, StarTwoTone } from '@ant-design/icons';
 import React, { useEffect, useState } from "react";
 import { ListBlogStyle } from './list_blog-style';
-import { URL_API } from '../../../config/app.config';
 import { Link } from 'react-router-dom';
+// import BlockService from "../../../serivces/blog.service";
+import axios from 'axios';
 
-const axios = require('axios');
 
 function BlogCPN() {
 
-    const [listBlogBl, setListBlogBl] = useState([])
-    console.log(listBlogBl)
+    const [listBlog, setListBlog] = useState([])
     useEffect(() => {
-        axios({
-            method: 'get',
-            url: `${URL_API}listBlog`,
-          })
-          .then(function (response) {
-            // handle success
-            setListBlogBl(response.data);
-          }).catch(
-            function (error) {
-              console.log('DONT GET DATA MOVIE!')
-              return Promise.reject(error)
-            }
-          )
-    }, [])
+        // const fetchBlog = async () => {
+        //   try {
+        //     const response = await BlockService.getAllBlog();
+        //     console.log(response);
+        //     setListBlog(response.data);
+        //   }catch (error) {
+        //     console.log("Failed to fetch block list: ",error);
+        //   }
+        // }
+        // fetchBlog();
+
+        async function getUser() {
+          try {
+            const response = await axios.get('https://6189cf9d34b4f400177c425b.mockapi.io/listBlog');
+            console.log(response);
+            setListBlog(response.data);
+          } catch (error) {
+            console.error(error);
+          }
+        }
+        getUser();
+      },[])
     
     return (
         <ListBlogStyle>
@@ -36,7 +43,7 @@ function BlogCPN() {
                 <div className="line"><div className="line1"></div></div>
 
                 <div className="container-blog">
-                    {listBlogBl.map((item, index) => (
+                    {listBlog.map((item, index) => (
                         <div className="blog-card" key={index}>
                             <Link to={item.href}>
                                 <img className="img-blog" src={item.img} alt="img"/>
@@ -60,7 +67,7 @@ function BlogCPN() {
                 <div className="line"><div className="line1"></div></div>
 
                 <div className="container-blog">
-                    {listBlogBl.map((item, index) => (
+                    {listBlog.map((item, index) => (
                         <div className="blog-card" key={index}>
                             <Link to={item.href}>
                                 <img className="img-blog" src={item.img} alt="img"/>

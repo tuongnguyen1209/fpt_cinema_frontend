@@ -12,13 +12,16 @@ import PageMember from "./page_member/page_member";
 import PageBlog from "./page_blog/page_blog";
 import PageSettingAccount from "./page_setting_account/page_setting_account";
 import PageBookTicketFood from "./page_bookticket_food/page_bookticket_food";
+import Register from "../../components/molecules/modal-register/register";
+import Forgot from "../../components/molecules/modal-forgotpassword/forgot";
+import Login from "../../components/molecules/modal-login/login";
 
 const { Header, Content, Footer } = Layout;
 
 const { useBreakpoint } = Grid;
 
 
-const isLogin = false;
+const isLogin = true;
 
 const Site = () => {
 
@@ -57,6 +60,15 @@ const Site = () => {
           </Route>
           <Route path="/bookticket-food">
             <PageBookTicketFood />
+          </Route>
+          <Route path="/login">
+            <Login />
+          </Route>
+          <Route path="/register">
+            <Register />
+          </Route>
+          <Route path="/forgot">
+            <Forgot />
           </Route>
         </Switch>
       </Content>

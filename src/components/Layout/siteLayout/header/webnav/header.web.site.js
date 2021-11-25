@@ -1,11 +1,9 @@
 import { DownOutlined } from "@ant-design/icons";
 import { Button, Col, Dropdown, Input, Menu, Row } from "antd";
-import React ,{ useState } from "react";
+import React from "react";
 import { Link } from "react-router-dom";
 import { APP_SITE_MENU } from "../../../../../config/app.config";
-import Login from "../../../../molecules/modal-login/login";
 import { HeaderCustom } from "./Customheader.syle";
-
 
 const menuUserLogin = () => {
   return (
@@ -27,17 +25,6 @@ const menuUserLogin = () => {
 const HeaderWebSite = () => {
   const isLogin = false;
 
-  const [closeModal, setCloseModal] = useState("hide-modal");
-
-
-  const handleCloseModal = () => {
-      setCloseModal("hide-modal")
-
-  } 
-  const handleOpenModal = () => {
-      setCloseModal("modal")
-  }
-
   return (
     <HeaderCustom>
       <Row>
@@ -57,8 +44,10 @@ const HeaderWebSite = () => {
               </Dropdown>
             </>
           ) : (
-            <Button className="btn-login" type="primary" size="large" onClick={handleOpenModal}>
-              Đăng nhập
+            <Button className="btn-login" type="primary" size="large">
+              <Link to="/login">
+                Đăng nhập
+              </Link>
             </Button>
           )}
         </Col>
@@ -93,8 +82,6 @@ const HeaderWebSite = () => {
           </Menu>
         </Col>
       </Row>
-
-      {<Login closeModal={closeModal} handleCloseModal={handleCloseModal}  setCloseModal={setCloseModal}/>}
     </HeaderCustom>
   );
 };
