@@ -1,6 +1,15 @@
 import styled from "styled-components";
 
 export const BookTicketFoodStyle = styled.div`
+    // css spin     
+    .example {
+    margin: 20px 0;
+    margin-bottom: 20px;
+    padding: 30px 50px;
+    text-align: center;
+    background: rgba(0, 0, 0, 0.05);
+    border-radius: 4px;
+    }
     .container {
         display: flex;
         justify-content: space-between;
@@ -287,7 +296,8 @@ export const BookTicketFoodStyle = styled.div`
                                 justify-content: space-between;
                                 align-items: center;
                                 padding-right: 10px;
-                                button {
+                                button,a {
+                                    text-align: center;
                                     width: 140px;
                                     display: inline-block;
                                     font-size: 14px;
@@ -320,6 +330,9 @@ export const BookTicketFoodStyle = styled.div`
                 align-items: center;
                 img {
                     max-width: 180px;
+                }
+                h4 {
+                    padding: 5px 0px;
                 }
                 p {
                     width: 100%;

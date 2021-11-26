@@ -7,6 +7,7 @@ export const DetailMovieCPNStyle = styled.div`
         align-items: flex-start;
         padding-top: 40px;
         .main_detail {
+            flex: 1;
             width: 65%;
             padding-right: 30px;
             .breadcrumb {
@@ -43,21 +44,24 @@ export const DetailMovieCPNStyle = styled.div`
                     }
                 }
                 .content_detail {
+                    flex: 2;
                     height: 100%;
+                    padding: 0px 25px;
                     h4 {
-                        font-size: 1.5rem;
+                        font-size: 1.4rem;
                         color: rgba(0,0,0,0.7);
                         text-overflow: ellipsis;
                         white-space: nowrap;
                         text-transform: uppercase;
                     }
                     p {
-                        font-size: 1.5rem;
+                        font-size: 1.3rem;
                         color: #7f8c8d;
                         text-overflow: ellipsis;
                     }
                     .rate_star {
                         padding: 10px;
+                        display: flex;
                         .btn_rate_star {
                             color: #ffffff;
                             background-color: #f26b38;
@@ -67,7 +71,7 @@ export const DetailMovieCPNStyle = styled.div`
                             margin: 5px 10px;
                             font-size: 0.8rem;
                         }
-                        span {
+                        p{
                             font-size: 1.2rem;
                             color: #ff9f1a;
                             font-family: cursive;
@@ -78,7 +82,8 @@ export const DetailMovieCPNStyle = styled.div`
                         p {
                             font-size: 1rem;
                             padding: 5px 0px;
-                            font-family: Arial, Helvetica, sans-serif;
+                            font-family: inherit;
+                            text-transform: capitalize;
                             span {
                                 color: black;
                             }
@@ -98,9 +103,9 @@ export const DetailMovieCPNStyle = styled.div`
                     width: 300px;
                 }
                 p {
-                    line-height: 20px;
+                    line-height: 30px;
                     padding: 15px 0px;
-                    font-size: 0.9rem;
+                    font-size: 1rem;
                     font-family: 'Roboto', sans-serif;
                 }
             }

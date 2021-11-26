@@ -4,6 +4,7 @@ import React from "react";
 import { Link } from "react-router-dom";
 import { APP_SITE_MENU } from "../../../../../config/app.config";
 import { HeaderCustom } from "./Customheader.syle";
+import DropMenu from "./drop.menu.movie";
 
 const menuUserLogin = () => {
   return (
@@ -67,11 +68,7 @@ const HeaderWebSite = () => {
                   title={el.name}
                   icon={<DownOutlined />}
                 >
-                  {el.submenu.map((e, i) => (
-                    <Menu.Item key={i} className="menu-item">
-                      <Link to={e.url}>{e.name}</Link>
-                    </Menu.Item>
-                  ))}
+                  <DropMenu />                
                 </Menu.SubMenu>
               ) : (
                 <Menu.Item key={ind} className="menu-item">

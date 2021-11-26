@@ -16,7 +16,7 @@ const PageMember = () => {
                     <SlideShowStyle >
                         <BoxBuyTicket />
                     </SlideShowStyle >
-                    <MovieCPN />
+                    <MovieCPN titleHome={"PHIM ĐANG CHIẾU"}/>
                 </div>
             </div>
         </PageMemberStyle>

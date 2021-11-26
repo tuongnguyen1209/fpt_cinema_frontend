@@ -13,6 +13,9 @@ export const PageBlogStyle = styled.div`
         overflow: hidden;
         display: flex;
         justify-content: center;
+        .img-mask {
+            height: 74%;
+        }
         .title > span {
             padding: 10px 20px;
         }

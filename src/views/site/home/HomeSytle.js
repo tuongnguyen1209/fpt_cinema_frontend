@@ -19,6 +19,10 @@ export const HomePage = styled.div`
         .img-mask {
             height: 83%;
         }
+        .meta-title {
+            background: #f0f2f5;
+            color: black;
+        }
     }
     @media screen and (min-width: 2200px) { 
         .carousel-style {

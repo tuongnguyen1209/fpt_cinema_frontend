@@ -3,7 +3,7 @@ import React, { useEffect, useState } from "react";
 import SlideItem from "../../atoms/slide-item/slide_item";
 import BoxBuyTicket from './box-buy-ticket';
 import { SlideShowStyle } from './slide_show-style';
-import { URL_API } from '../../../config/app.config';
+// import { URL_API } from '../../../config/app.config';
 
 const axios = require('axios');
 
@@ -14,7 +14,7 @@ function Slideshow() {
     useEffect(() => {
       axios({
         method: 'get',
-        url: `${URL_API}movie`,
+        url: `https://6189cf9d34b4f400177c425b.mockapi.io/movie`,
       })
       .then(function (response) {
         // handle success

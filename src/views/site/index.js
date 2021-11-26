@@ -15,7 +15,7 @@ import PageBookTicketFood from "./page_bookticket_food/page_bookticket_food";
 import Register from "../../components/molecules/modal-register/register";
 import Forgot from "../../components/molecules/modal-forgotpassword/forgot";
 import Login from "../../components/molecules/modal-login/login";
-
+import NotFound from "../site/page_not-found";
 const { Header, Content, Footer } = Layout;
 
 const { useBreakpoint } = Grid;
@@ -70,9 +70,12 @@ const Site = () => {
           <Route path="/forgot">
             <Forgot />
           </Route>
+          <Route>
+            <NotFound />
+          </Route>
         </Switch>
       </Content>
-      <Footer style={{ padding: 5 }}>
+      <Footer style={{ padding: 0 }}>
         <FooterSite />
       </Footer>
     </Layout>

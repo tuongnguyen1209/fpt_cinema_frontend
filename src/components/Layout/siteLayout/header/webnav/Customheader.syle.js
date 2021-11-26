@@ -44,4 +44,5 @@ export const HeaderCustom = styled.div`
     background-color: #29323d;
     border: 1px solid #29323d;
   }
+
 `;
