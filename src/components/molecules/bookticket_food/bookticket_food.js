@@ -1,8 +1,13 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import { LeftOutlined, MinusCircleFilled, PlusCircleFilled, RightOutlined } from '@ant-design/icons';
+import { message } from 'antd';
 import React, { useEffect, useRef, useState } from "react";
+import { useDispatch, useSelector } from 'react-redux';
+import { Link } from 'react-router-dom';
+import { saveTicketList } from '../../../redux/action/saveTicket';
 import { BookTicketFoodStyle } from "./bookticket_foodStyle";
 
+const axios = require('axios').default;
 
 const BookTicketFood = () => {
     
@@ -361,6 +366,7 @@ const BookTicketFood = () => {
 
     // totalTableTicket tổng tiền bảng đặt vé phải khác 0 mới cho người dùng qua bước đặt ghế
    const handlebtnNext = (e) => {
+        saveInfoTicket(); // luu thong tin
         if(totalTicketBought > 8) {
             alert("Bạn không được mua quá 8 vé!");
             return;
@@ -463,12 +469,67 @@ const BookTicketFood = () => {
             let item = document.getElementById(ArraySeat[id]);
             item.style.backgroundColor = "rgba(189,195,199,.4)";
             item.style.color = "rgba(0, 0, 0, 0.85)";
-            console.log("Changeeeeeeeeeeee")
         }
         setArraySeat([]);
     
     },[checkChangeTotallTicket])
 
+    
+
+    // redux ------------------------------------------------------
+    const infoTicketList = useSelector(state => state.saveTicket);
+    const dispatch = useDispatch();
+    console.table([infoTicketList]);
+    const saveInfoTicket = () => {
+        
+        let code_random = Math.trunc(Math.random() * (9000) + 1000);
+        let room_random = Math.trunc(Math.random() * 9 + 1);
+        const saveSeat = {
+            seat: ArraySeat.map((seat) => {return seat + ","}),
+            total: `${totalAll}.000 VND`,
+            combo: `${ quantityCombo1 > 0 ?  getCombo1 +"(" + quantityCombo1 + ")" : " " },${ quantityCombo2 > 0 ?  getCombo2 +"(" + quantityCombo2 + ")" : " " },${ quantityCombo3 > 0 ?  getCombo3 +"(" + quantityCombo3 + ")" : " " }`,
+            code_ticket: `MV${code_random}`,
+            info_ticket: `Vé thành viên (${counting_member}), Vé thường (${counting})`,
+            name: "ĐẶNG KIÊN",
+            room: `Phòng ${room_random}`,
+            status: "Sắp chiếu"
+        }
+
+        const action = saveTicketList(saveSeat);
+        dispatch(action);
+    }
+    // redux ------------------------------------------------------
+
+    // message
+    const success = () => {
+        message.success('Bạn đã đặt vé thành công !');
+      };
+
+    // post data lên sever 
+    const PostDataTicket = async () => {
+        saveInfoTicket();
+        axios.post('https://619dd250131c6000170890f9.mockapi.io/ticket', {
+            movie: infoTicketList.movie,
+            name: infoTicketList.name,
+            rap: infoTicketList.rap,
+            session: infoTicketList.session,
+            combo: infoTicketList.combo,
+            seat: infoTicketList.seat,
+            room: infoTicketList.room,
+            info_ticket: infoTicketList.info_ticket,
+            status: infoTicketList.status,
+            total: infoTicketList.total,
+            ticket_code: infoTicketList.code_ticket,
+            id: "1",
+        })
+        .then(function (response) {
+            console.log(response);
+        })
+        .catch(function (error) {
+            console.log(error);
+        });
+        success();
+    }
     // mảng ghế
 
     // const [limitTime, setLimitTime] = useState("16:00");
@@ -798,7 +859,7 @@ const BookTicketFood = () => {
                             <p></p>
                         </div>
                         <div className="form_payment">
-                            <form>
+                            <form method="post">
                                 <div className="form-group">
                                     <label>Hình thức thanh toán</label>
                                     <select>
@@ -822,7 +883,7 @@ const BookTicketFood = () => {
 
                                 <div className="form-group-btn">
                                     <p>(*)Trước khi click vào thanh toán bạn phải có <b>tài khoản ngân hàng</b> hoặc <b>ví điện tử momo</b></p>
-                                    <div><button onClick={handlePrevPageSeat}>QUAY LẠI</button> <button>THANH TOÁN</button></div>
+                                    <div><button onClick={handlePrevPageSeat}>QUAY LẠI</button> <Link to="/member" onClick={PostDataTicket}>THANH TOÁN</Link></div>
                                 </div>
                             </form>        
                         </div>
@@ -830,13 +891,12 @@ const BookTicketFood = () => {
                 </div>
                 <div className="aside_bookticket_food">
                     <div className="info_ticket">
-                        <img src="https://www.galaxycine.vn/media/2021/11/11/450_1636642104365.jpg" alt="img_movie" />
-                        <h4>HARD HIT</h4>
-                        <h4>ÁN TỬ TRÊN XE</h4>
+                        <img src={infoTicketList.img} alt="img_movie" />
+                        <h4>{infoTicketList.movie}</h4>
                         <p className="note">(*) Phim chỉ dành cho khán giả từ 16 tuổi trở lên</p>
 
-                        <p><b>Rạp:</b> Galaxy Quang Trung  | RAP 5 </p>
-                        <p><b>Suất chiếu:</b>  18:00  | Thứ tư, 17/11/2021</p>
+                        <p><b>Rạp:</b> {infoTicketList.rap}</p>
+                        <p><b>Suất chiếu:</b>  {infoTicketList.session}</p>
                         <p><b>Combo:</b> <span>{getCombo1}{ quantityCombo1 === 0 ? "" : "(" + quantityCombo1 + ")" }</span> <span>{getCombo2}{ quantityCombo2 === 0 ? "" : "(" + quantityCombo2 + ")" }</span> <span>{getCombo3}{ quantityCombo3 === 0 ? "" : "(" + quantityCombo3 + ")" }</span></p>
                         <p><b>Ghế:</b> {ArraySeat.toString()} </p>
                         <p className="total"><b>Tổng:</b> <span style={{"padding-left": "10px" }}>{totalAll},000 VNĐ</span></p>

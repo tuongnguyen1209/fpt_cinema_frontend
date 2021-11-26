@@ -3,7 +3,7 @@ import { TitleStyle } from "./title-style";
 import {useState} from "react"
 import { Link } from "react-router-dom";
 
-function Title({title1, title2}) {
+function Title({title1, title2, setCheckPage}) {
 
     const [state, setState] = useState("span");
     const [state2, setState2] = useState("span2");
@@ -12,11 +12,15 @@ function Title({title1, title2}) {
         e.preventDefault();
         setState("span");
         setState2("span2");
+
+        setCheckPage(true);
     };
     const ChangeBtn2 = (e) => {
         e.preventDefault();
         setState2("span");
         setState("span2");
+
+        setCheckPage(false)
     };
     return (
         <TitleStyle >

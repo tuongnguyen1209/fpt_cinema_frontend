@@ -5,30 +5,54 @@ import React, { useEffect, useRef, useState } from "react";
 import { Link } from "react-router-dom";
 import MovieCPN from '../movie_component/list_movie';
 import { DetailMovieCPNStyle } from "./detail_movieStyle";
-import MovieService from '../../../serivces/movie.service';
+// import MovieService from '../../../serivces/movie.service';
+import axios from 'axios';
+import { message } from 'antd';
+import { useSelector } from 'react-redux';
 
 
 const { Option } = Select;
 const dateFormat = 'YYYY-MM-DD';
 
+const key = 'updatable';
 
+const openMessage = () => {
+  message.loading({ content: 'Loading...', key });
+  setTimeout(() => {
+    message.success({ content: 'Cảm ơn bạn đã đánh giá!', key, duration: 2 });
+  }, 1000);
+};
 const DetailMovieCPN = () => {
+  
+    // redux -------------------------------------------
+    const idMovie = useSelector(state => state.findIdMovie);
+
+    // redux -------------------------------------------
 
     const [listMovie, setListMovie] = useState([]);
     
     useEffect(() => {
-      const fetchMovieList = async () => {
-        try {
-          const response = await MovieService.getAllMovie();
-          console.log(response);
-          setListMovie(response.movie);
-        }catch (error) {
-          console.log("Failed to fetch movie list: ",error);
-        }
-      }
-      fetchMovieList();
+      // const fetchMovieList = async () => {
+      //   try {
+      //     const response = await MovieService.getAllMovie();
+      //     console.log(response);
+      //     setListMovie(response.movie);
+      //   }catch (error) {
+      //     console.log("Failed to fetch movie list: ",error);
+      //   }
+      // }
+      // fetchMovieList();
 
-    },[])
+      axios.get(`https://61966cdbaf46280017e7e07c.mockapi.io/detail_movie/${idMovie.id}`) 
+      .then(function (response) {
+        setListMovie(response.data)
+      })
+      .catch(function (error) {
+        // handle error
+        console.log(error);
+      })
+
+    },[idMovie.id])
 
     // bật tắt đánh giá  
     const [toggleStar, setToggleStar] = useState(false);
@@ -50,7 +74,7 @@ const DetailMovieCPN = () => {
         },
         {
           path: 'detailmovie',
-          breadcrumbName: 'THE CONJURING: THE DEVIL MADE ME DO',
+          breadcrumbName: `${listMovie.name}`,
         },
       ];
       function itemRender(route, params, routes, paths) {
@@ -62,7 +86,7 @@ const DetailMovieCPN = () => {
         );
       }
       // end đường dẫn từng trang
-
+      
       // thực hiện open traller
       const iframeRef = useRef();
 
@@ -87,27 +111,27 @@ const DetailMovieCPN = () => {
                         <div className="box-detail">
                             
                             <div className="img-traller">
-                                <img src={listMovie[0].image} alt="123"/>
+                                <img src={listMovie.image_large} alt="123"/>
                                 <PlayCircleFilled className="btn-play" onClick={showModal}/>
-                                <Modal title="abc" width={610} visible={isModalVisible} onCancel={handleCancel} footer={null}>   
-                                    <p><iframe ref={iframeRef} title="YTB" width="100%" height="315" src={listMovie[0].traller} frameBorder="0"></iframe></p>
+                                <Modal title={listMovie.name} width={610} visible={isModalVisible} onCancel={handleCancel} footer={null}>   
+                                    <p><iframe ref={iframeRef} title="YTB" width="100%" height="315" src={listMovie.traller} frameBorder="0"></iframe></p>
                                 </Modal> 
                             </div>
 
                             <div className="content_detail">
-                                <h4>{listMovie[0].name}</h4>
-                                <p>{listMovie[0].image}</p>
+                                <h4>{listMovie.name}</h4>
+                                <p>{listMovie.name_vn}</p>
                                 <div className="rate_star">
-                                    <span>5/5 <StarOutlined /></span><button className="btn_rate_star" onClick={handleToggleStar}>Đánh giá</button>{ toggleStar ? <Rate allowHalf defaultValue={2.5} /> : ""} 
+                                    <p>{listMovie.rate}/5<StarOutlined /></p><button className="btn_rate_star" onClick={handleToggleStar}>Đánh giá</button>{ toggleStar ? <Rate onChange={openMessage} allowHalf defaultValue={4} /> : ""} 
                                 </div>
                                 <div className="info_movie">
-                                    <p>Time: <span><HistoryOutlined /> {listMovie[0].time} phút</span></p>
-                                    <p>Nhà sản xuất: <span>New Lane Cinema</span></p>
-                                    <p>Quốc gia: <span>{listMovie[0].country}</span></p>
-                                    <p>Đạo diễn: <span>{listMovie[0].dirctor}</span></p>
-                                    <p>Diễn viên: <span>{listMovie[0].actor}</span></p>
-                                    <p>Thể loại: <span>{listMovie[0].category}</span></p>
-                                    <p>Ngày: <span>{listMovie[0].datestart}</span></p>
+                                    <p>Thời gian: <span><HistoryOutlined /> {listMovie.time} phút</span></p>
+                                    <p>Nhà sản xuất: <span> {listMovie.producer}</span></p>
+                                    <p>Quốc gia: <span> {listMovie.country}</span></p>
+                                    <p>Đạo diễn: <span> {listMovie.director}</span></p>
+                                    <p>Diễn viên: <span> {listMovie.actor}</span></p>
+                                    <p>Thể loại: <span> {listMovie.category}</span></p>
+                                    <p>Ngày: <span> {listMovie.date_start}</span></p>
                                 </div>
                             </div>  
                         </div>
@@ -116,7 +140,7 @@ const DetailMovieCPN = () => {
                           <h3>Nội dung phim</h3>
                           <div className="line"><span className="line1"></span></div>
                           <p>
-                            {listMovie[0].content} 
+                            {listMovie.content} 
                           </p>
                         </div>
 
@@ -160,37 +184,11 @@ const DetailMovieCPN = () => {
                           </div>
                         <div className="select_time">
                             <div  className="select_time_box">
-                                <p className="tag_rap">Galaxy Quang Trung</p>
+                                <p className="tag_rap">{listMovie.rap}</p>
                                 <div className="tag_rap_box">
                                   <p>2D - Phụ đề</p>
                                   <div>
-                                      <Link to="" >18:30</Link>
-                                      <Link to="" >18:30</Link>
-                                      <Link to="" >18:30</Link>
-                                  </div>
-                                </div>
-                            </div>
-
-                            <div className="select_time_box">
-                                <p className="tag_rap">Galaxy Quang Trung</p>
-                                <div className="tag_rap_box">
-                                  <p>2D - Phụ đề</p>
-                                  <div>
-                                      <Link to="" >18:30</Link>
-                                      <Link to="" >18:30</Link>
-                                      <Link to="" >18:30</Link>
-                                  </div>
-                                </div>
-                            </div>
-
-                            <div className="select_time_box">
-                                <p className="tag_rap">Galaxy Quang Trung</p>
-                                <div className="tag_rap_box">
-                                  <p>2D - Phụ đề</p>
-                                  <div>
-                                      <Link to="" >18:30</Link>
-                                      <Link to="" >18:30</Link>
-                                      <Link to="" >18:30</Link>
+                                      <Link to="" >{listMovie.session}</Link>
                                   </div>
                                 </div>
                             </div>
@@ -211,7 +209,7 @@ const DetailMovieCPN = () => {
                         </form>
                       </div>
 
-                      <MovieCPN />
+                      <MovieCPN titleHome={"PHIM ĐANG CHIẾU"}/>
 
                     </div>
 

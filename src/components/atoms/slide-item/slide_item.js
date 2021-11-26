@@ -22,7 +22,7 @@ function SlideItem({props}) {
         <div className="img-slideshow">
             <img className="carousel-style" src={props.banner} alt="banner" />
             <PlayCircleFilled className="btn-play" onClick={showModal}/>
-            <Modal title={props.title} width={610} visible={isModalVisible} onCancel={handleCancel} footer={null}>   
+            <Modal title={props.name} width={610} visible={isModalVisible} onCancel={handleCancel} footer={null}>   
                 <p><iframe ref={iframeRef} title="YTB" width="100%" height="315" src={`${props.traller}?enablejsapi=1&playerapiid=ytplayer`} frameBorder="0"></iframe></p>
             </Modal> 
         </div>
