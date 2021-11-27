@@ -8,3 +8,11 @@ export const FormatDateRequest = (d = new Date()) => {
 
   return `${d.getFullYear()}-${month}-${day}`;
 };
+
+export const formatPrice = (tien) => {
+  return new Intl.NumberFormat("it-IT", {
+    style: "currency",
+    currency: "VND",
+    maximumFractionDigits: 1,
+  }).format(tien);
+};

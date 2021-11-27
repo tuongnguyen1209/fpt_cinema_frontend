@@ -6,6 +6,13 @@ import { Switch, Route } from "react-router-dom";
 import { ADMIN_PREFIX_PATH } from "../../config/app.config";
 import ListMovie from "./movie/listMovie.admin";
 import AddMovie from "./movie/addMovie.admin";
+import ListSession from "./session/listSession.admin";
+import AddSession from "./session/addSession.admin";
+import ListRoom from "./session/listRoom.admin";
+import Tickets from "./ticket/ticket.admin";
+import TicketDetail from "./ticket/ticketDetail.admin";
+import ListUser from "./user/listUser.admin";
+import HomeAdmin from "./home/home.admin";
 
 const { Content } = Layout;
 
@@ -23,6 +30,11 @@ const Admin = () => {
           <div style={{ padding: 24, backgroundColor: "#fff", minHeight: 360 }}>
             <Switch>
               <Route
+                path={`${ADMIN_PREFIX_PATH}/`}
+                component={HomeAdmin}
+                exact
+              />
+              <Route
                 path={`${ADMIN_PREFIX_PATH}/movie`}
                 component={ListMovie}
                 exact
@@ -35,6 +47,36 @@ const Admin = () => {
               <Route
                 path={`${ADMIN_PREFIX_PATH}/movie/:id`}
                 component={AddMovie}
+                exact
+              />
+              <Route
+                path={`${ADMIN_PREFIX_PATH}/session`}
+                component={ListSession}
+                exact
+              />
+              <Route
+                path={`${ADMIN_PREFIX_PATH}/room`}
+                component={ListRoom}
+                exact
+              />
+              <Route
+                path={`${ADMIN_PREFIX_PATH}/session/addsession`}
+                component={AddSession}
+                exact
+              />
+              <Route
+                path={`${ADMIN_PREFIX_PATH}/ticket`}
+                component={Tickets}
+                exact
+              />
+              <Route
+                path={`${ADMIN_PREFIX_PATH}/ticket/:id`}
+                component={TicketDetail}
+                exact
+              />
+              <Route
+                path={`${ADMIN_PREFIX_PATH}/user`}
+                component={ListUser}
                 exact
               />
             </Switch>
