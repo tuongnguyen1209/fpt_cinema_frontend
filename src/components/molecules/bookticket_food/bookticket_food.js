@@ -1,10 +1,18 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import { LeftOutlined, MinusCircleFilled, PlusCircleFilled, RightOutlined } from '@ant-design/icons';
+import { message } from 'antd';
 import React, { useEffect, useRef, useState } from "react";
+import { useDispatch, useSelector } from 'react-redux';
+import { Link } from 'react-router-dom';
+import { saveTicketList } from '../../../redux/action/saveTicket';
 import { BookTicketFoodStyle } from "./bookticket_foodStyle";
 
+const axios = require('axios').default;
 
 const BookTicketFood = () => {
     
+    const [checkChangeTotallTicket,setCheckChangeTotallTicket] = useState(false);
+
     const ticket_adults = [
         {
             "category_ticket": "Người lớn",
@@ -18,7 +26,6 @@ const BookTicketFood = () => {
     
     let price_ticket;
     for(let i = 0 ; i< ticket_adults.length ; i++) {
-        console.log(ticket_adults[i].price_ticket);
         price_ticket = ticket_adults[i].price_ticket;
     }
 
@@ -67,7 +74,6 @@ const BookTicketFood = () => {
     
     let price_ticket_member;
     for(let i = 0 ; i< ticket_member.length ; i++) {
-        console.log(ticket_member[i].price_ticket);
         price_ticket_member = ticket_member[i].price_ticket;
     }
 
@@ -108,6 +114,8 @@ const BookTicketFood = () => {
     
     useEffect(() => {
         setTotalTableTicket(totalPriceTicket+totalPriceTicket_member);
+        setCheckChangeTotallTicket(checkChangeTotallTicket ? false : true)
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     },[totalPriceTicket,totalPriceTicket_member])
 
     // ----------------------------------------------------------------------------
@@ -124,7 +132,6 @@ const BookTicketFood = () => {
     
     let price_combo1;
     for(let i = 0 ; i< combo_1.length ; i++) {
-        console.log(combo_1[i].price_combo);
         price_combo1 = combo_1[i].price_combo;
     }
 
@@ -185,7 +192,6 @@ const BookTicketFood = () => {
     
     let price_combo2;
     for(let i = 0 ; i< combo_2.length ; i++) {
-        console.log(combo_2[i].price_combo);
         price_combo2 = combo_2[i].price_combo;
     }
 
@@ -245,7 +251,6 @@ const BookTicketFood = () => {
     
     let price_combo3;
     for(let i = 0 ; i< combo_3.length ; i++) {
-        console.log(combo_3[i].price_combo);
         price_combo3 = combo_3[i].price_combo;
     }
 
@@ -323,7 +328,6 @@ const BookTicketFood = () => {
     const [getCombo3,setGetCombo3] = useState("");
     const [quantityCombo3, SetQuantityCombo3] = useState(0);
 
-    console.log(quantityCombo1,quantityCombo2,quantityCombo3);
 
     // cac state chuyen trang 
 
@@ -361,7 +365,12 @@ const BookTicketFood = () => {
     */
 
     // totalTableTicket tổng tiền bảng đặt vé phải khác 0 mới cho người dùng qua bước đặt ghế
-   const handlebtnPrevious = (e) => {
+   const handlebtnNext = (e) => {
+        saveInfoTicket(); // luu thong tin
+        if(totalTicketBought > 8) {
+            alert("Bạn không được mua quá 8 vé!");
+            return;
+        }
        e.preventDefault();
        if(totalTableTicket !== 0) {
            if(btnPrevious === "btn_prev_show") {
@@ -391,27 +400,45 @@ const BookTicketFood = () => {
         e.preventDefault();
         setTogglePagePayment("hide_page");
         setTogglePageBookTicket("main_bookticket_food");
-        setBtnNext("btn_prev_show");
+        setBtnNext("btn_prev_show");  
    }
- 
 
+
+   // ghe da co nguoi dat
+   const ArraySeatBooked = ["H7","D8","A14","G14"];
+   useEffect(() => {
+       for(let id = 0 ; id < ArraySeatBooked.length ; id++) {
+           let idItem = document.getElementById(ArraySeatBooked[id]);
+           idItem.style.backgroundColor = "red";
+           idItem.style.color = "white";
+           console.log(idItem);
+       }
+       console.log("useMemo pending")
+   // eslint-disable-next-line react-hooks/exhaustive-deps
+   },[ArraySeatBooked.length])
+   
+   // tinh tong so ve 
    const totalTicketBought = counting + counting_member;
-   // chon ghe
-   const [ArraySeat,setArraySeat]  =  useState([]);
 
-    const handleChooseSeat = (e) => {
-  
+   
+   const [ArraySeat,setArraySeat]  =  useState([]);
+   // chon ghe
+   const handleChooseSeat = (e) => {   
+       for(let id = 0 ; id < ArraySeatBooked.length ; id++) {
+            let idItem = document.getElementById(ArraySeatBooked[id]);
+            if(e.target.name === idItem.name) {
+                alert("Ghế đã có người đặt!!!")
+                return;
+            }
+        }
+
         if(ArraySeat.length === totalTicketBought) {
             for (const seat of ArraySeat) {
-                console.log(seat === e.target.name, seat,e.target.name);
                 if(e.target.name === seat) {
                     e.target.style.backgroundColor = "rgba(189,195,199,.4)";
                     e.target.style.color = "rgba(0, 0, 0, 0.85)";
-                    const newArraySeat =  ArraySeat.filter((seat,id) => {
-                        if(seat !== e.target.name) {
-                            console.log("đang xử lý!!!");
-                        };
-                        return seat;
+                    const newArraySeat =  ArraySeat.filter((seat,index,array) => {
+                        return seat !== e.target.name
                     })
                     setArraySeat([...newArraySeat]);
                     counting++;
@@ -420,13 +447,89 @@ const BookTicketFood = () => {
             }
         }
         else {
-            console.log(e.target.name); 
             setArraySeat([...ArraySeat, e.target.name]);
             e.target.style.backgroundColor = "#2ecc71";
             e.target.style.color = "white";
         }
+        for (const seat of ArraySeat) {
+            if(e.target.name === seat) {
+                e.target.style.backgroundColor = "rgba(189,195,199,.4)";
+                e.target.style.color = "rgba(0, 0, 0, 0.85)";
+                const newArraySeat =  ArraySeat.filter((seat,index,array) => {
+                    return seat !== e.target.name
+                })
+                setArraySeat([...newArraySeat]);
+                counting++;
+            }
+            
+        }
     }
+    useEffect(() =>{ 
+        for(let id = 0; id < ArraySeat.length; id++) {
+            let item = document.getElementById(ArraySeat[id]);
+            item.style.backgroundColor = "rgba(189,195,199,.4)";
+            item.style.color = "rgba(0, 0, 0, 0.85)";
+        }
+        setArraySeat([]);
+    
+    },[checkChangeTotallTicket])
 
+    
+
+    // redux ------------------------------------------------------
+    const infoTicketList = useSelector(state => state.saveTicket);
+    const dispatch = useDispatch();
+    console.table([infoTicketList]);
+    const saveInfoTicket = () => {
+        
+        let code_random = Math.trunc(Math.random() * (9000) + 1000);
+        let room_random = Math.trunc(Math.random() * 9 + 1);
+        const saveSeat = {
+            seat: ArraySeat.map((seat) => {return seat + ","}),
+            total: `${totalAll}.000 VND`,
+            combo: `${ quantityCombo1 > 0 ?  getCombo1 +"(" + quantityCombo1 + ")" : " " },${ quantityCombo2 > 0 ?  getCombo2 +"(" + quantityCombo2 + ")" : " " },${ quantityCombo3 > 0 ?  getCombo3 +"(" + quantityCombo3 + ")" : " " }`,
+            code_ticket: `MV${code_random}`,
+            info_ticket: `Vé thành viên (${counting_member}), Vé thường (${counting})`,
+            name: "ĐẶNG KIÊN",
+            room: `Phòng ${room_random}`,
+            status: "Sắp chiếu"
+        }
+
+        const action = saveTicketList(saveSeat);
+        dispatch(action);
+    }
+    // redux ------------------------------------------------------
+
+    // message
+    const success = () => {
+        message.success('Bạn đã đặt vé thành công !');
+      };
+
+    // post data lên sever 
+    const PostDataTicket = async () => {
+        saveInfoTicket();
+        axios.post('https://619dd250131c6000170890f9.mockapi.io/ticket', {
+            movie: infoTicketList.movie,
+            name: infoTicketList.name,
+            rap: infoTicketList.rap,
+            session: infoTicketList.session,
+            combo: infoTicketList.combo,
+            seat: infoTicketList.seat,
+            room: infoTicketList.room,
+            info_ticket: infoTicketList.info_ticket,
+            status: infoTicketList.status,
+            total: infoTicketList.total,
+            ticket_code: infoTicketList.code_ticket,
+            id: "1",
+        })
+        .then(function (response) {
+            console.log(response);
+        })
+        .catch(function (error) {
+            console.log(error);
+        });
+        success();
+    }
     // mảng ghế
 
     // const [limitTime, setLimitTime] = useState("16:00");
@@ -580,130 +683,130 @@ const BookTicketFood = () => {
                                 <div className="column_seats">
                                     <div className="row_seats_even">
                                         <span>
-                                            <input onClick={handleChooseSeat} type="button" name="H12" value="12"/>
-                                            <input onClick={handleChooseSeat} type="button" name="H11" value="11"/>
+                                            <input id="H12" onClick={handleChooseSeat} type="button" name="H12" value="12"/>
+                                            <input id="H11" onClick={handleChooseSeat} type="button" name="H11" value="11"/>
                                         </span>
                                         <span>
-                                            <input onClick={handleChooseSeat} type="button" name="H8" value="8"/>
-                                            <input onClick={handleChooseSeat} type="button" name="H7" value="7"/>
+                                            <input id="H8" onClick={handleChooseSeat} type="button" name="H8" value="8"/>
+                                            <input id="H7" onClick={handleChooseSeat} type="button" name="H7" value="7"/>
                                         </span>
                                         <span>
-                                            <input onClick={handleChooseSeat} type="button" name="H4" value="4"/>
-                                            <input onClick={handleChooseSeat} type="button" name="H3" value="3"/>
+                                            <input id="H4" onClick={handleChooseSeat} type="button" name="H4" value="4"/>
+                                            <input id="H3" onClick={handleChooseSeat} type="button" name="H3" value="3"/>
                                         </span>
                                     </div>
                                     <div className="row_seats_odd">
                                         <span>
-                                            <input onClick={handleChooseSeat} type="button" name="G14" value="14"/>
-                                            <input onClick={handleChooseSeat} type="button" name="G13" value="13"/>
+                                            <input id="G14" onClick={handleChooseSeat} type="button" name="G14" value="14"/>
+                                            <input id="G13" onClick={handleChooseSeat} type="button" name="G13" value="13"/>
                                         </span>
                                         <span>
-                                            <input onClick={handleChooseSeat} type="button" name="G10" value="10"/>
-                                            <input onClick={handleChooseSeat} type="button" name="G9" value="9"/>
+                                            <input id="G10" onClick={handleChooseSeat} type="button" name="G10" value="10"/>
+                                            <input id="G9" onClick={handleChooseSeat} type="button" name="G9" value="9"/>
                                         </span>
                                         <span>
-                                            <input onClick={handleChooseSeat} type="button" name="G6" value="6"/>
-                                            <input onClick={handleChooseSeat} type="button" name="G5" value="5"/>
+                                            <input id="G6" onClick={handleChooseSeat} type="button" name="G6" value="6"/>
+                                            <input id="G5" onClick={handleChooseSeat} type="button" name="G5" value="5"/>
                                         </span>
                                         <span>
-                                            <input onClick={handleChooseSeat} type="button" name="G2" value="2"/>
-                                            <input onClick={handleChooseSeat} type="button" name="G1" value="1"/>
+                                            <input id="G2" onClick={handleChooseSeat} type="button" name="G2" value="2"/>
+                                            <input id="G1" onClick={handleChooseSeat} type="button" name="G1" value="1"/>
                                         </span>
                                     </div>
                                     <div className="row_seats_even">
                                         <span>
-                                            <input onClick={handleChooseSeat} type="button" name="F12" value="12"/>
-                                            <input onClick={handleChooseSeat} type="button" name="F11" value="11"/>
+                                            <input id="F12" onClick={handleChooseSeat} type="button" name="F12" value="12"/>
+                                            <input id="F11" onClick={handleChooseSeat} type="button" name="F11" value="11"/>
                                         </span>
                                         <span>
-                                            <input onClick={handleChooseSeat} type="button" name="F8" value="8"/>
-                                            <input onClick={handleChooseSeat} type="button" name="F7" value="7"/>
+                                            <input id="F8" onClick={handleChooseSeat} type="button" name="F8" value="8"/>
+                                            <input id="F7" onClick={handleChooseSeat} type="button" name="F7" value="7"/>
                                         </span>
                                         <span>
-                                            <input onClick={handleChooseSeat} type="button" name="F4" value="4"/>
-                                            <input onClick={handleChooseSeat} type="button" name="F3" value="3"/>
+                                            <input id="F4" onClick={handleChooseSeat} type="button" name="F4" value="4"/>
+                                            <input id="F3" onClick={handleChooseSeat} type="button" name="F3" value="3"/>
                                         </span>
                                     </div>
                                     <div className="row_seats_odd">
                                         <span>
-                                            <input onClick={handleChooseSeat} type="button" name="E14" value="14"/>
-                                            <input onClick={handleChooseSeat} type="button" name="E13" value="13"/>
+                                            <input id="E14" onClick={handleChooseSeat} type="button" name="E14" value="14"/>
+                                            <input id="E13" onClick={handleChooseSeat} type="button" name="E13" value="13"/>
                                         </span>
                                         <span>
-                                            <input onClick={handleChooseSeat} type="button" name="E10" value="10"/>
-                                            <input onClick={handleChooseSeat} type="button" name="E9" value="9"/>
+                                            <input id="E10" onClick={handleChooseSeat} type="button" name="E10" value="10"/>
+                                            <input id="E9" onClick={handleChooseSeat} type="button" name="E9" value="9"/>
                                         </span>
                                         <span>
-                                            <input onClick={handleChooseSeat} type="button" name="E6" value="6"/>
-                                            <input onClick={handleChooseSeat} type="button" name="E5" value="5"/>
+                                            <input id="E6" onClick={handleChooseSeat} type="button" name="E6" value="6"/>
+                                            <input id="E5" onClick={handleChooseSeat} type="button" name="E5" value="5"/>
                                         </span>
                                         <span>
-                                            <input onClick={handleChooseSeat} type="button" name="E2" value="2"/>
-                                            <input onClick={handleChooseSeat} type="button" name="E1" value="1"/>
+                                            <input id="E2" onClick={handleChooseSeat} type="button" name="E2" value="2"/>
+                                            <input id="E1" onClick={handleChooseSeat} type="button" name="E1" value="1"/>
                                         </span>
                                     </div>
                                     <div className="row_seats_even">
                                         <span>
-                                            <input onClick={handleChooseSeat} type="button" name="D12" value="12"/>
-                                            <input onClick={handleChooseSeat} type="button" name="D11" value="11"/>
+                                            <input id="D12" onClick={handleChooseSeat} type="button" name="D12" value="12"/>
+                                            <input id="D11" onClick={handleChooseSeat} type="button" name="D11" value="11"/>
                                         </span>
                                         <span>
-                                            <input onClick={handleChooseSeat} type="button" name="D8" value="8"/>
-                                            <input onClick={handleChooseSeat} type="button" name="D7" value="7"/>
+                                            <input id="D8" onClick={handleChooseSeat} type="button" name="D8" value="8"/>
+                                            <input id="D7" onClick={handleChooseSeat} type="button" name="D7" value="7"/>
                                         </span>
                                         <span>
-                                            <input onClick={handleChooseSeat} type="button" name="D4" value="4"/>
-                                            <input onClick={handleChooseSeat} type="button" name="D3" value="3"/>
+                                            <input id="D4" onClick={handleChooseSeat} type="button" name="D4" value="4"/>
+                                            <input id="D3" onClick={handleChooseSeat} type="button" name="D3" value="3"/>
                                         </span>
                                     </div>
                                     <div className="row_seats_odd">
                                         <span>
-                                            <input onClick={handleChooseSeat} type="button" name="C14" value="14"/>
-                                            <input onClick={handleChooseSeat} type="button" name="C13" value="13"/>
+                                            <input id="C14" onClick={handleChooseSeat} type="button" name="C14" value="14"/>
+                                            <input id="C13" onClick={handleChooseSeat} type="button" name="C13" value="13"/>
                                         </span>
                                         <span>
-                                            <input onClick={handleChooseSeat} type="button" name="C10" value="10"/>
-                                            <input onClick={handleChooseSeat} type="button" name="C9" value="9"/>
+                                            <input id="C10" onClick={handleChooseSeat} type="button" name="C10" value="10"/>
+                                            <input id="C9" onClick={handleChooseSeat} type="button" name="C9" value="9"/>
                                         </span>
                                         <span>
-                                            <input onClick={handleChooseSeat} type="button" name="C6" value="6"/>
-                                            <input onClick={handleChooseSeat} type="button" name="C5" value="5"/>
+                                            <input id="C6" onClick={handleChooseSeat} type="button" name="C6" value="6"/>
+                                            <input id="C5" onClick={handleChooseSeat} type="button" name="C5" value="5"/>
                                         </span>
                                         <span>
-                                            <input onClick={handleChooseSeat} type="button" name="C2" value="2"/>
-                                            <input onClick={handleChooseSeat} type="button" name="C1" value="1"/>
+                                            <input id="C2" onClick={handleChooseSeat} type="button" name="C2" value="2"/>
+                                            <input id="C1" onClick={handleChooseSeat} type="button" name="C1" value="1"/>
                                         </span>
                                     </div>
                                     <div className="row_seats_even">
                                         <span>
-                                            <input onClick={handleChooseSeat} type="button" name="B12" value="12"/>
-                                            <input onClick={handleChooseSeat} type="button" name="B11" value="11"/>
+                                            <input id="B12" onClick={handleChooseSeat} type="button" name="B12" value="12"/>
+                                            <input id="B11" onClick={handleChooseSeat} type="button" name="B11" value="11"/>
                                         </span>
                                         <span>
-                                            <input onClick={handleChooseSeat} type="button" name="B8" value="8"/>
-                                            <input onClick={handleChooseSeat} type="button" name="B7" value="7"/>
+                                            <input id="B8" onClick={handleChooseSeat} type="button" name="B8" value="8"/>
+                                            <input id="B7" onClick={handleChooseSeat} type="button" name="B7" value="7"/>
                                         </span>
                                         <span>
-                                            <input onClick={handleChooseSeat} type="button" name="B4" value="4"/>
-                                            <input onClick={handleChooseSeat} type="button" name="B3" value="3"/>
+                                            <input id="B4" onClick={handleChooseSeat} type="button" name="B4" value="4"/>
+                                            <input id="B3" onClick={handleChooseSeat} type="button" name="B3" value="3"/>
                                         </span>
                                     </div>
                                     <div className="row_seats_odd">
                                         <span>
-                                            <input onClick={handleChooseSeat} type="button" name="A14" value="14"/>
-                                            <input onClick={handleChooseSeat} type="button" name="A13" value="13"/>
+                                            <input id="A14" onClick={handleChooseSeat} type="button" name="A14" value="14"/>
+                                            <input id="A13" onClick={handleChooseSeat} type="button" name="A13" value="13"/>
                                         </span>
                                         <span>
-                                            <input onClick={handleChooseSeat} type="button" name="A10" value="10"/>
-                                            <input onClick={handleChooseSeat} type="button" name="A9" value="9"/>
+                                            <input id="A10" onClick={handleChooseSeat} type="button" name="A10" value="10"/>
+                                            <input id="A9" onClick={handleChooseSeat} type="button" name="A9" value="9"/>
                                         </span>
                                         <span>
-                                            <input onClick={handleChooseSeat} type="button" name="A6" value="6"/>
-                                            <input onClick={handleChooseSeat} type="button" name="A5" value="5"/>
+                                            <input id="A6" onClick={handleChooseSeat} type="button" name="A6" value="6"/>
+                                            <input id="A5" onClick={handleChooseSeat} type="button" name="A5" value="5"/>
                                         </span>
                                         <span>
-                                            <input onClick={handleChooseSeat} type="button" name="A2" value="2"/>
-                                            <input onClick={handleChooseSeat} type="button" name="A1" value="1"/>
+                                            <input id="A2" onClick={handleChooseSeat} type="button" name="A2" value="2"/>
+                                            <input id="A1" onClick={handleChooseSeat} type="button" name="A1" value="1"/>
                                         </span>
                                     </div>
                                 </div>
@@ -756,7 +859,7 @@ const BookTicketFood = () => {
                             <p></p>
                         </div>
                         <div className="form_payment">
-                            <form>
+                            <form method="post">
                                 <div className="form-group">
                                     <label>Hình thức thanh toán</label>
                                     <select>
@@ -779,8 +882,8 @@ const BookTicketFood = () => {
                                 </div>
 
                                 <div className="form-group-btn">
-                                    <p>(*)Trước khi click và thanh toán bạn phải có <b>tài khoản ngân hàng</b> hoặc <b>ví điện tử momo</b></p>
-                                    <div><button onClick={handlePrevPageSeat}>QUAY LẠI</button> <button>THANH TOÁN</button></div>
+                                    <p>(*)Trước khi click vào thanh toán bạn phải có <b>tài khoản ngân hàng</b> hoặc <b>ví điện tử momo</b></p>
+                                    <div><button onClick={handlePrevPageSeat}>QUAY LẠI</button> <Link to="/member" onClick={PostDataTicket}>THANH TOÁN</Link></div>
                                 </div>
                             </form>        
                         </div>
@@ -788,13 +891,12 @@ const BookTicketFood = () => {
                 </div>
                 <div className="aside_bookticket_food">
                     <div className="info_ticket">
-                        <img src="https://www.galaxycine.vn/media/2021/11/11/450_1636642104365.jpg" alt="img_movie" />
-                        <h4>HARD HIT</h4>
-                        <h4>ÁN TỬ TRÊN XE</h4>
+                        <img src={infoTicketList.img} alt="img_movie" />
+                        <h4>{infoTicketList.movie}</h4>
                         <p className="note">(*) Phim chỉ dành cho khán giả từ 16 tuổi trở lên</p>
 
-                        <p><b>Rạp:</b> Galaxy Quang Trung  | RAP 5 </p>
-                        <p><b>Suất chiếu:</b>  18:00  | Thứ tư, 17/11/2021</p>
+                        <p><b>Rạp:</b> {infoTicketList.rap}</p>
+                        <p><b>Suất chiếu:</b>  {infoTicketList.session}</p>
                         <p><b>Combo:</b> <span>{getCombo1}{ quantityCombo1 === 0 ? "" : "(" + quantityCombo1 + ")" }</span> <span>{getCombo2}{ quantityCombo2 === 0 ? "" : "(" + quantityCombo2 + ")" }</span> <span>{getCombo3}{ quantityCombo3 === 0 ? "" : "(" + quantityCombo3 + ")" }</span></p>
                         <p><b>Ghế:</b> {ArraySeat.toString()} </p>
                         <p className="total"><b>Tổng:</b> <span style={{"padding-left": "10px" }}>{totalAll},000 VNĐ</span></p>
@@ -804,7 +906,7 @@ const BookTicketFood = () => {
                                 <LeftOutlined /> QUAY LẠI
                             </button>
 
-                            <button className={btnNext} onClick={handlebtnPrevious}>
+                            <button className={btnNext} onClick={handlebtnNext}>
                                     TIẾP TỤC <RightOutlined  />
                             </button>
     

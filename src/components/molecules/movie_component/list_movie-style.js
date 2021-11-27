@@ -23,6 +23,7 @@ export const ListMovieStyle = styled.div`
     .meta-title {
         padding: 0px;
         background: #f0f2f5;
+        color: black;
     }
     .box-card {
         background: #f0f2f5;
@@ -55,7 +56,7 @@ export const ListMovieStyle = styled.div`
         cursor: pointer;
         opacity: 0;
         transition: opacity 0.3s;
-        height: 73%;
+        height: 100%;
     }
     .img-mask button {
         display: inline-block;

@@ -1,63 +1,25 @@
-import React, { useState } from "react";
-import {RegisterStyle} from './registerStyle';
-import { Form, Input, Button, Checkbox } from 'antd';
-import { UserOutlined, LockOutlined,MailOutlined ,PhoneOutlined,CloseOutlined} from '@ant-design/icons';
-import { TitleStyle } from "../title_component/title-style";
-import { Link } from "react-router-dom";
+import { LockOutlined, MailOutlined, PhoneOutlined, UserOutlined,ArrowLeftOutlined } from '@ant-design/icons';
+import { Button, Checkbox, Form, Input } from 'antd';
+import React from "react";
+import { Link } from 'react-router-dom';
+import { RegisterStyle } from './registerStyle';
 
 
-const Register = ({closeModalRegister ,setcloseModalRegister,setCloseModal}) => {
+const Register = () => {
 
-    console.log(closeModalRegister);
 
     const [form] = Form.useForm();
     
     const onFinish = (values) => {
         console.log('Received values of form: ', values);
-    };
-    const [state, setState] = useState("span");
-    const [state2, setState2] = useState("span2");
-
-    
-    const ChangeBtn = (e) => {
-        e.preventDefault();
-        setState("span");
-        setCloseModal("modal")
-        setcloseModalRegister("hide-modal");
-    };
-
-    const handleCloseModalRegister = () => {
-        setcloseModalRegister("hide-modal");
     }
-    const ChangeBtn2 = (e) => {
-        e.preventDefault();
-        setState2("span2");
-    };
 
     return (
         <RegisterStyle>
             <div className="container">
-                <div className={closeModalRegister}>
-                    <div className="box-register">
-                        <div className="box-content">
-                        <TitleStyle >   
-                             <div className="title">
-                                <span className={state}>
-                                    <Link to="" onClick={ChangeBtn}>
-                                        Đăng nhập
-                                    </Link>
-                                </span>
-                                <span className={state2}>
-                                    <Link to="" onClick={ChangeBtn2}>
-                                        Đăng ký
-                                    </Link>
-                                </span>
-                                <div className="line">
-                                    <div className="line1"></div>
-                                    <div className="line2"></div>
-                                </div>
-                            </div>
-                        </TitleStyle>
+                    <div className="container_background">
+                        <div className="form_cotainer">
+                                <h3 class="title">ĐĂNG KÝ</h3>
                                 <Form
                                     form={form}
                                     name="register"
@@ -77,6 +39,7 @@ const Register = ({closeModalRegister ,setcloseModalRegister,setCloseModal}) => 
                                             prefix={<UserOutlined  className="site-form-item-icon" />} 
                                             type="text"
                                             placeholder="Họ và tên" 
+                                            className="input_element"
                                             />
                                     </Form.Item>
                                     <Form.Item
@@ -91,7 +54,8 @@ const Register = ({closeModalRegister ,setcloseModalRegister,setCloseModal}) => 
                                             <Input 
                                             prefix={<PhoneOutlined  className="site-form-item-icon" />} 
                                             type="text"
-                                            placeholder="Số điện thoại" 
+                                            placeholder="Số điện thoại"
+                                            className="input_element"
                                             />
                                     </Form.Item>
                                 
@@ -108,6 +72,7 @@ const Register = ({closeModalRegister ,setcloseModalRegister,setCloseModal}) => 
                                         prefix={<MailOutlined  className="site-form-item-icon" />} 
                                         type="email"
                                         placeholder="Email" 
+                                        className="input_element"
                                         />
                                     </Form.Item>
                                     
@@ -124,6 +89,7 @@ const Register = ({closeModalRegister ,setcloseModalRegister,setCloseModal}) => 
                                         prefix={<LockOutlined className="site-form-item-icon" />}
                                         type="password"
                                         placeholder="Mật khẩu"
+                                        className="input_element"
                                         hasFeedback
                                         />
                                     </Form.Item>
@@ -152,6 +118,7 @@ const Register = ({closeModalRegister ,setcloseModalRegister,setCloseModal}) => 
                                         prefix={<LockOutlined className="site-form-item-icon" />}
                                         placeholder="Xác nhận mật khẩu"
                                         hasFeedback
+                                        className="input_element"
                                         />
                                     </Form.Item>
 
@@ -174,13 +141,12 @@ const Register = ({closeModalRegister ,setcloseModalRegister,setCloseModal}) => 
                                             Đăng ký
                                         </Button>
                                     </Form.Item>
+                                    <div className="prev_login"><Link to="/login"><ArrowLeftOutlined /></Link></div>
                                 </Form>
-        
                         </div>
-                        {<span onClick={handleCloseModalRegister} className="close-modal"><CloseOutlined /></span>}
                     </div>
+                    <div className="logo"><Link to="/">POLY CINEMA</Link></div>
                 </div>
-            </div>
         </RegisterStyle>
     )
 }

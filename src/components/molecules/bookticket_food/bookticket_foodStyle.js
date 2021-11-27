@@ -1,6 +1,15 @@
 import styled from "styled-components";
 
 export const BookTicketFoodStyle = styled.div`
+    // css spin     
+    .example {
+    margin: 20px 0;
+    margin-bottom: 20px;
+    padding: 30px 50px;
+    text-align: center;
+    background: rgba(0, 0, 0, 0.05);
+    border-radius: 4px;
+    }
     .container {
         display: flex;
         justify-content: space-between;
@@ -230,7 +239,6 @@ export const BookTicketFoodStyle = styled.div`
             padding-right: 30px;
             .box_payment {
                 border: 14px solid #F26B38;
-                height: 500px;
                 .head_box_payment {
                     display: flex;
                     justify-content: space-between;
@@ -268,6 +276,7 @@ export const BookTicketFoodStyle = styled.div`
                                 padding: 7px 10px;
                                 width: 300px;
                                 border: 1px solid rgba(0,0,0,0.4);
+                                background-color: white;
                             }
                         }
                         .form-group-btn {
@@ -287,7 +296,8 @@ export const BookTicketFoodStyle = styled.div`
                                 justify-content: space-between;
                                 align-items: center;
                                 padding-right: 10px;
-                                button {
+                                button,a {
+                                    text-align: center;
                                     width: 140px;
                                     display: inline-block;
                                     font-size: 14px;
@@ -320,6 +330,9 @@ export const BookTicketFoodStyle = styled.div`
                 align-items: center;
                 img {
                     max-width: 180px;
+                }
+                h4 {
+                    padding: 5px 0px;
                 }
                 p {
                     width: 100%;
@@ -388,7 +401,7 @@ export const BookTicketFoodStyle = styled.div`
             .main_bookticket_food {
                 padding-right: 0px;
                 .box_bookticket {
-                    border: 14px solid #F26B38;
+                    border: 10px solid #F26B38;
              
                     h3 {
                         font-size: 1.1rem;
@@ -467,6 +480,232 @@ export const BookTicketFoodStyle = styled.div`
                                     max-width: 80px;
                                     height: 50px;
                                     margin-right: 10px;
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+            .main_seat {
+                flex: 3;
+                padding-right: 0px;
+                .box_seat {
+                    border: 10px solid #F26B38;
+                    height: 500px;
+                    h3 {
+                        font-size: 1rem;
+                        background: #F26B38;
+                        height: 40px;
+                        margin: -1px;
+                        color: white;
+                    }
+                    .room {
+                        width: 100%;
+                        height: 100%;
+                        display: flex;
+                        flex-direction: column;
+                        justify-content: flex-start;
+                        align-items: center;
+                        margin-top: 25px;
+                        .row_top {
+                            height: 50%;
+                            width: 100%;
+                            margin-bottom: 20px;
+                            display: flex;
+                            justify-content: center;
+                            align-items: center;
+                            .column_left {
+                                flex: 1;
+                                display: flex;
+                                flex-direction: column;
+                                justify-content: center;
+                                align-items: flex-end;
+                                button {
+                                    font-size: 0.75rem;
+                                    height: 22px;
+                                    width: 22px;
+                                    margin: 1px;
+                                }
+                            }
+                            .column_seats {
+                                flex: 10;
+                                display: flex;
+                                justify-content: space-around;
+                                align-items: center;
+                                flex-wrap: wrap;
+                                .row_seats_odd {
+
+                                }
+                                .row_seats_even {
+                                }
+                                span {
+                                    padding: 1px 10px;
+                                    input {
+                                        font-size: 0.75rem;
+                                        margin: 1px;
+                                        height: 20px;
+                                        width: 20px;
+                                        background-color: rgba(189, 195, 199,.4);
+                                        outline: none;
+                                        border: none;
+                                        cursor: pointer;
+                                    }
+                                }
+                            }
+                            .column_right {
+                                flex: 1;
+                                display: flex;
+                                flex-direction: column;
+                                justify-content: center;
+                                align-items: flex-start;
+                                button {
+                                    font-size: 0.75rem;
+                                    height: 22px;
+                                    width: 22px;
+                                    margin: 1px;
+                                }
+                            }
+                        }
+                        .row_middle {
+                            border-bottom: 3px solid gray;
+                            height: 7%;
+                            width: 70%;
+                            .screen {
+                                text-align: center;
+                            }
+                        }
+                        .row_bottom {
+                            margin-top: 40px;
+                            height: 10%;
+                            width: 110%;
+                            display: flex;
+                            justify-content: center;
+                            align-items: center;
+                            .note_seat {
+                                width: 90%;
+                                display: flex;
+                                justify-content: space-between;
+                                align-items: center;
+                                padding-left: 5%;
+                                button {
+                                    height: 10px;
+                                    width: 10px;
+                                    margin: 5px;
+                                }
+                                .btn_seat_green{
+                                    button {
+                                        background: green;
+                                        border: none;
+                                    }
+                                }
+                                .btn_seat_red {
+                                    button {
+                                        background: red;
+                                        border: none;
+                                    }
+                                }
+                                .btn_seat_gray {
+                                    button {
+                                        background: gray;
+                                        border: none;
+                                    }
+                                }
+                                .btn_seat_blue {
+                                    button {
+                                        background: blue;
+                                        border: none;
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+
+
+            // css main thanh toan
+            .main_payment {
+                flex: 3;
+                padding-right: 0px;
+                .box_payment {
+                    border: 10px solid #F26B38;
+                    padding-bottom: 50px;
+                    .head_box_payment {
+                        display: block;
+                        justify-content: space-between;
+                        background: #F26B38;
+                        margin-right: -3px;
+                        height: 40px;
+                        h3 {
+                            font-size: 1rem;
+                            background: #F26B38;
+                            height: 40px;
+                            margin: -1px;
+                            color: white;
+                        }
+                        p {
+                            font-size: 1.4rem;
+                            color: white;
+                        }
+                    }
+                    .form_payment {
+                        display: block;
+                        flex-direction: column;
+                        justify-content: center;
+                        align-items: flex-start;
+                        padding: 0px;
+                        padding-top: 10px;
+                        form {
+                            width: 100%;
+                            .form-group {
+                                width: 100%;
+                                display: block;
+                                justify-content: space-between;
+                                align-items: center;
+                                padding: 5px 0px 5px 10px;
+                                label {
+                                    font-size: 0.9rem;
+                                    font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
+                                }
+                                input ,select{
+                                    padding: 7px 10px;
+                                    width: 300px;
+                                    border: 1px solid rgba(0,0,0,0.4);
+                                    background-color: white;
+                                }
+                            }
+                            .form-group-btn {
+                                width: 100%;
+                                display: block;
+                                flex-direction: column;
+                                justify-content: flex-end;
+                                align-items: flex-end;
+                                padding: 5px 0px 5px 10px;
+                                p {
+                                    font-size: 0.7rem;
+                                    width: 100%;
+                                    color: rgba(0, 0, 0,.7);
+                                }
+                                div {
+                                    width: 100%;
+                                    display: flex;
+                                    justify-content: space-between;
+                                    align-items: center;
+                                    button {
+                                        width: 140px;
+                                        display: inline-block;
+                                        font-size: 14px;
+                                        letter-spacing: 1px;
+                                        text-transform: uppercase;
+                                        color: white;
+                                        border: 1px solid #f26b38;
+                                        padding: 12px 17px;
+                                        text-decoration: none;
+                                        line-height: 1;
+                                        transition: all 0.3s;
+                                        background: #f26b38;
+                                        cursor: pointer;
+                                    }
                                 }
                             }
                         }

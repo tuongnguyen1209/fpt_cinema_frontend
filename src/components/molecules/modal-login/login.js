@@ -1,83 +1,23 @@
-import { CloseOutlined, LockOutlined, UserOutlined } from '@ant-design/icons';
+import { LockOutlined, UserOutlined,FacebookFilled} from '@ant-design/icons';
 import { Button, Checkbox, Form, Input } from 'antd';
-import React, { useState } from "react";
+import React from "react";
 import { Link } from 'react-router-dom';
 import { LoginStyle } from './loginStyle';
-import Forgot from '../modal-forgotpassword/forgot';
-import { TitleStyle } from '../title_component/title-style';
-import Register from '../modal-register/register';
 
 
-const Login = ({closeModal, handleCloseModal, setCloseModal}) => {
-
-    // mở modal quên mật khẩu
-    const [openModalForgot, setOpenModalForgot] = useState(false);
-
-    // đóng modal quên mật khẩu
-    const [closeModalForgot, setcloseModalForgot] = useState("hide-modal");
-
+const Login = () => {
 
     const onFinish = (values) => {
         console.log('Received values of form: ', values);
     };
     
-    // mở modal đăng ký
-    const [openModalRegister, setOpenModalRegister] = useState(false);
 
-    const [closeModalRegister, setcloseModalRegister] = useState("hide-modal");
-
-    const handleOpenModal = (e) => {
-        e.preventDefault();
-        setOpenModalForgot(true)
-        setCloseModal("hide-modal");
-        setcloseModalForgot("modal");
-    }
-
-    const handleCloseModalForgot = () => {
-        setcloseModalForgot("hide-modal");
-    }
-
-    const [state, setState] = useState("span");
-    const [state2, setState2] = useState("span2");
-
-    
-    const ChangeBtn = (e) => {
-        e.preventDefault();
-        setState("span");
-        setOpenModalRegister(false);
-        setCloseModal("modal");
-    };
-    const ChangeBtn2 = (e) => {
-        e.preventDefault();
-        setState2("span2");
-        setOpenModalRegister(true);
-        setCloseModal("hide-modal");
-        setcloseModalRegister("modal");
-    };
     return (
         <LoginStyle>
             <div className="container">
-                <div className={closeModal}>
-                    <div className="box-register">
-                        <div className="box-content">
-                        <TitleStyle >   
-                             <div className="title">
-                                <span className={state}>
-                                    <Link to="" onClick={ChangeBtn}>
-                                        Đăng nhập
-                                    </Link>
-                                </span>
-                                <span className={state2}>
-                                    <Link to="" onClick={ChangeBtn2}>
-                                        Đăng ký
-                                    </Link>
-                                </span>
-                                <div className="line">
-                                    <div className="line1"></div>
-                                    <div className="line2"></div>
-                                </div>
-                            </div>
-                        </TitleStyle>
+                <div className="container_background">
+                        <div className="form_cotainer">
+                            <h3 class="title">ĐĂNG NHẬP</h3>
                             <Form
                                 name="normal_login"
                                 className="login-form"
@@ -98,7 +38,8 @@ const Login = ({closeModal, handleCloseModal, setCloseModal}) => {
                                     <Input 
                                     prefix={<UserOutlined className="site-form-item-icon" />} 
                                     type="email"
-                                    placeholder="Email" 
+                                    placeholder="Email"
+                                    className="input_element"
                                     />
                                 </Form.Item>
                                 <Form.Item
@@ -114,15 +55,13 @@ const Login = ({closeModal, handleCloseModal, setCloseModal}) => {
                                     prefix={<LockOutlined className="site-form-item-icon" />}
                                     type="password"
                                     placeholder="Password"
+                                    className="input_element"
                                     />
                                 </Form.Item>
                                 <Form.Item>
-                                    <Form.Item name="remember" valuePropName="checked" noStyle>                                   
+                                    <Form.Item name="remember" valuePropName="checked" noStyle >                                   
                                         <Checkbox>Ghi nhớ</Checkbox>
                                     </Form.Item>
-                                    <Link className="login-form-forgot" to="" onClick={handleOpenModal}>
-                                        Quên mật khẩu
-                                    </Link>
                                 </Form.Item>
 
                                 <Form.Item>
@@ -130,17 +69,24 @@ const Login = ({closeModal, handleCloseModal, setCloseModal}) => {
                                         Đăng nhập
                                     </Button>
                                 </Form.Item>
+
+                                <Form.Item>
+                                    <Link className="login-form-forgot" to="/forgot">
+                                        Quên mật khẩu ?
+                                    </Link>
+                                </Form.Item>
+
+                                <div className="login_facebook"><FacebookFilled /><Link to="">Đăng nhập bằng tài khoản Facebook</Link></div>
+                                <div className="text_register">
+                                    <span>Bạn mới tham gia <b>Poly Cinema</b> ?</span>
+                                    <Link to="/register">Đăng ký ngay !!!</Link>
+                                </div>
                             </Form>
-        
                         </div>
-                        <span className="close-modal" onClick={handleCloseModal}><CloseOutlined /></span>
+                                
                     </div>
+                    <div className="logo"><Link to="/">POLY CINEMA</Link></div>
                 </div>
-            </div>
-
-            {openModalForgot ? <Forgot closeModalForgot={closeModalForgot} handleCloseModalForgot={handleCloseModalForgot} /> : "" }
-
-            {openModalRegister ? <Register closeModalRegister={closeModalRegister} setcloseModalRegister={setcloseModalRegister} setCloseModal={setCloseModal}/> : "" }
         </LoginStyle>
     )
 }

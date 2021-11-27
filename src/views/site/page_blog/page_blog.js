@@ -23,7 +23,7 @@ const PageBlog = () => {
                             <BoxBuyTicket />
                         </SlideShowStyle >
                         
-                        <MovieCPN />
+                        <MovieCPN titleHome={"PHIM ĐANG CHIẾU"}/>
                 </div>
                 
             </div>

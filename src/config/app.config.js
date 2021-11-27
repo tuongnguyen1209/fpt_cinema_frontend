@@ -8,7 +8,6 @@ export const AUTH_PREFIX_PATH = "/auth";
 
 export const APP_SITE_MENU = [
   { name: "Trang chủ", url: "" },
-  { name: "Đặt vé", url: "/buyticket" },
   {
     name: "Phim",
     url: "",
@@ -17,6 +16,7 @@ export const APP_SITE_MENU = [
       { name: "Phim sắp chiếu", url: "" },
     ],
   },
+  { name: "Đặt vé", url: "/buyticket" },
   { name: "Góc điện ảnh", url: "/pageblog" },
   { name: "Hỗ trợ", url: "/pagesupport" },
   { name: "Thành viên", url: "/member" },

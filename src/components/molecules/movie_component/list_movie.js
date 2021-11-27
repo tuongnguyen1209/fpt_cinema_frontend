@@ -1,84 +1,97 @@
 import { RightOutlined } from "@ant-design/icons";
-import { Card, Col, Row } from "antd";
+import { Card, Col, message, Row } from "antd";
+import axios from "axios";
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
+// import MovieService from "../../../serivces/movie.service";
 import { ListMovieStyle } from "./list_movie-style";
-import { URL_API } from "../../../config/app.config";
+import { useDispatch, useSelector } from 'react-redux';
+import { findDetailMovie } from "../../../redux/action/findIdMovie";
 
 const { Meta } = Card;
-const axios = require('axios');
 
-function MovieCPN() {
-  const [listMovie, setListMovie] = useState([]);
-
+function MovieCPN({title,title2,titleHome,titleHome2}) {
+  // const Photo = React.lazy(() => import('./features/Phto'));
+  
   const [state, setState] = useState("span");
   const [state2, setState2] = useState("span2");
-
+  
   const ChangeBtn = (e) => {
     e.preventDefault();
     setState("span");
     setState2("span2");
-
-    axios({
-      method: 'get',
-      url: `${URL_API}movie`,
-    })
-    .then(function (response) {
-      // handle success
-      setListMovie(response.data);
-    }).catch(
-      function (error) {
-        console.log('DONT GET DATA MOVIE!')
-        return Promise.reject(error)
-      }
-    )
+    
   };
-
+  
   const ChangeBtn2 = (e) => {
     e.preventDefault();
     setState2("span");
     setState("span2");
-
-    axios({
-      method: 'get',
-      url: 'https://61966cdbaf46280017e7e07c.mockapi.io/movie_2',
-    })
-    .then(function (response) {
-      // handle success
-      setListMovie(response.data);
-    }).catch(
-      function (error) {
-        console.log('DONT GET DATA MOVIE!')
-        return Promise.reject(error)
-      }
-    )
-
+    
   };
+  
 
-  useEffect(()=> {
-    axios({
-      method: 'get',
-      url: `${URL_API}movie`,
-    })
-    .then(function (response) {
-      // handle success
-      setListMovie(response.data);
-    }).catch(
-      function (error) {
-        console.log('DONT GET DATA MOVIE!')
-        return Promise.reject(error)
-      }
-    )
+  const [listMovie, setListMovie] = useState([]);
+
+  useEffect(() => {
+    // const fetchMovieList = async () => {
+    //   try {
+    //     const response = await MovieService.getAllMovie();
+    //     console.log(response);
+    //     setListMovie(response.movie);
+    //   }catch (error) {
+    //     console.log("Failed to fetch movie list: ",error);
+    //   }
+    // }
+    // fetchMovieList();
+    
+    try {
+      axios.get('https://61966cdbaf46280017e7e07c.mockapi.io/movie_2') 
+      .then(function (response) {
+        setListMovie(response.data)
+      })
+      .catch(function (error) {
+        // handle error
+        console.log(error);
+      });
+    }
+    catch {
+      console.log("ERRO", message)
+    }
+
+    return;
+
   },[])
 
-  
+  // redux -------------------------------------------------------
+
+  const idMovie = useSelector(state => state.findIdMovie);
+  const dispatch = useDispatch();
+    
+  console.log(idMovie);
+
+  const handleGetId = e => {
+
+    console.log(e.target.value);
+    const saveIdMovie = {
+      id: e.target.value,
+    }
+
+    const action = findDetailMovie(saveIdMovie);
+    console.log(action)
+    dispatch(action)
+  }
+
+ 
+  // redux -------------------------------------------------------
   return (
     <ListMovieStyle>
       <div className="row-movie">
         <div className="title">
           <span className={state}>
             <Link to="" onClick={ChangeBtn}>
-              PHIM ĐANG CHIẾU
+                {title || title2}
+                {titleHome || titleHome2}
             </Link>
           </span>
           <span className={state2}>
@@ -100,10 +113,10 @@ function MovieCPN() {
                       className="box-card"
                       cover={
                         <div className="box-mask">
-                          <img src={item.thumbnail} width="400px" alt="img" />
+                          <img src={item.image} width="400px" alt="img" />
                           <div className="img-mask">
-                            <Link to={item.href}>
-                              <button>Mua Vé</button>
+                            <Link to="/detailmovie">
+                              <button onClick={handleGetId} value={item.id}>Mua Vé</button>
                             </Link>
                           </div>
                         </div>
@@ -111,8 +124,8 @@ function MovieCPN() {
                       >
                       <Meta
                         className="meta-title"
-                        title={item.title}
-                        description={item.description}
+                        title={item.name}
+                        description={item.name_vn}
                         />
                     </Card>
                 </Col>
