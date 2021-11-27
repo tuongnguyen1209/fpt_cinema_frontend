@@ -25,16 +25,14 @@ export const SlideShowStyle = styled.div`
         box-shadow: 2px 2px 2px black;
         padding: 50px 15px;
     }
-    .box-buy-ticket select {
+    .box-buy-ticket .select {
         width: 100%;
         padding: 5px;
-        margin-top: 14px;
-        background:#7f8c8d;
+        margin-top: 10px;
     }
     .box-buy-ticket .buy-sort{
         width: 100%;
         color: white;
-
     }
     .option-buy-ticket{
         margin: 10px;
