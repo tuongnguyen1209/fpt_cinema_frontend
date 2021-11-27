@@ -1,7 +1,7 @@
 import {
   CalendarOutlined,
+  ContainerOutlined,
   DashboardOutlined,
-  LayoutOutlined,
   PlaySquareOutlined,
   UserOutlined,
 } from "@ant-design/icons";
@@ -37,12 +37,29 @@ const adminNavigation = [
     title: "Lịch chiếu",
     icon: <CalendarOutlined />,
     path: `${ADMIN_PREFIX_PATH}/session`,
+    submenu: [
+      {
+        key: "sessionlist",
+        title: "Danh sách lịch chiếu phim theo ngày",
+        path: `${ADMIN_PREFIX_PATH}/session`,
+      },
+      {
+        key: "sessionadd",
+        title: "Thêm lịch chiếu phim",
+        path: `${ADMIN_PREFIX_PATH}/session/addsession`,
+      },
+      {
+        key: "room",
+        title: "Phòng chiếu",
+        path: `${ADMIN_PREFIX_PATH}/room`,
+      },
+    ],
   },
   {
-    key: "room",
-    title: "Phòng chiếu",
-    icon: <LayoutOutlined />,
-    path: `${ADMIN_PREFIX_PATH}/room`,
+    key: "orders",
+    title: "Quản lý vé",
+    icon: <ContainerOutlined />,
+    path: `${ADMIN_PREFIX_PATH}/ticket`,
   },
   {
     key: "User",

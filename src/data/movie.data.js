@@ -1,6 +1,6 @@
 const movieData = [
   {
-    id: "1",
+    id: 1,
     name: "Godzilla vs. Kong – Godzilla đại chiến Kong (26/3)",
     image:
       "https://static.ssphim.net/static/5fe2d564b3fa6403ffa11d1c/6061eb3d14fcbf485386b98a_godzilla-kong-2.jpg",
@@ -13,7 +13,7 @@ const movieData = [
     category: "Hành động, Khoa học viễn tưởng",
   },
   {
-    id: "2",
+    id: 2,
     name: "Mortal Kombat – Cuộc chiến sinh tử (16/4)",
     image:
       "https://img.tvzingvn.com/uploads/2021/04/6040b6750b2d836-58485_poster.jpg",
@@ -26,7 +26,7 @@ const movieData = [
     category: "Hành động, võ thuật",
   },
   {
-    id: "3",
+    id: 3,
     name: "VENOM: LET THERE BE CARNAGE",
     image:
       "https://image.thanhnien.vn/w660/Uploaded/2021/lxwpcqjwp/2021_10_01/vn-01_gaby.jpeg",
@@ -41,3 +41,113 @@ const movieData = [
 ];
 
 export default movieData;
+
+export const listTicketDefault = [
+  {
+    idMovie: 1,
+    list: [
+      {
+        id: 1,
+        customer: "Nguyen Van A",
+        time: "25/11/2021",
+        quantity: 2,
+        seat: ["H7", "H8"],
+        combo: [
+          { id: 1, name: "Combo 1", price: 50000, quantity: 1 },
+          { id: 2, name: "Combo 2", price: 70000, quantity: 1 },
+        ],
+      },
+      {
+        id: 1,
+        customer: "Nguyen Van B",
+        time: "25/11/2021",
+        quantity: 1,
+        seat: ["E7"],
+        combo: [{ id: 1, name: "Combo 1", price: 50000, quantity: 1 }],
+      },
+    ],
+  },
+  {
+    idMovie: 2,
+    list: [
+      {
+        id: 1,
+        customer: "Nguyen Van C",
+        time: "24/11/2021",
+        quantity: 2,
+        seat: ["H7", "H8"],
+        combo: [
+          { id: 1, name: "Combo 1", price: 50000, quantity: 1 },
+          { id: 3, name: "Combo 3", price: 90000, quantity: 1 },
+        ],
+      },
+      {
+        id: 1,
+        customer: "Nguyen Van D",
+        time: "26/11/2021",
+        quantity: 1,
+        seat: ["E7"],
+        combo: [{ id: 4, name: "Combo 4", price: 120000, quantity: 5 }],
+      },
+    ],
+  },
+  {
+    idMovie: 3,
+    list: [
+      {
+        id: 1,
+        customer: "Nguyen Van E",
+        time: "24/11/2021",
+        quantity: 2,
+        seat: ["C7", "C8"],
+        combo: [
+          { id: 1, name: "Combo 1", price: 50000, quantity: 1 },
+          { id: 2, name: "Combo 2", price: 70000, quantity: 1 },
+        ],
+      },
+      {
+        id: 1,
+        customer: "Nguyen Van F",
+        time: "26/11/2021",
+        quantity: 1,
+        seat: ["D7"],
+        combo: [{ id: 1, name: "Combo 1", price: 120000, quantity: 1 }],
+      },
+    ],
+  },
+];
+
+export const listUser = [
+  {
+    id: 1,
+    name: "Nguyen van a",
+    email: "a@gmail.com",
+    phone: "012315152",
+    status: 1,
+    role: 0,
+  },
+  {
+    id: 2,
+    name: "Nguyen van B",
+    email: "b@gmail.com",
+    phone: "012315152",
+    status: 1,
+    role: 1,
+  },
+  {
+    id: 3,
+    name: "Nguyen van C",
+    email: "C@gmail.com",
+    phone: "012315152",
+    status: 0,
+    role: 1,
+  },
+  {
+    id: 2,
+    name: "Nguyen van B",
+    email: "b@gmail.com",
+    phone: "012315152",
+    status: 1,
+    role: 1,
+  },
+];
