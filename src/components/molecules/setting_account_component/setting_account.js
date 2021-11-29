@@ -43,7 +43,7 @@ const SettingAccount = () => {
 
     // checkbox
     function onChange(e) {
-        console.log(`checked = ${e.target.checked}`);
+        // console.log(`checked = ${e.target.checked}`);
         setopenFormChangPass(openFormChangPass === true ? false : true);
     }
 
@@ -53,13 +53,15 @@ const SettingAccount = () => {
     // call api user 
 
     useEffect(()=> {
-        if(checkpage === true) {
+        if(checkpage) {
             setPath("Cập nhật tài khoản");
         }
         else {
             setPath("Lịch sử giao dịch");
         }
     },[checkpage])
+
+    
 
     return (
         <SettingAccountStyle>

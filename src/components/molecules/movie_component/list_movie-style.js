@@ -42,6 +42,11 @@ export const ListMovieStyle = styled.div`
     .row-movie .box-card:hover .img-mask {
         opacity: 1;
     }
+    .img_medium {
+        width: 400px;
+        height: 270px;
+        object-fit: cover;
+    }
     .img-mask {
         position: absolute;
         top: 0;
@@ -56,7 +61,7 @@ export const ListMovieStyle = styled.div`
         cursor: pointer;
         opacity: 0;
         transition: opacity 0.3s;
-        height: 100%;
+        height: 270px;
     }
     .img-mask button {
         display: inline-block;

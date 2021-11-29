@@ -14,9 +14,6 @@ export const PageSupportStyle = styled.div`
         display: flex;
         justify-content: center;
         flex-direction: column;
-        .img-mask {
-            height: 74%;
-        }
     }
     .title > span {
         padding: 10px 20px;

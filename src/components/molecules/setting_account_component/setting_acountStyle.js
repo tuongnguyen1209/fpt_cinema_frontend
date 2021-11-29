@@ -92,9 +92,6 @@ export const SettingAccountStyle = styled.div`
             }
         }
         .row-movie {
-            .img-mask{
-                height: 82%;
-            }
             .view-more {
                 display: none;
             }

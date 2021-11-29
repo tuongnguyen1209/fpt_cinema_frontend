@@ -100,6 +100,7 @@ const AddMovie = () => {
       date_end: "",
       banner: "tthm.jpg",
     };
+    // console.log(newMovie);
     try {
       message.loading({ content: "Đang tạo mới phim", key: "upload" });
       const rs = await MovieService.createMovie(newMovie);

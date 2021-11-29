@@ -16,7 +16,7 @@ const PageMember = () => {
                     <SlideShowStyle >
                         <BoxBuyTicket />
                     </SlideShowStyle >
-                    <MovieCPN titleHome={"PHIM ĐANG CHIẾU"}/>
+                    <MovieCPN titleHome={"PHIM ĐANG CHIẾU"} limit={6}/>
                 </div>
             </div>
         </PageMemberStyle>
