@@ -46,7 +46,7 @@ const ListRoom = () => {
   ];
   const showDrawer = (record = null) => {
     setVisible(true);
-    console.log(record);
+    // console.log(record);
     setCurrentRecord(record);
   };
   const onClose = () => {

@@ -27,7 +27,6 @@ const ListMovie = () => {
       setLoading(true);
       try {
         const listmovie = await MovieService.getAllMovie();
-        console.log(listmovie);
         setMovieData(listmovie.movie);
         setLoading(false);
       } catch (error) {
