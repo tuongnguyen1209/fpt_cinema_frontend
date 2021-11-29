@@ -2,9 +2,11 @@ import { faBars, faTimes } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { Button, Col, Drawer, Row, Menu } from "antd";
 import React, { useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import styled from "styled-components";
 import { APP_SITE_MENU } from "../../../../../config/app.config";
+import { logoutAction } from "../../../../../redux/action/user.action";
 
 const CustomMenu = styled.div`
   .menu-site {
@@ -14,7 +16,8 @@ const CustomMenu = styled.div`
 
 const HeaderMobileSite = () => {
   const [isVisible, setIsVisible] = useState(false);
-  const isLogin = false;
+  const userdata = useSelector((state) => state.user);
+  const dispatch = useDispatch();
 
   return (
     <div>
@@ -57,7 +60,7 @@ const HeaderMobileSite = () => {
                 </Menu.Item>
               ))}
               <Menu.Divider />
-              {isLogin ? (
+              {userdata.isLogin ? (
                 <>
                   <Menu.Item key="u-1" className="menu-item">
                     <Link to="">Trang cá nhân</Link>
@@ -67,7 +70,15 @@ const HeaderMobileSite = () => {
                   </Menu.Item>
                   <Menu.Divider />
                   <Menu.Item key="u-3" className="menu-item">
-                    <Link to="">Đăng xuất</Link>
+                    <Link
+                      to=""
+                      onClick={(e) => {
+                        e.preventDefault();
+                        dispatch(logoutAction());
+                      }}
+                    >
+                      Đăng xuất
+                    </Link>
                   </Menu.Item>
                 </>
               ) : (

@@ -1,55 +1,94 @@
-import { DownOutlined } from "@ant-design/icons";
-import { Button, Col, Dropdown, Input, Menu, Row } from "antd";
+import {
+  DownOutlined,
+  HistoryOutlined,
+  LoginOutlined,
+  UserOutlined,
+} from "@ant-design/icons";
+import { Button, Col, Dropdown, Input, Menu, Row, Space } from "antd";
 import React from "react";
+import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
-import { APP_SITE_MENU } from "../../../../../config/app.config";
+import {
+  APP_SITE_MENU,
+  AUTH_PREFIX_PATH,
+} from "../../../../../config/app.config";
+import { logoutAction } from "../../../../../redux/action/user.action";
 import { HeaderCustom } from "./Customheader.syle";
 import DropMenu from "./drop.menu.movie";
 
-const menuUserLogin = () => {
-  return (
-    <Menu>
-      <Menu.Item key="1">
-        <Link to="">Trang cá nhân</Link>
-      </Menu.Item>
-      <Menu.Item key="2">
-        <Link to="">Lịch sử mua vé</Link>
-      </Menu.Item>
-      <Menu.Divider />
-      <Menu.Item key="3">
-        <Link to="">Đăng xuất</Link>
-      </Menu.Item>
-    </Menu>
-  );
-};
-
 const HeaderWebSite = () => {
-  const isLogin = false;
+  const userdata = useSelector((state) => state.user);
+  const dispatch = useDispatch();
+
+  const menuUserLogin = () => {
+    return (
+      <Menu>
+        <Menu.Item key="1">
+          <Link to="">
+            <Button icon={<UserOutlined />} type="link">
+              Trang cá nhân
+            </Button>
+          </Link>
+        </Menu.Item>
+        <Menu.Item key="2">
+          <Link to="">
+            <Button icon={<HistoryOutlined />} type="link">
+              Lịch sử mua vé
+            </Button>
+          </Link>
+        </Menu.Item>
+        <Menu.Divider />
+        <Menu.Item key="3">
+          <Link
+            to=""
+            onClick={(e) => {
+              e.preventDefault();
+              dispatch(logoutAction());
+            }}
+          >
+            <Button type="link" icon={<LoginOutlined />}>
+              Đăng xuất
+            </Button>
+          </Link>
+        </Menu.Item>
+      </Menu>
+    );
+  };
 
   return (
     <HeaderCustom>
       <Row>
-        <Col span={17} className="wrap-logo">
+        <Col span={12} className="wrap-logo p-2">
           <h2 className="logo">POLY CINEMA</h2>
         </Col>
-        <Col span={4} className="searchwrap">
-          <Input.Search placeholder="Tìm kiếm phim" />
-        </Col>
-        <Col span={3} className="wrap-login">
-          {isLogin ? (
+        <Col span={12} className="searchwrap p-2">
+          <Input.Search
+            size="large"
+            placeholder="Tìm kiếm phim"
+            className="mr-3"
+          />
+
+          {userdata.isLogin ? (
             <>
               <Dropdown overlay={menuUserLogin}>
-                <Button>
-                  UserName <DownOutlined />
+                <Button size="large" type="primary" className="btn-login">
+                  {userdata.user?.full_name} <DownOutlined />
                 </Button>
               </Dropdown>
             </>
           ) : (
-            <Button className="btn-login" type="primary" size="large">
-              <Link to="/login">
-                Đăng nhập
+            <Space>
+              <Link to={`${AUTH_PREFIX_PATH}/login`}>
+                <Button className="btn-login" type="primary" size="large">
+                  Đăng nhập
+                </Button>
               </Link>
-            </Button>
+              <Link to={`${AUTH_PREFIX_PATH}/register`}>
+                <Button className="btn-login" type="primary" size="large">
+                  Đăng Ký
+                </Button>
+              </Link>
+            </Space>
           )}
         </Col>
         <Col span={24}>
@@ -68,7 +107,7 @@ const HeaderWebSite = () => {
                   title={el.name}
                   icon={<DownOutlined />}
                 >
-                  <DropMenu />                
+                  <DropMenu />
                 </Menu.SubMenu>
               ) : (
                 <Menu.Item key={ind} className="menu-item">

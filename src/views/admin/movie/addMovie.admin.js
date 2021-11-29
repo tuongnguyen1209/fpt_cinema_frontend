@@ -105,9 +105,8 @@ const AddMovie = () => {
       message.loading({ content: "Đang tạo mới phim", key: "upload" });
       const rs = await MovieService.createMovie(newMovie);
       form.resetFields();
-      console.log(rs);
       message.success({ content: "Thêm phim mới thành công", key: "upload" });
-
+      console.log(rs);
       setImgFile({
         previewVisible: false,
         previewImage: "",

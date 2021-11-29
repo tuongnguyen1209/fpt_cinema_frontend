@@ -14,17 +14,14 @@ import PageSettingAccount from "./page_setting_account/page_setting_account";
 import PageBookTicketFood from "./page_bookticket_food/page_bookticket_food";
 import Register from "../../components/molecules/modal-register/register";
 import Forgot from "../../components/molecules/modal-forgotpassword/forgot";
-import Login from "../../components/molecules/modal-login/login";
 import NotFound from "../site/page_not-found";
 const { Header, Content, Footer } = Layout;
 
 const { useBreakpoint } = Grid;
 
-
 const isLogin = true;
 
 const Site = () => {
-
   const screens = useBreakpoint();
   const isMobile = !screens.md;
 
@@ -56,13 +53,10 @@ const Site = () => {
             <PageDetailMovie />
           </Route>
           <Route path="/member">
-            {isLogin ? (<PageSettingAccount />) : (<PageMember />) }
+            {isLogin ? <PageSettingAccount /> : <PageMember />}
           </Route>
           <Route path="/bookticket-food">
             <PageBookTicketFood />
-          </Route>
-          <Route path="/login">
-            <Login />
           </Route>
           <Route path="/register">
             <Register />
