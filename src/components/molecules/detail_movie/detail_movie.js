@@ -1,15 +1,11 @@
 import { HistoryOutlined, PlayCircleFilled, StarOutlined } from '@ant-design/icons';
-import { Breadcrumb, DatePicker, Input, Modal, Rate, Select } from 'antd';
+import { Breadcrumb, DatePicker, Input, message, Modal, Rate, Select } from 'antd';
 import moment from 'moment';
 import React, { useEffect, useRef, useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
+import MovieService from '../../../serivces/movie.service';
 import MovieCPN from '../movie_component/list_movie';
 import { DetailMovieCPNStyle } from "./detail_movieStyle";
-// import MovieService from '../../../serivces/movie.service';
-import axios from 'axios';
-import { message } from 'antd';
-import { useSelector } from 'react-redux';
-
 
 const { Option } = Select;
 const dateFormat = 'YYYY-MM-DD';
@@ -25,34 +21,36 @@ const openMessage = () => {
 const DetailMovieCPN = () => {
   
     // redux -------------------------------------------
-    const idMovie = useSelector(state => state.findIdMovie);
-
+    // const idMovie = useSelector(state => state.findIdMovie);
+    const idMovie = useParams().id;
+    // console.log(idMovie)
     // redux -------------------------------------------
 
     const [listMovie, setListMovie] = useState([]);
     
     useEffect(() => {
-      // const fetchMovieList = async () => {
-      //   try {
-      //     const response = await MovieService.getAllMovie();
-      //     console.log(response);
-      //     setListMovie(response.movie);
-      //   }catch (error) {
-      //     console.log("Failed to fetch movie list: ",error);
-      //   }
-      // }
-      // fetchMovieList();
+      const fetchMovieList = async () => {
+        try {
+          const response = await MovieService.getMovieById(idMovie);
+          // console.log(response);
+          setListMovie(response);
+        }catch (error) {
+          console.log("Failed to fetch movie list: ",error);
+        }
+      }
+      fetchMovieList();
 
-      axios.get(`https://61966cdbaf46280017e7e07c.mockapi.io/detail_movie/${idMovie.id}`) 
-      .then(function (response) {
-        setListMovie(response.data)
-      })
-      .catch(function (error) {
-        // handle error
-        console.log(error);
-      })
+      // axios.get(`https://61966cdbaf46280017e7e07c.mockapi.io/detail_movie/${idMovie.id}`) 
+      // .then(function (response) {
+      //   setListMovie(response.data)
+      // })
+      // .catch(function (error) {
+      //   // handle error
+      //   console.log(error);
+      // })
 
-    },[idMovie.id])
+    },[idMovie])
+    // console.log(listMovie);
 
     // bật tắt đánh giá  
     const [toggleStar, setToggleStar] = useState(false);
@@ -74,7 +72,7 @@ const DetailMovieCPN = () => {
         },
         {
           path: 'detailmovie',
-          breadcrumbName: `${listMovie.name}`,
+          breadcrumbName: `${listMovie?.name_movie}`,
         },
       ];
       function itemRender(route, params, routes, paths) {
@@ -111,27 +109,27 @@ const DetailMovieCPN = () => {
                         <div className="box-detail">
                             
                             <div className="img-traller">
-                                <img src={listMovie.image_large} alt="123"/>
+                                <img src={listMovie?.img_large} alt="123"/>
                                 <PlayCircleFilled className="btn-play" onClick={showModal}/>
-                                <Modal title={listMovie.name} width={610} visible={isModalVisible} onCancel={handleCancel} footer={null}>   
-                                    <p><iframe ref={iframeRef} title="YTB" width="100%" height="315" src={listMovie.traller} frameBorder="0"></iframe></p>
+                                <Modal title={listMovie?.name_movie} width={610} visible={isModalVisible} onCancel={handleCancel} footer={null}>   
+                                    <p><iframe ref={iframeRef} title="YTB" width="100%" height="315" src={listMovie?.traller} frameBorder="0"></iframe></p>
                                 </Modal> 
                             </div>
 
                             <div className="content_detail">
-                                <h4>{listMovie.name}</h4>
-                                <p>{listMovie.name_vn}</p>
+                                <h4>{listMovie?.name_movie}</h4>
+                                <p>{listMovie?.name_vn}</p>
                                 <div className="rate_star">
-                                    <p>{listMovie.rate}/5<StarOutlined /></p><button className="btn_rate_star" onClick={handleToggleStar}>Đánh giá</button>{ toggleStar ? <Rate onChange={openMessage} allowHalf defaultValue={4} /> : ""} 
+                                    <p>{listMovie?.rate}/5<StarOutlined /></p><button className="btn_rate_star" onClick={handleToggleStar}>Đánh giá</button>{ toggleStar ? <Rate onChange={openMessage} allowHalf defaultValue={4} /> : ""} 
                                 </div>
                                 <div className="info_movie">
-                                    <p>Thời gian: <span><HistoryOutlined /> {listMovie.time} phút</span></p>
-                                    <p>Nhà sản xuất: <span> {listMovie.producer}</span></p>
-                                    <p>Quốc gia: <span> {listMovie.country}</span></p>
-                                    <p>Đạo diễn: <span> {listMovie.director}</span></p>
-                                    <p>Diễn viên: <span> {listMovie.actor}</span></p>
-                                    <p>Thể loại: <span> {listMovie.category}</span></p>
-                                    <p>Ngày: <span> {listMovie.date_start}</span></p>
+                                    <p>Thời gian: <span><HistoryOutlined /> {listMovie?.time_mv} phút</span></p>
+                                    <p>Nhà sản xuất: <span> {listMovie?.production}</span></p>
+                                    <p>Quốc gia: <span> {listMovie?.country}</span></p>
+                                    <p>Đạo diễn: <span> {listMovie?.director}</span></p>
+                                    <p>Diễn viên: <span> {listMovie?.actor}</span></p>
+                                    <p>Thể loại: <span> {listMovie?.cate}</span></p>
+                                    <p>Ngày: <span> {listMovie?.day}</span></p>
                                 </div>
                             </div>  
                         </div>
@@ -140,7 +138,7 @@ const DetailMovieCPN = () => {
                           <h3>Nội dung phim</h3>
                           <div className="line"><span className="line1"></span></div>
                           <p>
-                            {listMovie.content} 
+                            {listMovie?.detail} 
                           </p>
                         </div>
 
@@ -184,11 +182,11 @@ const DetailMovieCPN = () => {
                           </div>
                         <div className="select_time">
                             <div  className="select_time_box">
-                                <p className="tag_rap">{listMovie.rap}</p>
+                                <p className="tag_rap">{listMovie?.rap}</p>
                                 <div className="tag_rap_box">
                                   <p>2D - Phụ đề</p>
                                   <div>
-                                      <Link to="" >{listMovie.session}</Link>
+                                      <Link to="" >{listMovie?.session}</Link>
                                   </div>
                                 </div>
                             </div>
@@ -209,7 +207,7 @@ const DetailMovieCPN = () => {
                         </form>
                       </div>
 
-                      <MovieCPN titleHome={"PHIM ĐANG CHIẾU"}/>
+                      <MovieCPN titleHome={"PHIM ĐANG CHIẾU"} limit={4}/>
 
                     </div>
 

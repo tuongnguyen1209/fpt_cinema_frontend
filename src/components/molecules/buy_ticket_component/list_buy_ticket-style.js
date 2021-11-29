@@ -28,12 +28,11 @@ export const ListBuyTicketStyle = styled.div`
     .row-buyticket {
         display: flex;
         justify-content: space-between;
-        align-items: center;
+        align-items: flex-start;
         flex-wrap: wrap;
         .row1, .row2, .row3 {
             width: 32%;
             position: relative;
-            height: 700px;
             top: 0%;
         }
         .ant-collapse-content > .ant-collapse-content-box {

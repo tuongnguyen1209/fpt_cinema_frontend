@@ -8,7 +8,7 @@ const PageMovie  = () =>  {
     return (
         <PageMovieStyle>
             <div className="container">
-                <MovieCPN />
+                <MovieCPN titleHome={"PHIM ĐANG CHIẾU"} imgSize={true}/>
                 <div className="distancee"></div>
                 <RuleCPN />
             </div>

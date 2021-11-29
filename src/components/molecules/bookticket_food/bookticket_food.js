@@ -411,9 +411,9 @@ const BookTicketFood = () => {
            let idItem = document.getElementById(ArraySeatBooked[id]);
            idItem.style.backgroundColor = "red";
            idItem.style.color = "white";
-           console.log(idItem);
+        //    console.log(idItem);
        }
-       console.log("useMemo pending")
+    //    console.log("useMemo pending")
    // eslint-disable-next-line react-hooks/exhaustive-deps
    },[ArraySeatBooked.length])
    
@@ -523,7 +523,7 @@ const BookTicketFood = () => {
             id: "1",
         })
         .then(function (response) {
-            console.log(response);
+            // console.log(response);
         })
         .catch(function (error) {
             console.log(error);

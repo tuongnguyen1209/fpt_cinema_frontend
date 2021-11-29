@@ -2,14 +2,14 @@ import { Collapse } from 'antd';
 import React, { useEffect, useState } from "react";
 import { Link } from 'react-router-dom';
 import { ListBuyTicketStyle } from "./list_buy_ticket-style";
-// import MovieService from '../../../serivces/movie.service';
+import MovieService from '../../../serivces/movie.service';
 import { useDispatch, useSelector } from 'react-redux';
 import { saveTicketList } from '../../../redux/action/saveTicket';
 
 const { Panel } = Collapse;
 const axios = require('axios');
 
-const BuyTicketCPN  = () =>  {
+const   BuyTicketCPN  = () =>  {
     
     // change color btn
     const [state, setState] = useState("span")
@@ -25,32 +25,32 @@ const BuyTicketCPN  = () =>  {
     }
 
     // data api movie
-    const [listMovie, setlistMovie] = useState([])
+    const [listMovie2, setlistMovie2] = useState([])
     
     useEffect(() => {
-        // const fetchMovieList = async () => {
-        //     try {
-        //       const response = await MovieService.getAllMovie();
-        //       console.log(response);
-        //       setlistMovie(response.movie);
-        //     }catch (error) {
-        //       console.log("Failed to fetch movie list: ",error);
-        //     }
-        //   }
-        //   fetchMovieList();
-        axios({
-            method: 'get',
-            url: 'https://61966cdbaf46280017e7e07c.mockapi.io/movie_2',
-        })
-        .then(function (response) {
-            // handle success
-            setlistMovie(response.data);
-        }).catch(
-            function (error) {
-            console.log('DONT GET DATA MOVIE!')
-            return Promise.reject(error)
-        }
-        )
+        const fetchMovieList = async () => {
+            try {
+              const response = await MovieService.getMovieLimit(15);
+            //   console.log(response);
+              setlistMovie2(response.movie);
+            }catch (error) {
+              console.log("Failed to fetch movie list: ",error);
+            }
+          }
+          fetchMovieList();
+        // axios({
+        //     method: 'get',
+        //     url: 'https://61966cdbaf46280017e7e07c.mockapi.io/movie_2',
+        // })
+        // .then(function (response) {
+        //     // handle success
+        //     setlistMovie2(response.data);
+        // }).catch(
+        //     function (error) {
+        //     console.log('DONT GET DATA MOVIE!')
+        //     return Promise.reject(error)
+        // }
+        // )
         
     }, [])
     // function reset style
@@ -153,11 +153,10 @@ const BuyTicketCPN  = () =>  {
          // redux --------------------------------------------------
         const saveShowtime = {
             session: e.target.parentElement.parentElement.parentElement.innerText,
-            
         }
 
         const action = saveTicketList(saveShowtime);
-        console.log(action);
+        // console.log(action);
         dispatch(action);
         // redux --------------------------------------------------
     }
@@ -177,10 +176,10 @@ const BuyTicketCPN  = () =>  {
                 <div className="row1"> 
                     <Collapse defaultActiveKey={['1']} accordion={true}>
                         <Panel className="panel"  header="CHỌN PHIM" key="1">
-                            {listMovie.map((item,index) => (
+                            {listMovie2.map((item,index) => (
                             <div className="collapse" key={index} onClick={handleShowrap}>
                                 <div className="panel-box" >
-                                    <img src={item.image} width="70px" height="50px" alt="img"/>                                   
+                                    <img src={item.img_medium} width="70px" height="50px" alt="img"/>                                   
                                     <h4>{item.name}</h4>
                                 </div>
                             </div>

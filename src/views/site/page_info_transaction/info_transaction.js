@@ -3,6 +3,7 @@ import styled from "styled-components";
 import { Table } from 'antd';
 import Title from "antd/lib/skeleton/Title";
 import axios from "axios";
+import MovieService from "../../../serivces/movie.service";
 
 const PageTransactionStyle = styled.div`
     .container {
@@ -32,7 +33,7 @@ const PageTransaction = () => {
         axios.get('https://619dd250131c6000170890f9.mockapi.io/ticket')
         .then(function (response) {
           // handle success
-          console.log(response);
+        //   console.log(response);
           setBillTicket(response.data);
         })
         .catch(function (error) {
@@ -42,6 +43,35 @@ const PageTransaction = () => {
 
     },[])
 
+    const [listMovie, setListMovie] = useState([]);
+    const [idMovie, setIdMovie] = useState();
+
+    useEffect(() => {
+
+        const fetchMovieList = async () => {
+            try {
+              const response = await MovieService.getAllMovie();
+            //   console.log(response);
+              setListMovie(response.movie);
+            }catch (error) {
+              console.log("Failed to fetch movie list: ",error);
+            }
+          }
+          fetchMovieList();
+
+    },[])
+    const handleMoveDetail = (nameMovie) => {
+        for(let i = 0; i <= listMovie.length; i++) {
+            if(listMovie[i]?.name === nameMovie.text) {
+                // console.log(listMovie[i]?.name + " === " + nameMovie.text);
+                // console.log(listMovie[i]?.id_movie)
+                setIdMovie(listMovie[i]?.id_movie)
+            }
+            else {
+                console.log("KHÁC")
+            }
+        }
+    } 
     const columns = [
         {
           title: 'Tên Khách Hàng',
@@ -57,7 +87,7 @@ const PageTransaction = () => {
           title: 'Tên Phim',
           dataIndex: 'movie',
           key: 'movie',
-          render: text => <a href="/pagedetail">{text}</a>,
+          render: text => <a onClick={(nameMovie) => handleMoveDetail({text})} href={`/detailmovie/${idMovie}`} >{text}</a>,
         },
         {
             title: 'Suất Chiếu',

@@ -69,7 +69,11 @@ const DropMenuStyle = styled.div`
             margin-left: 18px;
             margin-right: 5px;
             img {
-                max-width: 100%;
+                width: 220px;
+                height: 150px;
+            }
+            .img-mask {
+                height: 150px;
             }
         }
         .ant-col {
@@ -114,8 +118,8 @@ const DropMenu = () => {
     return ( 
         <DropMenuStyle>
             <div class="container">
-                <MovieCPN title={"PHIM ĐANG CHIẾU"}/>
-                <MovieCPN title2={"PHIM SẮP CHIẾU"}/>
+                <MovieCPN title={"PHIM ĐANG CHIẾU"} limit={4}/>
+                <MovieCPN title2={"PHIM SẮP CHIẾU"} limit={4}/>
             </div>
         </DropMenuStyle>
      );

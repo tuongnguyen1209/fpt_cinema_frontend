@@ -10,7 +10,7 @@ const axios = require('axios');
 function PromotionCPN() {
 
     const [listPromotion, setlistPromotion] = useState([])
-    console.log(listPromotion)
+    // console.log(listPromotion)
     useEffect(() => {
       axios({
         method: 'get',
