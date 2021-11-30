@@ -10,25 +10,32 @@ import {
   Typography,
 } from "antd";
 import React, { useEffect, useState } from "react";
-
-const dataInit = [
-  { id: 1, name: "Phong 1" },
-  { id: 2, name: "Phong 1" },
-];
+import roomService from "../../../serivces/room.service";
 
 const ListRoom = () => {
   const [form] = Form.useForm();
   const [visible, setVisible] = useState(false);
   const [data, setData] = useState([]);
   const [currentRecord, setCurrentRecord] = useState("");
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
-    setData(dataInit);
+    (async () => {
+      setLoading(true);
+      const rs = await roomService.getAll();
+      setData(rs.data.room);
+      setLoading(false);
+    })();
   }, []);
 
   const columns = [
-    { title: "Id", dataIndex: "id", key: "id" },
-    { title: "Tên phòng", dataIndex: "name", key: "name", editable: true },
+    { title: "Id", dataIndex: "id_room", key: "id_room" },
+    {
+      title: "Tên phòng",
+      dataIndex: "name_room",
+      key: "name_room",
+      editable: true,
+    },
     {
       title: "operation",
       dataIndex: "operation",
@@ -68,6 +75,8 @@ const ListRoom = () => {
           </Typography.Title>
           <Table
             dataSource={data}
+            loading={loading}
+            rowKey="id_room"
             form={form}
             component={false}
             columns={columns}
@@ -89,7 +98,7 @@ const ListRoom = () => {
           </Space>
         }
       >
-        <Input value={currentRecord ? currentRecord.name : ""} />
+        <Input value={currentRecord ? currentRecord.name_room : ""} />
       </Drawer>
     </div>
   );

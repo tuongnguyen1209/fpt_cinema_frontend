@@ -1,4 +1,5 @@
 import axiosClient from "./axios.client";
+const url = "/v1.php/ticket";
 
 const TicketService = {
     createTicket: (data) => {
@@ -6,7 +7,10 @@ const TicketService = {
     },
     getTicketByUser: (idUser) => {
         return axiosClient.get("/v1.php/ticket",idUser);
-    }
-}
+    },
+    getAll: (params) => {
+      return axiosClient.get(url, { params });
+    },
+};
 
 export default TicketService;
