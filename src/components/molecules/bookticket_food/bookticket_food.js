@@ -11,6 +11,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import { saveTicketList } from "../../../redux/action/saveTicket";
 import { BookTicketFoodStyle } from "./bookticket_foodStyle";
+import TicketService from '../../../serivces/ticket.service'
 
 const axios = require("axios").default;
 
@@ -471,23 +472,17 @@ const BookTicketFood = () => {
   const dispatch = useDispatch();
   console.table([infoTicketList]);
   const saveInfoTicket = () => {
-    let code_random = Math.trunc(Math.random() * 9000 + 1000);
+    // let code_random = Math.trunc(Math.random() * 9000 + 1000);
     let room_random = Math.trunc(Math.random() * 9 + 1);
     const saveSeat = {
-      seat: ArraySeat.map((seat) => {
-        return seat + ",";
-      }),
-      total: `${totalAll}.000 VND`,
-      combo: `${
-        quantityCombo1 > 0 ? getCombo1 + "(" + quantityCombo1 + ")" : " "
-      },${quantityCombo2 > 0 ? getCombo2 + "(" + quantityCombo2 + ")" : " "},${
-        quantityCombo3 > 0 ? getCombo3 + "(" + quantityCombo3 + ")" : " "
-      }`,
-      code_ticket: `MV${code_random}`,
-      info_ticket: `Vé thành viên (${counting_member}), Vé thường (${counting})`,
-      name: "ĐẶNG KIÊN",
-      room: `Phòng ${room_random}`,
-      status: "Sắp chiếu",
+      seat: ArraySeat,
+      Total_money: `${totalAll}.000`,
+      id_combo: [2,3],
+      ticket_information: `Vé thành viên (${counting_member}), Vé thường (${counting})`,
+      full_name: loginReducer.user.full_name,
+      id_room: room_random,
+      status: "1",
+      id_user: loginReducer.user.id_user
     };
 
     const action = saveTicketList(saveSeat);
@@ -503,29 +498,74 @@ const BookTicketFood = () => {
   // post data lên sever
   const PostDataTicket = async () => {
     saveInfoTicket();
-    axios
-      .post("https://619dd250131c6000170890f9.mockapi.io/ticket", {
-        movie: infoTicketList.movie,
-        name: infoTicketList.name,
-        rap: infoTicketList.rap,
-        session: infoTicketList.session,
-        combo: infoTicketList.combo,
-        seat: infoTicketList.seat,
-        room: infoTicketList.room,
-        info_ticket: infoTicketList.info_ticket,
-        status: infoTicketList.status,
-        total: infoTicketList.total,
-        ticket_code: infoTicketList.code_ticket,
-        id: "1",
-      })
-      .then(function (response) {
-        console.log(response);
-      })
-      .catch(function (error) {
-        console.log(error);
-      });
-    success();
+
+    try {
+      const response = TicketService.createTicket({
+        // name_mv: infoTicketList.name_mv,
+        // full_name: infoTicketList.full_name,
+        // time_start: "10:30",
+        // id_combo: infoTicketList.id_combo,
+        // seat: infoTicketList.seat,
+        // id_room: infoTicketList.id_room,
+        // ticket_information: infoTicketList.ticket_information,
+        // status: infoTicketList.status,
+        // Total_money: infoTicketList.Total_money,
+        // quantity: "5",
+        // unit_price: "8000",
+
+        "id_session":"2",
+        "Total_money": infoTicketList.Total_money,
+        "id_user":infoTicketList.id_user,
+        "id_promotion":"3",
+        "time_create":"",
+        "status":"1",
+        "ticket_information": infoTicketList.ticket_information,
+        "id_seat" : infoTicketList.seat,
+        "id_combo": infoTicketList.id_combo,
+        "quantity": [quantityCombo1,quantityCombo2,quantityCombo3],
+        "unit_price":[8000,9000]
+      },
+      {
+        headers: {'Content-Type': 'application/json'}
+      }
+        )
+      console.log(response);
+      success();
+    }
+    catch {
+      console.log("Error", message);
+    }
+    // axios.post("https://cinemafptproject.herokuapp.com/v1.php/ticket", {
+    //     name_mv: infoTicketList.name_mv,
+    //     full_name: infoTicketList.full_name,
+    //     date: "30-11-2021",
+    //     time_start: "10:30",
+    //     combo: infoTicketList.combo,
+    //     seat: infoTicketList.seat,
+    //     id_room: infoTicketList.id_room,
+    //     ticket_information: infoTicketList.ticket_information,
+    //     status: infoTicketList.status,
+    //     Total_money: infoTicketList.Total_money,
+    //   })
+    //   .then(function (response) {
+    //     console.log(response);
+    //   })
+    //   .catch(function (error) {
+    //     console.log(error);
+    //   });
   };
+
+
+  // check login
+  const loginReducer = useSelector((state) => state.user);
+  const isLogin = loginReducer.isLogin;
+      
+  useEffect(() => {
+    if(isLogin === false) {
+      alert("Đăng nhập để tiếp tục đặt vé !")
+      return window.location="/auth/login";
+    }
+  }, [isLogin]);
   // mảng ghế
 
   // const [limitTime, setLimitTime] = useState("16:00");
@@ -558,7 +598,7 @@ const BookTicketFood = () => {
   // },[second])
   return (
     <BookTicketFoodStyle>
-      <div className="container">
+      <div className="container_custom">
         <div className={TogglePageBookTicket}>
           <div className="box_bookticket">
             <h3>CHỌN VÉ/THỨC ĂN</h3>
@@ -1264,13 +1304,13 @@ const BookTicketFood = () => {
                 </div>
 
                 <div className="form-group-btn">
-                  <p>
+                  <p onClick={PostDataTicket}>
                     (*)Trước khi click vào thanh toán bạn phải có{" "}
                     <b>tài khoản ngân hàng</b> hoặc <b>ví điện tử momo</b>
                   </p>
                   <div>
                     <button onClick={handlePrevPageSeat}>QUAY LẠI</button>{" "}
-                    <Link to="/member" onClick={PostDataTicket}>
+                    <Link to="/member">
                       THANH TOÁN
                     </Link>
                   </div>
@@ -1282,7 +1322,7 @@ const BookTicketFood = () => {
         <div className="aside_bookticket_food">
           <div className="info_ticket">
             <img src={infoTicketList.img} alt="img_movie" />
-            <h4>{infoTicketList.movie}</h4>
+            <h4>{infoTicketList.name_mv}</h4>
             <p className="note">
               (*) Phim chỉ dành cho khán giả từ 16 tuổi trở lên
             </p>

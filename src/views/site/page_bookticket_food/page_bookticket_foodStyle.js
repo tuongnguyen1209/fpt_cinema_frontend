@@ -7,14 +7,14 @@ export const PageBookTicketFoodStyle = styled.div`
     a {
         color: white;
     }
-    .container {
+    .container_custom {
         position: relative;
         margin: 20px 130px 50px 130px;
         overflow: hidden;
     }
 
     @media screen and (max-width: 480px) {
-        .container {
+        .container_custom {
         position: relative;
         margin: 10px;
         overflow: hidden;

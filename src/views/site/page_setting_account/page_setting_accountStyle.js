@@ -9,7 +9,7 @@ export const PageSettingAccountStyle = styled.div`
     a {
         color: white;
     }
-    .container {
+    .container_custom {
         position: relative;
     }
     

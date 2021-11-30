@@ -9,10 +9,9 @@ import { Pagination } from 'antd';
 const PageBlog = () => {
     return (
         <PageBlogStyle>
-            <div className="container">
+            <div className="container_custom">
 
                 <div className="main_blog">
-                    <BlogCPN />
                     <BlogCPN />
 
                     <div className="pagination"><Pagination defaultCurrent={1} total={50} /></div>

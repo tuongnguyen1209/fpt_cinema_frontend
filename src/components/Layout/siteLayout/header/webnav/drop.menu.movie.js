@@ -24,17 +24,6 @@ const DropMenuStyle = styled.div`
         background-color: black;
       }
     }
-    .row-movie {
-      height: 260px;
-      overflow: hidden;
-      padding: 0px 10px;
-      .line {
-        width: 24%;
-        padding-left: 20px;
-        .line2 {
-          background-color: black;
-        }
-      }
       .title {
         padding: 10px 0px 10px 0px;
         font-weight: bold;
@@ -199,13 +188,13 @@ const DropMenuStyle = styled.div`
       margin: 50px 0px 50px 0px;
       display: none;
     }
-  }
+  
 `;
 
 const DropMenu = () => {
   return (
     <DropMenuStyle>
-      <div class="container">
+      <div class="container_custom">
         <MovieCPN title={"PHIM ĐANG CHIẾU"} limit={4} />
         <MovieCPN title2={"PHIM SẮP CHIẾU"} limit={4} />
       </div>

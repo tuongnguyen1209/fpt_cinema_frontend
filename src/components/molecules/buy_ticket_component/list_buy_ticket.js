@@ -33,7 +33,7 @@ const BuyTicketCPN = () => {
   const handleShowrap = (e) => {
     // lấy thông tin (tên phim, hình ảnh) lưu vào redux
     const saveNameMovie = {
-      movie: e.target.parentElement.innerText,
+      name_mv: e.target.parentElement.innerText,
       img: e.target.parentElement.children[0].src,
     };
     const action = saveTicketList(saveNameMovie);
@@ -44,18 +44,27 @@ const BuyTicketCPN = () => {
     e.target.parentElement.style.backgroundColor = "rgba(223, 228, 234,1.0)";
     e.target.parentElement.setAttribute("id", "styleTicket");
 
-    axios({
+    
+    Promise.all([axios({
       method: "get",
       url: "https://618ca5c8ded7fb0017bb9657.mockapi.io/rap",
-    })
-      .then(function (response) {
+    }), axios({
+      method: "get",
+      url: "https://cinemafptproject.herokuapp.com/v1.php/session",
+    })])
+    
+    
+    .then(function (response) {
         // handle success
-        setRap(response.data);
+        setRap(response[0].data);
+        console.log(response[1].data);
       })
       .catch(function (error) {
         console.log("DONT GET DATA MOVIE!");
         return Promise.reject(error);
       });
+    
+
   };
   // thay đổi style
   const resetStyleRap = () => {
@@ -73,9 +82,9 @@ const BuyTicketCPN = () => {
   useEffect(() => {
     const fetchMovieList = async () => {
       try {
-        const response = await MovieService.getMovieLimit(15);
+        const response = await MovieService.getMovieLimit(8);
         console.log(response);
-        setlistMovie2(response.movie);
+        setlistMovie2(response.data.movie);
       } catch (error) {
         console.log("Failed to fetch movie list: ", error);
       }
@@ -124,24 +133,14 @@ const BuyTicketCPN = () => {
       resetStyleRap();
       e.target.style.backgroundColor = "rgba(223, 228, 234,1.0)";
       e.target.setAttribute("id", "resetStyleRap");
-      axios({
-        method: "get",
-        url: "https://618ca5c8ded7fb0017bb9657.mockapi.io/session",
-      })
-        .then(function (response) {
-          // handle success
-          setTime(response.data);
-          setCheck(true);
-        })
-        .catch(function (error) {
-          console.log("DONT GET DATA MOVIE!");
-          return Promise.reject(error);
-        });
     }
   };
 
   // login
-  const Login = true;
+    const loginReducer = useSelector((state) => state.user);
+      
+    const isLogin = loginReducer.isLogin;
+
   const handleLogin = (e) => {
     // redux --------------------------------------------------
     const saveShowtime = {
@@ -225,7 +224,7 @@ const BuyTicketCPN = () => {
                         </p>
                         <p className="row_show_time">
                           {item.category_ticket}
-                          <Link to={Login ? "bookticket-food" : "login"}>
+                          <Link to={isLogin ? "bookticket-food" : "auth/login"}>
                             <span className="box_time" onClick={handleLogin}>
                               {item.show_time[0]}
                             </span>

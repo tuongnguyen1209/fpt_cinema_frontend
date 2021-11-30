@@ -6,7 +6,8 @@ import { Link } from "react-router-dom";
 import axios from "axios";
 
 function BlogCPN() {
-  const [listBlog, setListBlog] = useState([]);
+  const [listBlogBL, setListBlogBL] = useState([]);
+  const [listBlogDA, setListBlogDA] = useState([]);
   useEffect(() => {
     // const fetchBlog = async () => {
     //   try {
@@ -19,18 +20,31 @@ function BlogCPN() {
     // }
     // fetchBlog();
 
-    async function getUser() {
+    async function getBlogBL() {
       try {
         const response = await axios.get(
           "https://6189cf9d34b4f400177c425b.mockapi.io/listBlog"
         );
         // console.log(response);
-        setListBlog(response.data);
+        setListBlogBL(response.data);
       } catch (error) {
         console.error(error);
       }
     }
-    getUser();
+    getBlogBL();
+
+    async function getBlogDA() {
+      try {
+        const response = await axios.get(
+          "https://619dd250131c6000170890f9.mockapi.io/blog_da"
+        );
+        // console.log(response);
+        setListBlogDA(response.data);
+      } catch (error) {
+        console.error(error);
+      }
+    }
+    getBlogDA();
   }, []);
 
   return (
@@ -43,7 +57,7 @@ function BlogCPN() {
           </div>
 
           <div className="container-blog">
-            {listBlog.map((item, index) => (
+            {listBlogBL.map((item, index) => (
               <div className="blog-card" key={index}>
                 <Link to={item.href}>
                   <img className="img-blog" src={item.img} alt="img" />
@@ -75,7 +89,7 @@ function BlogCPN() {
           </div>
 
           <div className="container-blog">
-            {listBlog.map((item, index) => (
+            {listBlogDA.map((item, index) => (
               <div className="blog-card" key={index}>
                 <Link to={item.href}>
                   <img className="img-blog" src={item.img} alt="img" />

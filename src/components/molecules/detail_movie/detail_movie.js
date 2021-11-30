@@ -33,7 +33,7 @@ const DetailMovieCPN = () => {
         try {
           const response = await MovieService.getMovieById(idMovie);
           // console.log(response);
-          setListMovie(response);
+          setListMovie(response.data);
         }catch (error) {
           console.log("Failed to fetch movie list: ",error);
         }
@@ -102,7 +102,7 @@ const DetailMovieCPN = () => {
 
     return (
         <DetailMovieCPNStyle>
-            <div className="container">
+            <div className="container_custom">
                 <div className="main_detail">
                     <Breadcrumb itemRender={itemRender} routes={routes} />
                     <div className="container-detail">

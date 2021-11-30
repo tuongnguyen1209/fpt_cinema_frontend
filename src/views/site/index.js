@@ -15,15 +15,20 @@ import PageBookTicketFood from "./page_bookticket_food/page_bookticket_food";
 import Register from "../../components/molecules/modal-register/register";
 import Forgot from "../../components/molecules/modal-forgotpassword/forgot";
 import NotFound from "../site/page_not-found";
+import { useSelector } from "react-redux";
 const { Header, Content, Footer } = Layout;
 
 const { useBreakpoint } = Grid;
 
-const isLogin = true;
+
 
 const Site = () => {
   const screens = useBreakpoint();
   const isMobile = !screens.md;
+  
+  // check login toggle page member
+  const loginReducer = useSelector((state) => state.user);
+  const isLogin = loginReducer.isLogin;
 
   return (
     <Layout style={{ width: "100%" }}>

@@ -1,7 +1,7 @@
 import styled from "styled-components";
 
 export const DetailMovieCPNStyle = styled.div`
-    .container {
+    .container_custom {
         display: flex;
         justify-content: space-around;
         align-items: flex-start;
@@ -211,7 +211,7 @@ export const DetailMovieCPNStyle = styled.div`
     }
 
     @media screen and (max-width: 480px) {
-        .container {
+        .container_custom {
             display: flex;
             flex-direction: column;
             padding-top: 20px;

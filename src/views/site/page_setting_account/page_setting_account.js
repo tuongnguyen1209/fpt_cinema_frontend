@@ -3,9 +3,10 @@ import SettingAccount from "../../../components/molecules/setting_account_compon
 import { PageSettingAccountStyle } from "./page_setting_accountStyle";
 
 const PageSettingAccount = () => {
+
     return (
         <PageSettingAccountStyle>
-            <div className="container">
+            <div className="container_custom">
                 <SettingAccount />
             </div>
         </PageSettingAccountStyle>

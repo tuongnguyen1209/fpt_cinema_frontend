@@ -5,7 +5,7 @@ import { BuyTicketStyle } from "./buy_ticketStyle";
 const BuyTicketSite  = () =>  {
     return (
         <BuyTicketStyle>
-            <div className="container">
+            <div className="container_custom">
                 <BuyTicketCPN />
             </div>
         </BuyTicketStyle>

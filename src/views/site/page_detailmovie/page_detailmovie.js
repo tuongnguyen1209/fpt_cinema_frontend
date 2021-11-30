@@ -6,7 +6,7 @@ import { PageDetailMovieStyle } from "./page_detailmovieStyle";
 const PageDetailMovie = () => {
     return (
         <PageDetailMovieStyle>
-            <div className="container">
+            <div className="container_custom">
                 <DetailMovieCPN />
             </div>
         </PageDetailMovieStyle>

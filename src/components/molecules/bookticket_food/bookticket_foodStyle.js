@@ -10,7 +10,7 @@ export const BookTicketFoodStyle = styled.div`
     background: rgba(0, 0, 0, 0.05);
     border-radius: 4px;
   }
-  .container {
+  .container_custom {
     display: flex;
     justify-content: space-between;
     align-items: flex-start;
@@ -334,6 +334,7 @@ export const BookTicketFoodStyle = styled.div`
         }
         h4 {
           padding: 5px 0px;
+          font-size: 1rem;
         }
         p {
           width: 100%;
@@ -395,7 +396,7 @@ export const BookTicketFoodStyle = styled.div`
   }
 
   @media screen and (max-width: 480px) {
-    .container {
+    .container_custom {
       display: block;
       .main_bookticket_food {
         padding-right: 0px;

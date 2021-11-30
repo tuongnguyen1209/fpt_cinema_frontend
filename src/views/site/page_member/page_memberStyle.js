@@ -9,7 +9,7 @@ export const PageMemberStyle = styled.div`
     a {
         color: white;
     }
-    .container {
+    .container_custom {
         position: relative;
         margin: 10px 60px 50px 60px;
         overflow: hidden;
@@ -77,15 +77,12 @@ export const PageMemberStyle = styled.div`
                 }
             }
             .row-movie {
-                .img-mask {
-                    height: 82%;
-                }
             }
         }
     }
     
     @media screen and (max-width: 480px) {
-        .container {
+        .container_custom {
             display: block;
             margin: 0px;
             padding: 15px 5px 0px 5px;

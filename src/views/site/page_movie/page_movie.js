@@ -7,8 +7,8 @@ import { PageMovieStyle } from "./page_movieStyle";
 const PageMovie  = () =>  {
     return (
         <PageMovieStyle>
-            <div className="container">
-                <MovieCPN titleHome={"PHIM ĐANG CHIẾU"} imgSize={true}/>
+            <div className="container_custom">
+                <MovieCPN titleHome={"PHIM ĐANG CHIẾU"} imgSize={true} limit={100}/>
                 <div className="distancee"></div>
                 <RuleCPN />
             </div>

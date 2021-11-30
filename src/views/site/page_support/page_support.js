@@ -38,7 +38,7 @@ const PageSupport  = () =>  {
 
     return (
         <PageSupportStyle>
-            <div className="container">
+            <div className="container_custom">
 
                 <div className="row-question">
                     <div className="main">
