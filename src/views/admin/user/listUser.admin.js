@@ -1,11 +1,23 @@
 import { Image, Table, Typography, Tag, Button, Space, Modal } from "antd";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import { listTicketDefault, listUser } from "../../../data/movie.data";
+import { listTicketDefault } from "../../../data/movie.data";
+import userService from "../../../serivces/user.service";
 import { formatPrice } from "../../../ultil/format";
 
 const ListUser = () => {
   const [isModalVisible, setIsModalVisible] = useState(false);
+  const [listUser, setListUser] = useState([]);
+  const [loading, setLoading] = useState(false);
+
+  useEffect(() => {
+    (async () => {
+      setLoading(true);
+      const rs = await userService.getAll();
+      setListUser(rs.data.user);
+      setLoading(false);
+    })();
+  }, []);
 
   const showModal = () => {
     setIsModalVisible(true);
@@ -34,18 +46,18 @@ const ListUser = () => {
         />
       ),
     },
-    { title: "Tên", dataIndex: "name", key: "name" },
+    { title: "Tên", dataIndex: "name_user", key: "name_user" },
     { title: "Email", dataIndex: "email", key: "email" },
     { title: "Số điện thoại", dataIndex: "phone", key: "phone" },
     {
       title: "Chức vụ",
-      dataIndex: "role",
-      key: "role",
-      render: (role) =>
-        role === 1 ? (
-          <Tag color="#87d068"> Khách hàng</Tag>
-        ) : (
+      dataIndex: "status",
+      key: "status",
+      render: (status) =>
+        status === "0" ? (
           <Tag color="#f50"> Admin</Tag>
+        ) : (
+          <Tag color="#87d068"> Khách hàng</Tag>
         ),
     },
     {
@@ -53,7 +65,7 @@ const ListUser = () => {
       dataIndex: "status",
       key: "status",
       render: (status) =>
-        status === 1 ? (
+        status !== 3 ? (
           <Tag color="green">Đang hoạt động</Tag>
         ) : (
           <Tag color="red">Bị khóa</Tag>
@@ -120,7 +132,12 @@ const ListUser = () => {
         <Typography.Title level={4}>Danh sách người dùng</Typography.Title>
       </div>
       <div>
-        <Table dataSource={listUser} columns={columns} />
+        <Table
+          dataSource={listUser}
+          columns={columns}
+          loading={loading}
+          rowKey="id_user"
+        />
       </div>
       <Modal
         title="Lịch sử đặt hàng"

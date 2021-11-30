@@ -13,6 +13,7 @@ import Tickets from "./ticket/ticket.admin";
 import TicketDetail from "./ticket/ticketDetail.admin";
 import ListUser from "./user/listUser.admin";
 import HomeAdmin from "./home/home.admin";
+import EditMovie from "./movie/editMovie.admin";
 
 const { Content } = Layout;
 
@@ -46,7 +47,7 @@ const Admin = () => {
               />
               <Route
                 path={`${ADMIN_PREFIX_PATH}/movie/:id`}
-                component={AddMovie}
+                component={EditMovie}
                 exact
               />
               <Route

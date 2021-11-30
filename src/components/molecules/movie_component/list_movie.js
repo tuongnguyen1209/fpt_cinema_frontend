@@ -5,31 +5,28 @@ import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 // import MovieService from "../../../serivces/movie.service";
 import { ListMovieStyle } from "./list_movie-style";
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch, useSelector } from "react-redux";
 import { findDetailMovie } from "../../../redux/action/findIdMovie";
 
 const { Meta } = Card;
 
-function MovieCPN({title,title2,titleHome,titleHome2}) {
+function MovieCPN({ title, title2, titleHome, titleHome2 }) {
   // const Photo = React.lazy(() => import('./features/Phto'));
-  
+
   const [state, setState] = useState("span");
   const [state2, setState2] = useState("span2");
-  
+
   const ChangeBtn = (e) => {
     e.preventDefault();
     setState("span");
     setState2("span2");
-    
   };
-  
+
   const ChangeBtn2 = (e) => {
     e.preventDefault();
     setState2("span");
     setState("span2");
-    
   };
-  
 
   const [listMovie, setListMovie] = useState([]);
 
@@ -44,45 +41,42 @@ function MovieCPN({title,title2,titleHome,titleHome2}) {
     //   }
     // }
     // fetchMovieList();
-    
+
     try {
-      axios.get('https://61966cdbaf46280017e7e07c.mockapi.io/movie_2') 
-      .then(function (response) {
-        setListMovie(response.data)
-      })
-      .catch(function (error) {
-        // handle error
-        console.log(error);
-      });
-    }
-    catch {
-      console.log("ERRO", message)
+      axios
+        .get("https://61966cdbaf46280017e7e07c.mockapi.io/movie_2")
+        .then(function (response) {
+          setListMovie(response.data);
+        })
+        .catch(function (error) {
+          // handle error
+          console.log(error);
+        });
+    } catch {
+      console.log("ERRO", message);
     }
 
     return;
-
-  },[])
+  }, []);
 
   // redux -------------------------------------------------------
 
-  const idMovie = useSelector(state => state.findIdMovie);
+  const idMovie = useSelector((state) => state.findIdMovie);
   const dispatch = useDispatch();
-    
+
   console.log(idMovie);
 
-  const handleGetId = e => {
-
+  const handleGetId = (e) => {
     console.log(e.target.value);
     const saveIdMovie = {
       id: e.target.value,
-    }
+    };
 
     const action = findDetailMovie(saveIdMovie);
-    console.log(action)
-    dispatch(action)
-  }
+    console.log(action);
+    dispatch(action);
+  };
 
- 
   // redux -------------------------------------------------------
   return (
     <ListMovieStyle>
@@ -90,8 +84,8 @@ function MovieCPN({title,title2,titleHome,titleHome2}) {
         <div className="title">
           <span className={state}>
             <Link to="" onClick={ChangeBtn}>
-                {title || title2}
-                {titleHome || titleHome2}
+              {title || title2}
+              {titleHome || titleHome2}
             </Link>
           </span>
           <span className={state2}>
@@ -107,29 +101,31 @@ function MovieCPN({title,title2,titleHome,titleHome2}) {
 
         <Row className="flex-card">
           {listMovie.map((item, index) => (
-              <div key={index}>
-                <Col >
-                    <Card
-                      className="box-card"
-                      cover={
-                        <div className="box-mask">
-                          <img src={item.image} width="400px" alt="img" />
-                          <div className="img-mask">
-                            <Link to="/detailmovie">
-                              <button onClick={handleGetId} value={item.id}>Mua Vé</button>
-                            </Link>
-                          </div>
-                        </div>
-                      }
-                      >
-                      <Meta
-                        className="meta-title"
-                        title={item.name}
-                        description={item.name_vn}
-                        />
-                    </Card>
-                </Col>
-              </div>
+            <div key={index}>
+              <Col>
+                <Card
+                  className="box-card"
+                  cover={
+                    <div className="box-mask">
+                      <img src={item.image} width="400px" alt="img" />
+                      <div className="img-mask">
+                        <Link to="/detailmovie">
+                          <button onClick={handleGetId} value={item.id}>
+                            Mua Vé
+                          </button>
+                        </Link>
+                      </div>
+                    </div>
+                  }
+                >
+                  <Meta
+                    className="meta-title"
+                    title={item.name}
+                    description={item.name_vn}
+                  />
+                </Card>
+              </Col>
+            </div>
           ))}
         </Row>
 

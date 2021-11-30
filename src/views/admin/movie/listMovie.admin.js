@@ -26,8 +26,8 @@ const ListMovie = () => {
     (async () => {
       setLoading(true);
       try {
-        const listmovie = await MovieService.getAllMovie();
-        setMovieData(listmovie.movie);
+        const listmovie = await MovieService.getAllMovie({ limit: 100 });
+        setMovieData(listmovie.data.movie);
         setLoading(false);
       } catch (error) {
         setLoading(false);
@@ -39,8 +39,8 @@ const ListMovie = () => {
   const columns = [
     {
       title: "Hình ảnh",
-      dataIndex: "image",
-      key: "image",
+      dataIndex: "img_medium",
+      key: "img_medium",
       render: (image) => (
         <Image
           src={image}

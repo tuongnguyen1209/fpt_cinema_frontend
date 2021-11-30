@@ -1,6 +1,7 @@
 import { Button, Space, Table, Typography } from "antd";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
+import sessionService from "../../../serivces/session.service";
 
 const columns = [
   {
@@ -10,7 +11,13 @@ const columns = [
     render: (_, element) => <Link to="/move/">{element.name}</Link>,
   },
   { title: "Ngày chiếu", dataIndex: "date", key: "date" },
+];
 
+const columns1 = [
+  { title: "Thời gian bắt đầu", dataIndex: "start", key: "start" },
+  { title: "Thời gian kết thúc", dataIndex: "end", key: "end" },
+  { title: "Phòng", dataIndex: "room", key: "room" },
+  { title: "loại chiếu", dataIndex: "type", key: "type" },
   {
     title: "Thao Tác",
     dataIndex: "",
@@ -28,25 +35,57 @@ const columns = [
   },
 ];
 
-const columns1 = [
-  { title: "Thời gian bắt đầu", dataIndex: "start", key: "start" },
-  { title: "Thời gian kết thúc", dataIndex: "end", key: "end" },
-  { title: "Phòng", dataIndex: "room", key: "room" },
-  { title: "loại chiếu", dataIndex: "type", key: "type" },
-];
+const handleResult = (arr = []) => {
+  const newArr = [];
 
-const data = [
-  {
-    key: 1,
-    name: "Phim 1",
-    date: "11/25/2021",
-    session: [
-      { id: 1, start: "10:00", end: "12:00", room: "Phong 1", type: "2D" },
-      { id: 2, start: "12:00", end: "14:00", room: "Phong 1", type: "2D" },
-    ],
-  },
-];
+  for (let i = 0; i < arr.length; i++) {
+    const element = arr[i];
+
+    const index = newArr.findIndex(
+      (el) => el.name === element.name_mv && el.date === element.day
+    );
+
+    if (index !== -1) {
+      newArr[index].session.push({
+        id: element.id_session,
+        start: element.date_start,
+        end: element.date_end,
+        room: element.room_number,
+        type: element.type,
+      });
+    } else {
+      newArr.push({
+        key: i,
+        name: element.name_mv,
+        date: element.day,
+        session: [
+          {
+            id: element.id_session,
+            start: element.date_start,
+            end: element.date_end,
+            type: element.type,
+            room: element.room_number,
+          },
+        ],
+      });
+    }
+  }
+
+  return newArr;
+};
+
 const ListSession = () => {
+  const [loading, setLoading] = useState(false);
+  const [sessions, setSessions] = useState([]);
+  useEffect(() => {
+    (async () => {
+      setLoading(true);
+      const listSession = await sessionService.getAll();
+      setSessions(handleResult(listSession.data.session));
+      setLoading(false);
+    })();
+  }, []);
+
   return (
     <div>
       <div style={{ display: "flex", justifyContent: "space-between" }}>
@@ -58,7 +97,9 @@ const ListSession = () => {
         </Link>
       </div>
       <Table
+        loading={loading}
         columns={columns}
+        rowKey="key"
         expandable={{
           expandedRowRender: (record) => (
             <Table
@@ -69,7 +110,7 @@ const ListSession = () => {
           ),
           rowExpandable: (record) => record.name !== "Not Expandable",
         }}
-        dataSource={data}
+        dataSource={sessions}
       />
     </div>
   );

@@ -19,6 +19,7 @@ import MovieService from "../../../serivces/movie.service";
 import Uploadfile from "../../../serivces/uploadImg.service";
 import { FormatDateRequest } from "../../../ultil/format";
 import { WrapCkediter } from "./movie.style.admin";
+import { useParams } from "react-router-dom";
 
 function getBase64(file) {
   return new Promise((resolve, reject) => {
@@ -35,8 +36,59 @@ const formItemLayout = {
   labelCol: { span: 6 },
   wrapperCol: { span: 14 },
 };
-
-const AddMovie = () => {
+const createFiled = (newResult, listCateOfMovie) => {
+  return [
+    {
+      name: ["name_mv"],
+      value: newResult.name_movie,
+    },
+    {
+      name: ["name_vn"],
+      value: newResult.name_movie,
+    },
+    // {
+    //   name: ["date_start"],
+    //   value: new Date(newResult.day),
+    // },
+    {
+      name: ["director"],
+      value: newResult.director,
+    },
+    {
+      name: ["actor"],
+      value: newResult.actor,
+    },
+    {
+      name: ["country"],
+      value: newResult.country,
+    },
+    {
+      name: ["id_cate"],
+      value: listCateOfMovie,
+    },
+    {
+      name: ["Traller"],
+      value: newResult.Traller,
+    },
+    {
+      name: ["production"],
+      value: newResult.production,
+    },
+    {
+      name: ["country"],
+      value: newResult.country,
+    },
+    {
+      name: ["traller"],
+      value: newResult.traller,
+    },
+    {
+      name: ["time_mv"],
+      value: newResult.time_mv,
+    },
+  ];
+};
+const EditMovie = () => {
   const [imgFile, setImgFile] = useState({
     previewVisible: false,
     previewImage: "",
@@ -46,23 +98,57 @@ const AddMovie = () => {
   const [description, setDescription] = useState("");
   const [form] = Form.useForm();
   const [listcategory, setListCategory] = useState([]);
+  const { id } = useParams();
+  const [movieDetail, setMovieDetail] = useState({});
+  const [filed, setFiled] = useState([]);
 
   useEffect(() => {
     (async () => {
       try {
         const result = await CategoryService.getAll();
         setListCategory(result.data.category);
-      } catch (error) {}
+
+        if (id) {
+          let movie = await MovieService.getMovieById(id);
+          movie = movie.data;
+          // console.log(movie);
+          let listCateOfMovie = movie.cate.split(",");
+
+          for (let i = 0; i < listCateOfMovie.length; i++) {
+            let element = listCateOfMovie[i];
+            element = result.data.category.find(
+              (el) => el.name_category === element.trim()
+            ).id_category;
+          }
+
+          const newFL = [
+            {
+              uid: "-1",
+              name: movie.name_movie,
+              status: "done",
+              url: movie.img_medium,
+            },
+          ];
+          const newImgFile = { ...imgFile, fileList: newFL };
+          setImgFile(newImgFile);
+
+          setMovieDetail(movie);
+          setDescription(movie.detail);
+          setFiled(createFiled(movie, listCateOfMovie));
+        }
+      } catch (error) {
+        console.log(error);
+      }
     })();
-  }, []);
+  }, [id]);
 
   const onPreview = async (res) => {
-    if (!res.response.url) {
+    if (!res.url && !res.preview) {
       res.preview = await getBase64(res.originFileObj);
     }
     setImgFile({
       ...imgFile,
-      previewImage: res.response.url || res.preview,
+      previewImage: res.url || res.preview,
       previewVisible: true,
       previewTitle: res.name || res.url.substring(res.url.lastIndexOf("/") + 1),
     });
@@ -128,21 +214,26 @@ const AddMovie = () => {
         </Col>
       </Row>
 
-      <Form form={form} onFinish={onFinish} {...formItemLayout}>
+      <Form form={form} onFinish={onFinish} fields={filed} {...formItemLayout}>
         <Row>
           <Col span={12}>
             <Form.Item
               label="Tên phim tiếng anh"
               name="name_mv"
               required
+              // initialValue={movieDetail.name_movie}
               rules={[...rulesInputdefault]}
             >
-              <Input placeholder="Nhập vào tên phim" />
+              <Input
+                placeholder="Nhập vào tên phim"
+                value={movieDetail.name_movie}
+              />
             </Form.Item>
             <Form.Item
               label="Tên phim tiếng việt"
               name="name_vn"
               required
+              initialValue={id ? movieDetail.name_movie : ""}
               rules={[...rulesInputdefault]}
             >
               <Input placeholder="Nhập vào tên phim" />
@@ -154,6 +245,7 @@ const AddMovie = () => {
               name="director"
               label="Đạo diễn"
               required
+              initialValue={movieDetail?.director}
               rules={[...rulesInputdefault]}
             >
               <Input placeholder="Nhập vào tên đạo diễn" />
@@ -161,6 +253,7 @@ const AddMovie = () => {
             <Form.Item
               name="actor"
               label="Diễn viên"
+              initialValue={id ? movieDetail.actor : ""}
               required
               rules={[...rulesInputdefault]}
             >
@@ -230,6 +323,7 @@ const AddMovie = () => {
                   name="id_cate"
                   label="Thể loại"
                   required
+                  initialValue={movieDetail ? movieDetail.cate : ""}
                   rules={[
                     { required: true, message: "Please select your category!" },
                   ]}
@@ -319,4 +413,4 @@ const AddMovie = () => {
   );
 };
 
-export default AddMovie;
+export default EditMovie;
