@@ -71,8 +71,8 @@ const ListMovie = () => {
     },
     {
       title: "Thời gian khởi chiếu",
-      dataIndex: "datestart",
-      key: "datestart",
+      dataIndex: "date_start",
+      key: "date_start",
     },
     {
       title: "Thời lượng",
@@ -247,7 +247,7 @@ const ListMovie = () => {
           <Col span={8}>
             <div>
               <Image
-                src={currentMovie?.image}
+                src={currentMovie?.image_large}
                 width="100%"
                 fallback="https://thumbs.dreamstime.com/b/no-image-available-icon-flat-vector-no-image-available-icon-flat-vector-illustration-132482953.jpg"
               />

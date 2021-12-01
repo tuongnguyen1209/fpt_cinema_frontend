@@ -10,6 +10,9 @@ const MovieService = {
   createMovie: (data) => {
     return axiosClient.post("/v1.php/movie", data);
   },
+  updateMovie: (id_movie, data) => {
+    return axiosClient.put(`/v1.php/movie?id_movie=${id_movie}`, data);
+  },
 };
 
 export default MovieService;

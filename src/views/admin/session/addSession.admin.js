@@ -37,7 +37,7 @@ const AddSession = () => {
   useEffect(() => {
     (async () => {
       const rs = await Promise.all([
-        MovieService.getAllMovie(),
+        MovieService.getAllMovie({ limit: 100 }),
         roomService.getAll(),
       ]);
 

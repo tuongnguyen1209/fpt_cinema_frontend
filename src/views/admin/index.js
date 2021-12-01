@@ -1,19 +1,19 @@
-import React from "react";
 import { Breadcrumb, Layout } from "antd";
-import SlideAdmin from "../../components/Layout/adminLayout/slide";
+import React from "react";
+import { Route, Switch } from "react-router-dom";
 import HeaderAdmin from "../../components/Layout/adminLayout/headerAdmin";
-import { Switch, Route } from "react-router-dom";
+import SlideAdmin from "../../components/Layout/adminLayout/slide";
 import { ADMIN_PREFIX_PATH } from "../../config/app.config";
-import ListMovie from "./movie/listMovie.admin";
+import HomeAdmin from "./home/home.admin";
 import AddMovie from "./movie/addMovie.admin";
-import ListSession from "./session/listSession.admin";
+import EditMovie from "./movie/editMovie.admin";
+import ListMovie from "./movie/listMovie.admin";
 import AddSession from "./session/addSession.admin";
 import ListRoom from "./session/listRoom.admin";
+import ListSession from "./session/listSession.admin";
 import Tickets from "./ticket/ticket.admin";
 import TicketDetail from "./ticket/ticketDetail.admin";
 import ListUser from "./user/listUser.admin";
-import HomeAdmin from "./home/home.admin";
-import EditMovie from "./movie/editMovie.admin";
 
 const { Content } = Layout;
 
