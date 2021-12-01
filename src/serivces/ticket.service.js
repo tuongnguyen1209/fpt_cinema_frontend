@@ -6,7 +6,7 @@ const TicketService = {
       return axiosClient.post("/v1.php/ticket", data);
     },
     getTicketByUser: (idUser) => {
-        return axiosClient.get("/v1.php/ticket",idUser);
+        return axiosClient.get(`/v1.php/ticket?code=${idUser}&type=id_user`);
     },
     getAll: (params) => {
       return axiosClient.get(url, { params });

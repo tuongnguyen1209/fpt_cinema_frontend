@@ -12,10 +12,24 @@ import { Link } from "react-router-dom";
 import { saveTicketList } from "../../../redux/action/saveTicket";
 import { BookTicketFoodStyle } from "./bookticket_foodStyle";
 import TicketService from '../../../serivces/ticket.service'
-
-const axios = require("axios").default;
+import sessionService from "../../../serivces/session.service";
+import SeatService from "../../../serivces/tk_seat.service";
+// const axios = require("axios").default;
 
 const BookTicketFood = () => {
+
+  const error = () => {
+    message.error("Bạn chưa mua vé!");
+  } 
+
+  const error2 = () => {
+    message.error("Ghế đã có người đặt!");
+  } 
+
+  const error3 = () => {
+    message.error("Đăng nhập để tiếp tục đặt vé!");
+  } 
+
   const [checkChangeTotallTicket, setCheckChangeTotallTicket] = useState(false);
 
   const ticket_adults = [
@@ -385,7 +399,7 @@ const BookTicketFood = () => {
         setTogglePageSeat("main_seat");
       }
     } else {
-      alert("Bạn chưa mua vé!!!");
+      error();
     }
   };
 
@@ -403,17 +417,45 @@ const BookTicketFood = () => {
   };
 
   // ghe da co nguoi dat
-  const ArraySeatBooked = ["H7", "D8", "A14", "G14"];
+  const [arraySeatBooked, setArraySeatBooked] = useState([]);
+  // useEffect(()=> {
+  //   axios.get('https://cinemafptproject.herokuapp.com/v1.php/tk_seat')
+  //   .then(function(response) {
+  //     // console.log(response.data.data.tk_seat)
+  //     setArraySeatBooked(response.data.data.tk_seat);
+  //   })
+  //   .catch(function(error) {
+  //     console.log("Don't get data seat", error);
+  //   })
+
+
+  // },[])
   useEffect(() => {
-    for (let id = 0; id < ArraySeatBooked.length; id++) {
-      let idItem = document.getElementById(ArraySeatBooked[id]);
-      idItem.style.backgroundColor = "red";
-      idItem.style.color = "white";
-      console.log(idItem);
+    const fetchSeatList = async () => {
+      try {
+        const response = await SeatService.getSeatByIdSession(infoTicketList.session);
+        // console.log(response);
+        setArraySeatBooked(response.data.tk_seat);
+      console.log(response.data.tk_seat.tk_seat);
+    } catch (error) {
+      console.log("Failed to fetch seat list: ", error);
     }
-    console.log("useMemo pending");
+  };
+  fetchSeatList();
+  },[])
+  
+  useEffect(() => {
+    for (let id = 0; id < arraySeatBooked.length; id++) {
+      let idItem = document.getElementById(arraySeatBooked[id]);
+      // console.log(idItem);
+      if(idItem) {
+        idItem.style.backgroundColor = "red";
+        idItem.style.color = "white";
+        // console.log(idItem);
+      }
+    }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [ArraySeatBooked.length]);
+  }, [arraySeatBooked.length]);
 
   // tinh tong so ve
   const totalTicketBought = counting + counting_member;
@@ -421,11 +463,13 @@ const BookTicketFood = () => {
   const [ArraySeat, setArraySeat] = useState([]);
   // chon ghe
   const handleChooseSeat = (e) => {
-    for (let id = 0; id < ArraySeatBooked.length; id++) {
-      let idItem = document.getElementById(ArraySeatBooked[id]);
-      if (e.target.name === idItem.name) {
-        alert("Ghế đã có người đặt!!!");
-        return;
+    for (let id = 0; id < arraySeatBooked.length; id++) {
+      let idItem = document.getElementById(arraySeatBooked[id]);
+      if(idItem){
+        if (e.target.name === idItem.name) {
+          error2();
+          return;
+        }
       }
     }
 
@@ -470,7 +514,7 @@ const BookTicketFood = () => {
   // redux ------------------------------------------------------
   const infoTicketList = useSelector((state) => state.saveTicket);
   const dispatch = useDispatch();
-  console.table([infoTicketList]);
+  // console.table([infoTicketList]);
   const saveInfoTicket = () => {
     // let code_random = Math.trunc(Math.random() * 9000 + 1000);
     let room_random = Math.trunc(Math.random() * 9 + 1);
@@ -482,7 +526,7 @@ const BookTicketFood = () => {
       full_name: loginReducer.user.full_name,
       id_room: room_random,
       status: "1",
-      id_user: loginReducer.user.id_user
+      id_user: loginReducer.user.id_user,
     };
 
     const action = saveTicketList(saveSeat);
@@ -490,9 +534,28 @@ const BookTicketFood = () => {
   };
   // redux ------------------------------------------------------
 
+  const [idSession,setIdSession] = useState([]);
+  // gọi API lấy ngày, giờ trong session
+  useEffect(()=> {
+    const fetchSessionList = async () => {
+      try {
+        const response = await sessionService.getAll({id_session : infoTicketList.session});
+        // console.log(response);
+        setIdSession(response.data);
+        // console.log(response);
+      } catch (error) {
+        console.log("Failed to fetch movie list: ", error);
+      }
+    };
+    fetchSessionList();
+
+  },[])
+
   // message
   const success = () => {
-    message.success("Bạn đã đặt vé thành công !");
+    message
+    .loading('Đang đặt vé...', 2.5)
+    .then(() => message.success('Đặt vé thành công!', 2.5))
   };
 
   // post data lên sever
@@ -513,7 +576,7 @@ const BookTicketFood = () => {
         // quantity: "5",
         // unit_price: "8000",
 
-        "id_session":"2",
+        "id_session": infoTicketList.session,
         "Total_money": infoTicketList.Total_money,
         "id_user":infoTicketList.id_user,
         "id_promotion":"3",
@@ -559,10 +622,10 @@ const BookTicketFood = () => {
   // check login
   const loginReducer = useSelector((state) => state.user);
   const isLogin = loginReducer.isLogin;
-      
+  // console.log(loginReducer)
   useEffect(() => {
     if(isLogin === false) {
-      alert("Đăng nhập để tiếp tục đặt vé !")
+      error3();
       return window.location="/auth/login";
     }
   }, [isLogin]);
@@ -1292,25 +1355,25 @@ const BookTicketFood = () => {
                 </div>
                 <div className="form-group">
                   <label>Họ và tên</label>
-                  <input placeholder="Nhập họ và tên..." />
+                  <input placeholder="Nhập họ và tên..." value={loginReducer.user.full_name}/>
                 </div>
                 <div className="form-group">
                   <label>Địa chỉ email</label>
-                  <input type="email" placeholder="Nhập địa chỉ email..." />
+                  <input type="email" placeholder="Nhập địa chỉ email..." value={loginReducer.user.email}/>
                 </div>
                 <div className="form-group">
                   <label>Số điện thoại</label>
-                  <input placeholder="Nhập số điện thoại..." />
+                  <input placeholder="Nhập số điện thoại..." value={loginReducer.user.phone}/>
                 </div>
 
                 <div className="form-group-btn">
-                  <p onClick={PostDataTicket}>
+                  <p>
                     (*)Trước khi click vào thanh toán bạn phải có{" "}
                     <b>tài khoản ngân hàng</b> hoặc <b>ví điện tử momo</b>
                   </p>
                   <div>
                     <button onClick={handlePrevPageSeat}>QUAY LẠI</button>{" "}
-                    <Link to="/member">
+                    <Link to="/member" onClick={PostDataTicket}>
                       THANH TOÁN
                     </Link>
                   </div>
@@ -1331,7 +1394,7 @@ const BookTicketFood = () => {
               <b>Rạp:</b> {infoTicketList.rap}
             </p>
             <p>
-              <b>Suất chiếu:</b> {infoTicketList.session}
+              <b>Suất chiếu:</b> {idSession.day} || {idSession.time_start}
             </p>
             <p>
               <b>Combo:</b>{" "}

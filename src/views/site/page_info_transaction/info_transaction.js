@@ -1,9 +1,10 @@
-import React, { useEffect, useState } from "react";
-import styled from "styled-components";
-import { Table } from 'antd';
 import Title from "antd/lib/skeleton/Title";
 import axios from "axios";
-import MovieService from "../../../serivces/movie.service";
+import React, { useEffect, useState } from "react";
+import { useSelector } from "react-redux";
+import styled from "styled-components";
+// import MovieService from "../../../serivces/movie.service";
+import TicketService from "../../../serivces/ticket.service";
 
 const PageTransactionStyle = styled.div`
     .container_custom_transaction {
@@ -68,35 +69,63 @@ const PageTransaction = () => {
     //         }
     //     }
     // } 
-
+    
+    // login
+    const idUserReducer = useSelector((state) => state.user);
+    const idUser = idUserReducer.user.id_user;
 
     const [billTicket,setBillTicket] = useState([]);
     const [nameRoom,setNameRoom] = useState([]);
     useEffect(() => {
+    const fetchTransactionUser = async () => {
+            try {
+              const response = await TicketService.getTicketByUser(idUser);
+              console.log(response.data.ticket);
+              setBillTicket(response.data.ticket);
+            }catch (error) {
+              console.log("Failed to fetch id user: ",error);
+            }
+          }
+          fetchTransactionUser();
 
-        axios.get('https://cinemafptproject.herokuapp.com/v1.php/ticket')
-        .then(function (response) {
-          // handle success
-          console.log(response.data.data.ticket);
-          setBillTicket(response.data.data.ticket);
-        })
-        .catch(function (error) {
-          // handle error
-          console.log(error);
-        })
+          axios.get('https://cinemafptproject.herokuapp.com/v1.php/room')
+          .then(function (response) {
+            // handle success
+            // console.log(response.data.data.room);
+            setNameRoom(response.data.data.room);
+          })
+          .catch(function (error) {
+            // handle error
+            console.log(error);
+          })  
+    },[idUser])
+
+
+    // useEffect(() => {
+
+    //     axios.get('https://cinemafptproject.herokuapp.com/v1.php/ticket')
+    //     .then(function (response) {
+    //       // handle success
+    //       console.log(response.data.data.ticket);
+    //       setBillTicket(response.data.data.ticket);
+    //     })
+    //     .catch(function (error) {
+    //       // handle error
+    //       console.log(error);
+    //     })
         
-        axios.get('https://cinemafptproject.herokuapp.com/v1.php/room')
-        .then(function (response) {
-          // handle success
-          console.log(response.data.data.room);
-          setNameRoom(response.data.data.room);
-        })
-        .catch(function (error) {
-          // handle error
-          console.log(error);
-        })  
+    //     axios.get('https://cinemafptproject.herokuapp.com/v1.php/room')
+    //     .then(function (response) {
+    //       // handle success
+    //       console.log(response.data.data.room);
+    //       setNameRoom(response.data.data.room);
+    //     })
+    //     .catch(function (error) {
+    //       // handle error
+    //       console.log(error);
+    //     })  
 
-    },[])
+    // },[])
 
     
     return (  

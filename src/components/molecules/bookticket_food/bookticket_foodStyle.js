@@ -45,6 +45,7 @@ export const BookTicketFoodStyle = styled.div`
               background: #47251c;
               color: white;
               padding: 8px 5px;
+              text-align: center;
             }
             td {
               text-align: center;

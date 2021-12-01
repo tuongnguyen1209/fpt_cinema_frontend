@@ -140,7 +140,7 @@ const EditMovie = () => {
         console.log(error);
       }
     })();
-  }, [id]);
+  }, [id,imgFile]); // sửa lỗi 
 
   const onPreview = async (res) => {
     if (!res.url && !res.preview) {

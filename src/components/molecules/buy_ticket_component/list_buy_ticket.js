@@ -5,12 +5,17 @@ import { ListBuyTicketStyle } from "./list_buy_ticket-style";
 import MovieService from "../../../serivces/movie.service";
 import { useDispatch, useSelector } from "react-redux";
 import { saveTicketList } from "../../../redux/action/saveTicket";
-
+import { message } from 'antd';
 const { Panel } = Collapse;
 const axios = require("axios");
 
 const BuyTicketCPN = () => {
   // change color btn
+  const [time, setTime] = useState(["Vui lòng chọn suất chiếu"]);
+  const [arraySession,setArraySession] = useState(["Vui lòng chọn suất chiếu"]);
+  const [check, setCheck] = useState(false);
+  const [listMovie2, setlistMovie2] = useState([]);
+  const [rap, setRap] = useState(["Vui lòng chọn rạp"]);
   const [state, setState] = useState("span");
   const [state2, setState2] = useState("span2");
 
@@ -29,7 +34,6 @@ const BuyTicketCPN = () => {
   console.table([infoTicketList]);
   // redux ----------------------------------------------------------------------
   // event handle show rap
-  const [rap, setRap] = useState(["Vui lòng chọn rạp"]);
   const handleShowrap = (e) => {
     // lấy thông tin (tên phim, hình ảnh) lưu vào redux
     const saveNameMovie = {
@@ -44,7 +48,7 @@ const BuyTicketCPN = () => {
     e.target.parentElement.style.backgroundColor = "rgba(223, 228, 234,1.0)";
     e.target.parentElement.setAttribute("id", "styleTicket");
 
-    
+    // lấy dữ liệu từ api session
     Promise.all([axios({
       method: "get",
       url: "https://618ca5c8ded7fb0017bb9657.mockapi.io/rap",
@@ -53,19 +57,28 @@ const BuyTicketCPN = () => {
       url: "https://cinemafptproject.herokuapp.com/v1.php/session",
     })])
     
-    
     .then(function (response) {
-        // handle success
-        setRap(response[0].data);
-        console.log(response[1].data);
-      })
+      // handle success
+      setRap(response[0].data);
+      time.shift(time[0]);
+      for(let i = 0 ; i < response[1].data.data.session.length; i++) {
+        if(response[1].data.data.session[i].name_mv === e.target.parentElement.innerText) {
+          time.push(response[1].data.data.session[i]);
+          setTime([response[1].data.data.session[i]]);
+          // console.log(response[1].data.data.session);
+          setArraySession(time);
+        }
+      }
+      })  
       .catch(function (error) {
         console.log("DONT GET DATA MOVIE!");
         return Promise.reject(error);
       });
-    
-
-  };
+      
+      setCheck(true)
+      
+    };
+    // console.log(time)
   // thay đổi style
   const resetStyleRap = () => {
     if (!document.getElementById("resetStyleRap")) {
@@ -77,12 +90,10 @@ const BuyTicketCPN = () => {
   };
 
   // data api movie
-  const [listMovie2, setlistMovie2] = useState([]);
-
   useEffect(() => {
     const fetchMovieList = async () => {
       try {
-        const response = await MovieService.getMovieLimit(8);
+        const response = await MovieService.getMovieLimit(15);
         console.log(response);
         setlistMovie2(response.data.movie);
       } catch (error) {
@@ -90,19 +101,6 @@ const BuyTicketCPN = () => {
       }
     };
     fetchMovieList();
-    // axios({
-    //     method: 'get',
-    //     url: 'https://61966cdbaf46280017e7e07c.mockapi.io/movie_2',
-    // })
-    // .then(function (response) {
-    //     // handle success
-    //     setlistMovie2(response.data);
-    // }).catch(
-    //     function (error) {
-    //     console.log('DONT GET DATA MOVIE!')
-    //     return Promise.reject(error)
-    // }
-    // )
   }, []);
   // function reset style
   const resetStyleTicket = () => {
@@ -114,13 +112,14 @@ const BuyTicketCPN = () => {
     }
   };
 
-  const [check, setCheck] = useState(false);
+  const error = () => {
+    message.error("Bạn phải chọn phim!");
+  } 
 
-  const [time, setTime] = useState(["Vui lòng chọn suất chiếu"]);
   // event handle showtime
   const handleShowtime = (e) => {
     if (rap.length < 2) {
-      alert("Bạn phải chọn phim");
+      error();
     } else {
       // redux --------------------------------------------------
       const saveRap = {
@@ -138,13 +137,13 @@ const BuyTicketCPN = () => {
 
   // login
     const loginReducer = useSelector((state) => state.user);
-      
     const isLogin = loginReducer.isLogin;
 
-  const handleLogin = (e) => {
+  const handleLogin = (id_session,room_number) => {
     // redux --------------------------------------------------
     const saveShowtime = {
-      session: e.target.parentElement.parentElement.parentElement.innerText,
+      session: id_session,
+      room: room_number,
     };
 
     const action = saveTicketList(saveShowtime);
@@ -214,19 +213,19 @@ const BuyTicketCPN = () => {
         <div className="row3">
           <Collapse defaultActiveKey={["1"]}>
             <Panel className="panel" header="CHỌN SUẤT" key="1">
-              {time.map((item, index) => (
+              {arraySession.map((item, index) => (
                 <div key={index}>
                   <div className="panel-box-session">
                     {check ? (
                       <div className="session_box">
                         <p>
-                          {item.days}, {item.Date}
+                          {item.day}
                         </p>
                         <p className="row_show_time">
-                          {item.category_ticket}
+                          Vé {item.type}
                           <Link to={isLogin ? "bookticket-food" : "auth/login"}>
-                            <span className="box_time" onClick={handleLogin}>
-                              {item.show_time[0]}
+                            <span className="box_time" onClick={() => handleLogin(item.id_session,item.room_number)}>
+                              {item.date_start}
                             </span>
                           </Link>
                         </p>
