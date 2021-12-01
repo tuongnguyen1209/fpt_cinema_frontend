@@ -7,7 +7,7 @@ const PageMovie = () => {
   return (
     <PageMovieStyle>
       <div className="container">
-        <MovieCPN />
+        <MovieCPN titleHome={"PHIM ĐANG CHIẾU"} imgSize={true} />
         <div className="distancee"></div>
         <RuleCPN />
       </div>
@@ -15,20 +15,4 @@ const PageMovie = () => {
   );
 };
 
-<<<<<<< HEAD
 export default PageMovie;
-=======
-const PageMovie  = () =>  {
-    return (
-        <PageMovieStyle>
-            <div className="container">
-                <MovieCPN titleHome={"PHIM ĐANG CHIẾU"} imgSize={true}/>
-                <div className="distancee"></div>
-                <RuleCPN />
-            </div>
-        </PageMovieStyle>
-    )
-}
-
-export default PageMovie
->>>>>>> a176b4e597ccc4b1552725ff66ccef8991585b90
