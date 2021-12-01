@@ -49,7 +49,7 @@ const Site = () => {
           <Route path="/pagesupport">
             <PageSupport />
           </Route>
-          <Route path="/detailmovie">
+          <Route path="/detailmovie/:id">
             <PageDetailMovie />
           </Route>
           <Route path="/member">

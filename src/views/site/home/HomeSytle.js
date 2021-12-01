@@ -17,7 +17,7 @@ export const HomePage = styled.div`
         justify-content: center;
         flex-direction: column;
         .img-mask {
-            height: 83%;
+            height: 270px;
         }
         .meta-title {
             background: #f0f2f5;
@@ -96,11 +96,16 @@ export const HomePage = styled.div`
                 }
                 .box-card {
                     width: 150px;
-                    height: 150px;
+                    height: 120px;
                     margin: 5px;
+                    .ant-card-meta-description {
+                        font-size: 0.7rem;
+                        margin-top: -10px;
+                    }
                 }
                 img {
                     width: 150px;
+                    height: 100px;
 
                 }
                 .img-mask {

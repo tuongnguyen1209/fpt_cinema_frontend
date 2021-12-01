@@ -23,7 +23,7 @@ const PageBlog = () => {
                             <BoxBuyTicket />
                         </SlideShowStyle >
                         
-                        <MovieCPN titleHome={"PHIM ĐANG CHIẾU"}/>
+                        <MovieCPN titleHome={"PHIM ĐANG CHIẾU"} limit={4}/>
                 </div>
                 
             </div>

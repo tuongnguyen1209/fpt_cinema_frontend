@@ -24,7 +24,7 @@ function BlogCPN() {
         const response = await axios.get(
           "https://6189cf9d34b4f400177c425b.mockapi.io/listBlog"
         );
-        console.log(response);
+        // console.log(response);
         setListBlog(response.data);
       } catch (error) {
         console.error(error);
