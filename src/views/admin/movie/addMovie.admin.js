@@ -180,7 +180,13 @@ const AddMovie = () => {
                     onPreview={onPreview}
                     customRequest={uploadImage}
                   >
-                    {fileList.length < 1 && "+ Tải hình"}
+                    {fileList.length < 3 && (
+                      <>
+                        {fileList.length === 0 && "+ Tải hình ảnh lớn"}
+                        {fileList.length === 1 && "+ Tải hình vừa"}
+                        {fileList.length === 2 && "+ Tải hình banner"}
+                      </>
+                    )}
                   </Upload>
 
                   <Modal
@@ -196,36 +202,7 @@ const AddMovie = () => {
                   </Modal>
                 </Form.Item>
               </Col>
-              {/* <Col span={24}>
-                <Form.Item
-                  label="Banner"
-                  required
-                  rules={[...rulesInputdefault]}
-                >
-                  <Upload
-                    action=""
-                    listType="picture-card"
-                    fileList={fileList}
-                    onChange={onChange}
-                    onPreview={onPreview}
-                    customRequest={uploadImage}
-                  >
-                    {fileList.length < 1 && "+ Tải hình"}
-                  </Upload>
 
-                  <Modal
-                    visible={previewVisible}
-                    title={previewTitle}
-                    onCancel={handleCancel}
-                  >
-                    <img
-                      alt="example"
-                      style={{ width: "100%" }}
-                      src={previewImage}
-                    />
-                  </Modal>
-                </Form.Item>
-              </Col> */}
               <Col span={24}>
                 <Form.Item
                   name="id_cate"

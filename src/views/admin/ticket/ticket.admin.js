@@ -28,7 +28,9 @@ const Tickets = () => {
     nam_mv: "",
     day: "",
   });
-
+ 
+  const [form] = Form.useForm();
+ 
   useEffect(() => {
     (async () => {
       setLoading(true);
@@ -125,18 +127,20 @@ const Tickets = () => {
           </Space>
         </Col>
         <Col span={24}>
-          <Form onFinish={onFinish}>
+ 
+          <Form form={form} onFinish={onFinish}>
             <Space className="w-100 justify-content-end">
-              <Form.Item>
-                <DatePicker
+              <Form.Item name="data">
+                 <DatePicker
                   placeholder="Chọn ngày"
                   onChange={(e) => {
                     setDate(moment(e).format("YYYY-MM-DD"));
                   }}
                 />
               </Form.Item>
-              <Form.Item>
-                <Select
+ 
+              <Form.Item name="time">
+                 <Select
                   placeholder="Chọn thời gian"
                   onChange={(e) => setTime(e)}
                 >
@@ -152,18 +156,13 @@ const Tickets = () => {
                   loading={loadingSession}
                   style={{ width: "300px" }}
                 >
-                  {listSession
-                    .filter(
-                      (el) =>
-                        (!sort.day && !sort.nam_mv) ||
-                        (el.name_mv === sort.nam_mv && el.date === sort.day)
-                    )
-                    .map((el, ind) => (
-                      <Select.Option key={ind} value={[el.name_mv, el.day]}>
-                        {el.name_mv}
-                      </Select.Option>
-                    ))}
-                </Select>
+ 
+                  {listSession.map((el, ind) => (
+                    <Select.Option key={ind} value={[el.name_mv, el.day]}>
+                      {el.name_mv}
+                    </Select.Option>
+                  ))}
+                 </Select>
               </Form.Item>
               <Form.Item>
                 <Button type="primary" htmlType="submit">
@@ -171,14 +170,39 @@ const Tickets = () => {
                 </Button>
               </Form.Item>
               <Form.Item>
-                <Button type="primary">Đặt lại</Button>
-              </Form.Item>
+ 
+                <Button
+                  type="primary"
+                  onClick={() => {
+                    setListSession([]);
+                    form.resetFields();
+                    setSort({
+                      day: "",
+                      nam_mv: "",
+                    });
+                  }}
+                >
+                  Đặt lại
+                </Button>
+               </Form.Item>
             </Space>
           </Form>
         </Col>
       </Row>
 
-      <Table dataSource={listTicket} columns={collums} loading={loading} />
+ 
+      <Table
+        dataSource={listTicket.filter(
+          (el) =>
+            !sort.day ||
+            !sort.nam_mv ||
+            (el.name_mv === sort.nam_mv && el.date === sort.day)
+        )}
+        rowKey="id_ticket"
+        columns={collums}
+        loading={loading}
+      />
+ 
     </div>
   );
 };

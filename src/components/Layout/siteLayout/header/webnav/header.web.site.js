@@ -1,4 +1,5 @@
 import {
+  DashboardOutlined,
   DownOutlined,
   HistoryOutlined,
   LoginOutlined,
@@ -9,6 +10,7 @@ import React from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import {
+  ADMIN_PREFIX_PATH,
   APP_SITE_MENU,
   AUTH_PREFIX_PATH,
 } from "../../../../../config/app.config";
@@ -38,6 +40,15 @@ const HeaderWebSite = () => {
           </Link>
         </Menu.Item>
         <Menu.Divider />
+        {userdata.user.administration === "1" && (
+          <Menu.Item key="admin">
+            <Link to={`${ADMIN_PREFIX_PATH}/`}>
+              <Button icon={<DashboardOutlined />} type="link">
+                Admin
+              </Button>
+            </Link>
+          </Menu.Item>
+        )}
         <Menu.Item key="3">
           <Link
             to=""

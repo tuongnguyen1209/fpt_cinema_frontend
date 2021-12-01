@@ -11,6 +11,10 @@ const TicketService = {
     getAll: (params) => {
       return axiosClient.get(url, { params });
     },
+
+  getAll: (params) => {
+    return axiosClient.get(url, { params });
+  },
 };
 
-export default TicketService;
+export default ticketService;

@@ -1,3 +1,4 @@
+import { DashboardOutlined } from "@ant-design/icons";
 import { faBars, faTimes } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { Button, Col, Drawer, Row, Menu } from "antd";
@@ -5,7 +6,10 @@ import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import styled from "styled-components";
-import { APP_SITE_MENU } from "../../../../../config/app.config";
+import {
+  ADMIN_PREFIX_PATH,
+  APP_SITE_MENU,
+} from "../../../../../config/app.config";
 import { logoutAction } from "../../../../../redux/action/user.action";
 
 const CustomMenu = styled.div`
@@ -69,6 +73,15 @@ const HeaderMobileSite = () => {
                     <Link to="">Lịch sử mua vé</Link>
                   </Menu.Item>
                   <Menu.Divider />
+                  {userdata.user.administration === "1" && (
+                    <Menu.Item key="admin">
+                      <Link to={`${ADMIN_PREFIX_PATH}/`}>
+                        <Button icon={<DashboardOutlined />} type="link">
+                          Admin
+                        </Button>
+                      </Link>
+                    </Menu.Item>
+                  )}
                   <Menu.Item key="u-3" className="menu-item">
                     <Link
                       to=""
