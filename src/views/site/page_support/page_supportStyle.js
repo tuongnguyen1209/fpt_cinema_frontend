@@ -7,7 +7,7 @@ export const PageSupportStyle = styled.div`
     a {
         color: white;
     }
-    .container {
+    .container_custom {
         position: relative;
         margin: 0px 120px 50px 120px;
         overflow: hidden;
@@ -43,6 +43,7 @@ export const PageSupportStyle = styled.div`
         .box-buy-ticket {
             position: relative;
             width: 400px;
+            height: 380px;
             left: 0px;
             top: 0px;
             background: #ff4400e0;
@@ -72,7 +73,7 @@ export const PageSupportStyle = styled.div`
     }
 
     @media screen and (max-width: 480px) {
-        .container {
+        .container_custom {
             position: relative;
             margin: 0px 10px;
             overflow: hidden;

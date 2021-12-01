@@ -28,8 +28,9 @@ const Tickets = () => {
     nam_mv: "",
     day: "",
   });
+ 
   const [form] = Form.useForm();
-
+ 
   useEffect(() => {
     (async () => {
       setLoading(true);
@@ -126,18 +127,20 @@ const Tickets = () => {
           </Space>
         </Col>
         <Col span={24}>
+ 
           <Form form={form} onFinish={onFinish}>
             <Space className="w-100 justify-content-end">
               <Form.Item name="data">
-                <DatePicker
+                 <DatePicker
                   placeholder="Chọn ngày"
                   onChange={(e) => {
                     setDate(moment(e).format("YYYY-MM-DD"));
                   }}
                 />
               </Form.Item>
+ 
               <Form.Item name="time">
-                <Select
+                 <Select
                   placeholder="Chọn thời gian"
                   onChange={(e) => setTime(e)}
                 >
@@ -153,12 +156,13 @@ const Tickets = () => {
                   loading={loadingSession}
                   style={{ width: "300px" }}
                 >
+ 
                   {listSession.map((el, ind) => (
                     <Select.Option key={ind} value={[el.name_mv, el.day]}>
                       {el.name_mv}
                     </Select.Option>
                   ))}
-                </Select>
+                 </Select>
               </Form.Item>
               <Form.Item>
                 <Button type="primary" htmlType="submit">
@@ -166,6 +170,7 @@ const Tickets = () => {
                 </Button>
               </Form.Item>
               <Form.Item>
+ 
                 <Button
                   type="primary"
                   onClick={() => {
@@ -179,12 +184,13 @@ const Tickets = () => {
                 >
                   Đặt lại
                 </Button>
-              </Form.Item>
+               </Form.Item>
             </Space>
           </Form>
         </Col>
       </Row>
 
+ 
       <Table
         dataSource={listTicket.filter(
           (el) =>
@@ -196,6 +202,7 @@ const Tickets = () => {
         columns={collums}
         loading={loading}
       />
+ 
     </div>
   );
 };

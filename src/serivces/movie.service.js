@@ -9,6 +9,7 @@ const MovieService = {
   },
   getMovieLimit: (param) => {
     return axiosClient.get(`/v1.php/movie?limit=${param}`);
+    // return axiosClient.get(`/v1.php/movie`, { params: { id_movie: id } });
   },
   createMovie: (data) => {
     return axiosClient.post("/v1.php/movie", data);

@@ -37,8 +37,9 @@ const AddSession = () => {
   useEffect(() => {
     (async () => {
       const rs = await Promise.all([
+ 
         MovieService.getAllMovie({ limit: 100 }),
-        roomService.getAll(),
+         roomService.getAll(),
       ]);
 
       setListMovie(rs[0].data.movie);

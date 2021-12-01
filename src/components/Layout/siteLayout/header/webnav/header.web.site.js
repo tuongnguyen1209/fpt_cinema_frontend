@@ -26,7 +26,7 @@ const HeaderWebSite = () => {
     return (
       <Menu>
         <Menu.Item key="1">
-          <Link to="">
+          <Link to="/member">
             <Button icon={<UserOutlined />} type="link">
               Trang cá nhân
             </Button>

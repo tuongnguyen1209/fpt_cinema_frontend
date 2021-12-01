@@ -6,9 +6,11 @@ import BoxBuyTicket from "../../../components/molecules/slide_show_component/box
 import { SlideShowStyle } from "../../../components/molecules/slide_show_component/slide_show-style";
 
 const PageMember = () => {
+    
+
     return (
         <PageMemberStyle>
-            <div className="container">
+            <div className="container_custom">
                 <div className="main_member">
                     <Member /> 
                 </div>

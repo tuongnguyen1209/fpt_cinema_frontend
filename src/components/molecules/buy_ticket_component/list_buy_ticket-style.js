@@ -63,6 +63,7 @@ export const ListBuyTicketStyle = styled.div`
       h4 {
         width: 75%;
         padding: 5px;
+        font-size: 1rem;
         span {
           color: rgba(0, 0, 0, 0.7);
         }

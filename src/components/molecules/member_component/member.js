@@ -34,7 +34,7 @@ const Member = () => {
 
     return (
         <MemberStyle>
-            <div className="container">
+            <div className="container_custom">
                 <div className="main_member">
                     <Breadcrumb itemRender={itemRender} routes={routes} />
                     <Title title1={"THỂ LỆ"} title2={"QUYỀN LỢI"}/>

@@ -20,7 +20,7 @@ function Title({title1, title2, setCheckPage}) {
         setState2("span");
         setState("span2");
 
-        setCheckPage(false)
+        setCheckPage(false);
     };
     return (
         <TitleStyle >

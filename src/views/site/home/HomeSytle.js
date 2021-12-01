@@ -9,7 +9,7 @@ export const HomePage = styled.div`
     a {
         color: white;
     }
-    .container {
+    .container_custom {
         position: relative;
         margin: 0px 120px 50px 120px;
         overflow: hidden;
@@ -28,7 +28,7 @@ export const HomePage = styled.div`
         .carousel-style {
             height: 100vh;
         }
-        .container {
+        .container_custom {
             display: none;
         }
     }
@@ -62,6 +62,7 @@ export const HomePage = styled.div`
             select {
                 background: #fff;
                 color: black;
+                padding: 10px;
             }
             .tem-box-ticket {
                 background: transparent;
@@ -79,10 +80,12 @@ export const HomePage = styled.div`
                background: #333;
             }
             .btn-buy-ticket {
-                width: 92%;
+                width: 97%;
+                margin: 15px 0px 10px 20px;
+                position: relative;
             }
         }
-        .container {
+        .container_custom {
             padding: 0px 10px;
             margin: 0 auto;
             .line {

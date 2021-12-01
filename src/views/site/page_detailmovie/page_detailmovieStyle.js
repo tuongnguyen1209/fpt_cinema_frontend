@@ -9,17 +9,14 @@ export const PageDetailMovieStyle = styled.div`
     a {
         color: white;
     }
-    .container {
+    .container_custom {
         position: relative;
         margin: 0px 60px 50px 60px;
         overflow: hidden;
-        .img-mask {
-            height: 83%;
-        }
     }
 
     @media screen and (max-width: 480px) {
-        .container {
+        .container_custom {
             position: relative;
             margin: 5px;
             overflow: hidden;

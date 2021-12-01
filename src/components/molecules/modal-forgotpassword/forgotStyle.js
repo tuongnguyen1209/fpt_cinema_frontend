@@ -2,7 +2,7 @@ import styled from "styled-components";
 
 export const ForgotStyle = styled.div`
 
-.container {
+.container_custom {
         background-image: url('https://assets.nflxext.com/ffe/siteui/vlv3/03fdc4bf-72f6-4926-83a7-a76e6a1a5591/08edf155-45a9-45a1-9ffa-e44ae04029a8/VN-vi-20211115-popsignuptwoweeks-perspective_alpha_website_large.jpg');
         height: 950px;
         background-size: cover;
@@ -112,7 +112,7 @@ export const ForgotStyle = styled.div`
         }
     }
     @media screen and (max-width: 480px) {
-        .container {
+        .container_custom {
             background-image: unset;
             height: 100vh;
             position: relative;

@@ -41,10 +41,7 @@ a {
   font-family: "Bungee Inline", cursive;
   margin-bottom: 0;
   transition: all 1s;
-}
-.logo:hover {
-  transform: scale(1.2);
-  cursor: zoom-in;
+  margin: 10px;
 }
 
 svg {

@@ -1,7 +1,7 @@
 import styled from "styled-components";
 
 export const SettingAccountStyle = styled.div`
-    .container {
+    .container_custom {
         position: relative;
         margin: 20px 60px 50px 60px;
         .main_setting_account {
@@ -102,7 +102,7 @@ export const SettingAccountStyle = styled.div`
     }
 
     @media screen and (max-width: 480px) {
-        .container {
+        .container_custom {
             margin: 20px 5px;
             .main_setting_account {
                 .form-group {

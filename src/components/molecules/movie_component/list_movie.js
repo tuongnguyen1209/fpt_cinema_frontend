@@ -39,7 +39,7 @@ function MovieCPN({
       try {
         const response = await MovieService.getMovieLimit(limit);
         // console.log(response);
-        setListMovie(response.movie);
+        setListMovie(response.data.movie);
       } catch (error) {
         console.log("Failed to fetch movie list: ", error);
       }
@@ -89,7 +89,7 @@ function MovieCPN({
         <div className="title">
           <span className={state}>
             <Link to="" onClick={ChangeBtn}>
-              {title || title2}
+              <Link to="pageMovie">{title || title2}</Link>
               {titleHome || titleHome2}
             </Link>
           </span>

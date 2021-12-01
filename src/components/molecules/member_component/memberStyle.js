@@ -1,7 +1,7 @@
 import styled from "styled-components";
 
 export const MemberStyle = styled.div`
-    .container {
+    .container_custom {
         .div-container {
             width: 100%;
             display: flex;

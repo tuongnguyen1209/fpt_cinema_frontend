@@ -16,7 +16,7 @@ const Forgot = () => {
 
     return (
         <ForgotStyle>
-            <div className="container">
+            <div className="container_custom">
                     <div className="container_background">
                         <div className="form_cotainer">
                             <h3 class="title">Quên mật khẩu</h3>
@@ -49,7 +49,7 @@ const Forgot = () => {
                                             Gửi mã xác nhận qua email
                                         </Button>
                                     </Form.Item>
-                                    <div className="prev_login"><Link to="/login"><ArrowLeftOutlined /></Link></div>
+                                    <div className="prev_login"><Link to="/auth/login"><ArrowLeftOutlined /></Link></div>
                                 </Form>
                         </div>
                     </div>

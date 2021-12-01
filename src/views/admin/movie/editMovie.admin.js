@@ -20,8 +20,9 @@ import Uploadfile from "../../../serivces/uploadImg.service";
 import { FormatDateRequest } from "../../../ultil/format";
 import { WrapCkediter } from "./movie.style.admin";
 import { useParams } from "react-router-dom";
+ 
 import moment from "moment";
-
+ 
 function getBase64(file) {
   return new Promise((resolve, reject) => {
     const reader = new FileReader();
@@ -47,10 +48,12 @@ const createFiled = (newResult, listCateOfMovie) => {
       name: ["name_vn"],
       value: newResult.name_movie,
     },
-    {
+ 
+     {
       name: ["date_start"],
       value: moment(newResult.day),
     },
+ 
     {
       name: ["director"],
       value: newResult.director,
@@ -117,13 +120,15 @@ const EditMovie = () => {
 
           for (let i = 0; i < listCateOfMovie.length; i++) {
             let element = listCateOfMovie[i];
+ 
             listCateOfMovie[i] = result.data.category.find(
-              (el) => el.name_category === element.trim()
+               (el) => el.name_category === element.trim()
             ).id_category;
           }
 
           const newFL = [
             {
+ 
               uid: "1",
               name: movie.name_movie,
               status: "done",
@@ -131,17 +136,18 @@ const EditMovie = () => {
             },
             {
               uid: "2",
-              name: movie.name_movie,
+               name: movie.name_movie,
               status: "done",
               url: movie.img_medium,
             },
+ 
             {
               uid: "-1",
               name: movie.name_movie,
               status: "done",
               url: movie.image_banner,
             },
-          ];
+           ];
           const newImgFile = { ...imgFile, fileList: newFL };
           setImgFile(newImgFile);
 
@@ -153,9 +159,10 @@ const EditMovie = () => {
         console.log(error);
       }
     })();
+ 
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [id]);
-
+ 
   const onPreview = async (res) => {
     if (!res.url && !res.preview) {
       res.preview = await getBase64(res.originFileObj);
@@ -173,8 +180,9 @@ const EditMovie = () => {
     Uploadfile(file)
       .then((res) => {
         setImgFile({ ...imgFile, previewImage: res.url });
+ 
         onSuccess(res.secure_url);
-      })
+       })
       .catch((err) => {
         const error = new Error("Some error");
         onError({ event: error });
@@ -193,6 +201,7 @@ const EditMovie = () => {
     movie.date_start = FormatDateRequest(new Date(movie.date_start._d));
     const newMovie = {
       ...movie,
+ 
       image_lage: imgFile.fileList[0].url || imgFile.fileList[0].response,
       image_medium: imgFile.fileList[1].url || imgFile.fileList[1].response,
       detail: description,
@@ -212,7 +221,7 @@ const EditMovie = () => {
       console.log(rs);
     } catch (error) {
       console.log(error);
-    }
+     }
   };
 
   return (
@@ -274,8 +283,9 @@ const EditMovie = () => {
           <Col span={12}>
             <Row>
               <Col span={24}>
+ 
                 <Form.Item label="Hình ảnh " required>
-                  <Upload
+                   <Upload
                     action=""
                     listType="picture-card"
                     fileList={fileList}
@@ -283,6 +293,7 @@ const EditMovie = () => {
                     onPreview={onPreview}
                     customRequest={uploadImage}
                   >
+ 
                     {fileList.length < 3 && (
                       <>
                         {fileList.length === 0 && "+ Tải hình ảnh lớn"}
@@ -290,6 +301,7 @@ const EditMovie = () => {
                         {fileList.length === 2 && "+ Tải hình banner"}
                       </>
                     )}
+ 
                   </Upload>
 
                   <Modal
@@ -305,7 +317,7 @@ const EditMovie = () => {
                   </Modal>
                 </Form.Item>
               </Col>
-
+ 
               <Col span={24}>
                 <Form.Item
                   name="id_cate"

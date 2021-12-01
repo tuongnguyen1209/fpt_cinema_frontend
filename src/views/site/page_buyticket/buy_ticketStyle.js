@@ -7,7 +7,7 @@ export const BuyTicketStyle = styled.div`
     a {
         color: white;
     }
-    .container {
+    .container_custom {
         position: relative;
         margin: 0px 120px 50px 120px;
         overflow: hidden;
@@ -26,7 +26,7 @@ export const BuyTicketStyle = styled.div`
     }
 
     @media screen and (max-width: 480px) {
-        .container {
+        .container_custom {
             padding: 0px 10px;
             margin: 0 auto;
             .row-buyticket {
