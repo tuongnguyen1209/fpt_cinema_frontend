@@ -6,7 +6,7 @@ import { LogoWrap } from "./sliderAdmin.style";
 
 const { Sider } = Layout;
 
-const SlideAdmin = () => {
+const SlideAdmin = ({ collapseSlide }) => {
   const [collapsed, setCollapsed] = useState(false);
 
   return (
@@ -19,6 +19,7 @@ const SlideAdmin = () => {
       collapsible
       collapsed={collapsed}
       onCollapse={() => {
+        collapseSlide(!collapsed);
         setCollapsed(!collapsed);
       }}
     >

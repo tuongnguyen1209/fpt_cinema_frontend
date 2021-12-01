@@ -6,6 +6,9 @@ const userService = {
   create: (data) => {
     return axiosClient.post(url, data);
   },
+  getAll: () => {
+    return axiosClient.get(url);
+  },
 };
 
 export default userService;

@@ -4,13 +4,19 @@ import {
   Col,
   DatePicker,
   Form,
+  message,
   Row,
   Select,
   Space,
   Typography,
 } from "antd";
-import React from "react";
-import movieData from "../../../data/movie.data";
+import moment from "moment";
+import React, { useEffect, useState } from "react";
+import { useHistory } from "react-router-dom";
+import { ADMIN_PREFIX_PATH } from "../../../config/app.config";
+import MovieService from "../../../serivces/movie.service";
+import roomService from "../../../serivces/room.service";
+import sessionService from "../../../serivces/session.service";
 
 const timeDefault = [
   { id: 1, start: "9:30", end: "11:30" },
@@ -21,14 +27,48 @@ const timeDefault = [
   { id: 6, start: "19:00", end: "21:00" },
   { id: 7, start: "21:00", end: "23:00" },
 ];
-const roomDefault = [
-  { id: 1, name: "Phòng A1" },
-  { id: 2, name: "Phòng A2" },
-];
 
 const AddSession = () => {
-  const onFinish = (value) => {
-    console.log(value);
+  const [listRoom, setListRoom] = useState([]);
+  const [listMovie, setListMovie] = useState([]);
+  const [loading, setLoading] = useState(false);
+  const history = useHistory();
+
+  useEffect(() => {
+    (async () => {
+      const rs = await Promise.all([
+        MovieService.getAllMovie({ limit: 100 }),
+        roomService.getAll(),
+      ]);
+
+      setListMovie(rs[0].data.movie);
+      setListRoom(rs[1].data.room);
+    })();
+  }, []);
+
+  const onFinish = async (value) => {
+    // console.log(value);
+    setLoading(true);
+    try {
+      for (let i = 0; i < value.session.length; i++) {
+        const element = value.session[i];
+
+        const newData = {
+          id_movie: value.id_movie,
+          id_room: element.room,
+          day: moment(value.date).format("YYYY-MM-DD"),
+          type: element.type,
+          id_showtimes: element.time,
+        };
+        await sessionService.create(newData);
+      }
+      setLoading(false);
+      message.success("Thêm danh sách chiếu thành công!");
+      history.push(`${ADMIN_PREFIX_PATH}/session`);
+    } catch (error) {
+      setLoading(false);
+      message.error("Có lỗi xảy ra, vui lòng kiểm tra và thử lại!");
+    }
   };
   return (
     <div>
@@ -49,8 +89,8 @@ const AddSession = () => {
               ]}
             >
               <Select>
-                {movieData.map((el) => (
-                  <Select.Option key={el.id}>{el.name}</Select.Option>
+                {listMovie.map((el) => (
+                  <Select.Option key={el.id_movie}>{el.name}</Select.Option>
                 ))}
               </Select>
             </Form.Item>
@@ -77,7 +117,7 @@ const AddSession = () => {
               {(fields, { add, remove }) => (
                 <>
                   {fields.map((field) => (
-                    <div>
+                    <div key={field.key}>
                       <Space key={field.key} align="baseline">
                         <Form.Item
                           {...field}
@@ -89,9 +129,12 @@ const AddSession = () => {
                           ]}
                         >
                           <Select style={{ width: 130 }}>
-                            {roomDefault.map((item) => (
-                              <Select.Option key={item.id} value={item.id}>
-                                {item.name}
+                            {listRoom.map((item) => (
+                              <Select.Option
+                                key={item.id_room}
+                                value={item.id_room}
+                              >
+                                {item.name_room}
                               </Select.Option>
                             ))}
                           </Select>
@@ -179,7 +222,7 @@ const AddSession = () => {
             </Form.List>
           </Col>
           <Col span={24} style={{ textAlign: "center" }}>
-            <Button type="primary" htmlType="submit">
+            <Button type="primary" htmlType="submit" loading={loading}>
               Lưu
             </Button>
           </Col>

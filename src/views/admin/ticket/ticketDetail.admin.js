@@ -1,53 +1,32 @@
-import { Col, Descriptions, Row, Typography, Table, Image } from "antd";
+import { Col, Descriptions, Image, Row, Table, Typography } from "antd";
 import React, { useEffect, useState } from "react";
-import movieData from "../../../data/movie.data";
+import { useParams } from "react-router-dom";
+import ticketService from "../../../serivces/ticket.service";
 import { formatPrice } from "../../../ultil/format";
 
 const TicketDetail = () => {
   const [data, setData] = useState();
-  const [data1, setData1] = useState();
+  const { id } = useParams();
 
   useEffect(() => {
-    setData([
-      {
-        key: "1",
-        location: "H1",
-        type: "persion",
-        price: "50000",
-      },
-      {
-        key: "1",
-        location: "H2",
-        type: "persion",
-        price: "50000",
-      },
-    ]);
-    setData1([
-      {
-        key: "1",
-        name: "Combo1",
-        quantity: 1,
-        price: 50000,
-      },
-      {
-        key: "2",
-        name: "Combo2",
-        quantity: 2,
-        price: 50000,
-      },
-    ]);
-  }, []);
+    (async () => {
+      const rs = await ticketService.getAll({ code: id, type: "id_ticket" });
+      console.log(rs);
+      setData(rs.data.ticket[0]);
+    })();
+  }, [id]);
 
   const columns = [
     {
       title: "Vị trí",
-      dataIndex: "location",
-      key: "location",
+      dataIndex: "seat",
+      key: "seat",
     },
     {
       title: "Giá",
       dataIndex: "price",
       key: "price",
+      render: () => formatPrice(50000),
     },
   ];
   const columns1 = [
@@ -59,8 +38,8 @@ const TicketDetail = () => {
     },
     {
       title: "Tên",
-      dataIndex: "name",
-      key: "name",
+      dataIndex: "combo",
+      key: "combo",
     },
     {
       title: "Số lượng",
@@ -69,15 +48,15 @@ const TicketDetail = () => {
     },
     {
       title: "Số lượng",
-      dataIndex: "price",
-      key: "price",
+      dataIndex: "unit_price",
+      key: "unit_price",
     },
     {
       title: "Tổng cộng",
       dataIndex: "total",
       key: "total",
       render: (_, record) => {
-        let total = record.quantity * record.price;
+        let total = record.quantity * record.unit_price;
         return formatPrice(total);
       },
     },
@@ -94,12 +73,19 @@ const TicketDetail = () => {
         <Col span={12}>
           <Descriptions title="Thông tin khách hàng" column={1}>
             <Descriptions.Item label="Thông tin khách hàng">
-              Nguyễn Văn A
+              <Typography.Text strong>{data?.full_name}</Typography.Text>
             </Descriptions.Item>
-            <Descriptions.Item label="Email">a@gmail.com</Descriptions.Item>
-            <Descriptions.Item label="Số lượng">2</Descriptions.Item>
+            <Descriptions.Item label="Email">
+              <Typography.Text strong>{data?.email} </Typography.Text>
+            </Descriptions.Item>
+            <Descriptions.Item label="Số điện thoại">
+              <Typography.Text strong> {data?.phone}</Typography.Text>
+            </Descriptions.Item>
+            <Descriptions.Item label="Số lượng">
+              <Typography.Text strong> {data?.seat.length}</Typography.Text>
+            </Descriptions.Item>
             <Descriptions.Item label="Tổng hóa đơn">
-              120.000VND
+              <Typography.Text strong> 120.000VND</Typography.Text>
             </Descriptions.Item>
           </Descriptions>
         </Col>
@@ -113,32 +99,42 @@ const TicketDetail = () => {
               <div>
                 <Descriptions column={1}>
                   <Descriptions.Item label="Tên phim">
-                    {movieData[0].name}
+                    <Typography.Text strong>{data?.name_mv}</Typography.Text>
                   </Descriptions.Item>
-                  <Descriptions.Item label="Ngày">25/11/2021</Descriptions.Item>
+                  <Descriptions.Item label="Ngày">
+                    {data?.date}
+                  </Descriptions.Item>
                   <Descriptions.Item label="Khung thời gian">
-                    19:00 - 21:00
+                    {data?.time_start}
                   </Descriptions.Item>
-                  <Descriptions.Item label="Phòng">PH011</Descriptions.Item>
+                  <Descriptions.Item label="Phòng">
+                    {data?.id_room}
+                  </Descriptions.Item>
                   <Descriptions.Item label="Loại">2D</Descriptions.Item>
                 </Descriptions>
               </div>
             </Col>
             <Col span={12}>
               <div className="text-center">
-                <Image src={movieData[0].image} width="200px" />
+                <Image src={data?.image} width="200px" />
               </div>
             </Col>
           </Row>
         </Col>
         <Col span={24} className="mt-3">
           <Typography.Text strong>Thông tin Vị trí</Typography.Text>
-          <Table dataSource={data} columns={columns} pagination={false} />
+          <Table dataSource={data?.seat} columns={columns} pagination={false} />
         </Col>
-        <Col span={24} className="mt-3">
-          <Typography.Text strong>Thông tin đồ ăn kèm theo</Typography.Text>
-          <Table dataSource={data1} columns={columns1} pagination={false} />
-        </Col>
+        {data?.combo && data.combo.length > 0 && (
+          <Col span={24} className="mt-3">
+            <Typography.Text strong>Thông tin đồ ăn kèm theo</Typography.Text>
+            <Table
+              dataSource={data?.combo}
+              columns={columns1}
+              pagination={false}
+            />
+          </Col>
+        )}
       </Row>
     </div>
   );

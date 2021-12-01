@@ -1,48 +1,89 @@
-import { BarsOutlined, InsertRowAboveOutlined } from "@ant-design/icons";
-import { Button, Col, Row, Table, Typography } from "antd";
+import { BarcodeOutlined, FontSizeOutlined } from "@ant-design/icons";
+import {
+  Button,
+  Col,
+  DatePicker,
+  Form,
+  Row,
+  Select,
+  Space,
+  Table,
+  Typography,
+} from "antd";
+import moment from "moment";
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import movieData, { listTicketDefault } from "../../../data/movie.data";
+import sessionService from "../../../serivces/session.service";
+import ticketService from "../../../serivces/ticket.service";
 import { formatPrice } from "../../../ultil/format";
-import ListLayout from "./layoutTicket/listLayout";
 
 const Tickets = () => {
-  const [currentMovie, setCurrentMovie] = useState(1);
-  const [typeShow, setTypeShow] = useState("list");
   const [listTicket, setListTicket] = useState([]);
+  const [listSession, setListSession] = useState([]);
+  const [loading, setLoading] = useState(false);
+  const [date, setDate] = useState();
+  const [time, setTime] = useState();
+  const [loadingSession, setLoadingSession] = useState(false);
+  const [sort, setSort] = useState({
+    nam_mv: "",
+    day: "",
+  });
+  const [form] = Form.useForm();
 
   useEffect(() => {
-    const indexTickets = listTicketDefault.findIndex(
-      (el) => el.idMovie === currentMovie
-    );
-    console.log(indexTickets);
-    setListTicket(listTicketDefault[indexTickets].list);
-  }, [currentMovie]);
+    (async () => {
+      setLoading(true);
+      const rs = await ticketService.getAll();
+      console.log(rs);
+      setListTicket(rs.data.ticket);
+      setLoading(false);
+    })();
+  }, []);
 
-  const handleClickMovie = (id) => {
-    setCurrentMovie(id);
-  };
+  useEffect(() => {
+    (async () => {
+      if (date && time) {
+        setLoadingSession(true);
+        const rs = await sessionService.getAll({
+          day: date,
+          id_showtimes: time,
+        });
+        setListSession(rs.data.session);
+        setLoadingSession(false);
+      }
+    })();
+  }, [date, time]);
 
   const collums = [
     {
       title: "Tên khách hàng",
-      dataIndex: "customer",
-      key: "customer",
+      dataIndex: "full_name",
+      key: "full_name",
     },
     {
-      title: "Ngày mua",
-      dataIndex: "time",
-      key: "time",
+      title: "Tên phim",
+      dataIndex: "name_mv",
+      key: "name_mv",
+    },
+    {
+      title: "Ngày chiếu",
+      dataIndex: "date",
+      key: "date",
+    },
+    {
+      title: "Suất chiếu",
+      dataIndex: "time_start",
+      key: "time_start",
     },
     {
       title: "Tổng tiền",
       dataIndex: "price",
       key: "price",
       render: (_, record) => {
-        let price = record.quantity * 50000;
+        let price = record.seat.length * 50000;
         for (let i = 0; i < record.combo.length; i++) {
           const element = record.combo[i];
-          price += element.price * element.quantity;
+          price += element.unit_price * element.quantity;
         }
 
         return formatPrice(price);
@@ -53,12 +94,19 @@ const Tickets = () => {
       dataIndex: "action",
       key: "action",
       render: (_, record) => (
-        <Link to={`ticket/${record.id}`}>
+        <Link to={`ticket/${record.id_ticket}`}>
           <Button type="primary">Chi tiết</Button>
         </Link>
       ),
     },
   ];
+  const onFinish = (e) => {
+    console.log(e);
+    setSort({
+      nam_mv: e.name[0],
+      day: e.name[1],
+    });
+  };
 
   return (
     <div>
@@ -66,29 +114,88 @@ const Tickets = () => {
         <Col span={12}>
           <Typography.Title level={5}>Danh sách vé đã đặt</Typography.Title>
         </Col>
-        <Col span={12} className="text-right">
-          <Button
-            type={typeShow === "list" ? "link" : "text"}
-            onClick={() => setTypeShow("list")}
-          >
-            <BarsOutlined />
-          </Button>
-          <Button
-            type={typeShow === "table" ? "link" : "text"}
-            onClick={() => setTypeShow("table")}
-          >
-            <InsertRowAboveOutlined />
-          </Button>
-          <Button></Button>
+
+        <Col span={12} className="text-right mb-3">
+          <Space>
+            <Button icon={<BarcodeOutlined />} type="primary" color="#27ae60">
+              Nhập barcode
+            </Button>
+            <Button icon={<FontSizeOutlined />} type="primary" color="#27ae60">
+              Nhập mã vé
+            </Button>
+          </Space>
+        </Col>
+        <Col span={24}>
+          <Form form={form} onFinish={onFinish}>
+            <Space className="w-100 justify-content-end">
+              <Form.Item name="data">
+                <DatePicker
+                  placeholder="Chọn ngày"
+                  onChange={(e) => {
+                    setDate(moment(e).format("YYYY-MM-DD"));
+                  }}
+                />
+              </Form.Item>
+              <Form.Item name="time">
+                <Select
+                  placeholder="Chọn thời gian"
+                  onChange={(e) => setTime(e)}
+                >
+                  <Select.Option value="1">Khung giờ 1</Select.Option>
+                  <Select.Option value="2">Khung giờ 2</Select.Option>
+                  <Select.Option value="3">Khung giờ 3</Select.Option>
+                  <Select.Option value="4">Khung giờ 4</Select.Option>
+                </Select>
+              </Form.Item>
+              <Form.Item name="name">
+                <Select
+                  placeholder="Chọn suất chiếu"
+                  loading={loadingSession}
+                  style={{ width: "300px" }}
+                >
+                  {listSession.map((el, ind) => (
+                    <Select.Option key={ind} value={[el.name_mv, el.day]}>
+                      {el.name_mv}
+                    </Select.Option>
+                  ))}
+                </Select>
+              </Form.Item>
+              <Form.Item>
+                <Button type="primary" htmlType="submit">
+                  Lọc
+                </Button>
+              </Form.Item>
+              <Form.Item>
+                <Button
+                  type="primary"
+                  onClick={() => {
+                    setListSession([]);
+                    form.resetFields();
+                    setSort({
+                      day: "",
+                      nam_mv: "",
+                    });
+                  }}
+                >
+                  Đặt lại
+                </Button>
+              </Form.Item>
+            </Space>
+          </Form>
         </Col>
       </Row>
-      <ListLayout
-        movieData={movieData}
-        currentMovie={currentMovie}
-        handleClickMovie={(id) => handleClickMovie(id)}
-      >
-        <Table dataSource={listTicket} columns={collums} />
-      </ListLayout>
+
+      <Table
+        dataSource={listTicket.filter(
+          (el) =>
+            !sort.day ||
+            !sort.nam_mv ||
+            (el.name_mv === sort.nam_mv && el.date === sort.day)
+        )}
+        rowKey="id_ticket"
+        columns={collums}
+        loading={loading}
+      />
     </div>
   );
 };

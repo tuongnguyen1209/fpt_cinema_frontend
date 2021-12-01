@@ -1,4 +1,5 @@
 import React from "react";
+import { useSelector } from "react-redux";
 import { Route, Switch, Redirect } from "react-router-dom";
 import { ADMIN_PREFIX_PATH, AUTH_PREFIX_PATH } from "../config/app.config";
 import Admin from "./admin";
@@ -15,7 +16,7 @@ const PrivateRoute = ({ children, isAuthenticated, ...rest }) => {
         ) : (
           <Redirect
             to={{
-              pathname: "/login",
+              pathname: `${AUTH_PREFIX_PATH}/login`,
               state: { from: location },
             }}
           />
@@ -26,10 +27,15 @@ const PrivateRoute = ({ children, isAuthenticated, ...rest }) => {
 };
 
 function Views() {
+  const user = useSelector((state) => state.user);
+  console.log(user);
   return (
     <>
       <Switch>
-        <PrivateRoute path={ADMIN_PREFIX_PATH} isAuthenticated={true}>
+        <PrivateRoute
+          path={ADMIN_PREFIX_PATH}
+          isAuthenticated={user.isLogin && user.user.administration === "1"}
+        >
           <Admin />
         </PrivateRoute>
 

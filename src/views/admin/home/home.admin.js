@@ -212,7 +212,7 @@ const HomeAdmin = () => {
         </Row>
       </div>
 
-      <div style={{ height: "700px" }} className="mt-5">
+      <div style={{ height: "1000px" }} className="mt-5">
         <div className="text-center">
           <Typography.Title type="secondary" level={5}>
             Doanh thu theo thời gian

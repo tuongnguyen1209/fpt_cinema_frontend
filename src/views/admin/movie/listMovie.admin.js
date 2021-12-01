@@ -26,8 +26,8 @@ const ListMovie = () => {
     (async () => {
       setLoading(true);
       try {
-        const listmovie = await MovieService.getAllMovie();
-        setMovieData(listmovie.movie);
+        const listmovie = await MovieService.getAllMovie({ limit: 100 });
+        setMovieData(listmovie.data.movie);
         setLoading(false);
       } catch (error) {
         setLoading(false);
@@ -39,8 +39,8 @@ const ListMovie = () => {
   const columns = [
     {
       title: "Hình ảnh",
-      dataIndex: "image",
-      key: "image",
+      dataIndex: "img_medium",
+      key: "img_medium",
       render: (image) => (
         <Image
           src={image}
@@ -71,8 +71,8 @@ const ListMovie = () => {
     },
     {
       title: "Thời gian khởi chiếu",
-      dataIndex: "datestart",
-      key: "datestart",
+      dataIndex: "date_start",
+      key: "date_start",
     },
     {
       title: "Thời lượng",
@@ -247,7 +247,7 @@ const ListMovie = () => {
           <Col span={8}>
             <div>
               <Image
-                src={currentMovie?.image}
+                src={currentMovie?.image_large}
                 width="100%"
                 fallback="https://thumbs.dreamstime.com/b/no-image-available-icon-flat-vector-no-image-available-icon-flat-vector-illustration-132482953.jpg"
               />
