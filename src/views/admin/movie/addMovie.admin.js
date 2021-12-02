@@ -73,7 +73,7 @@ const AddMovie = () => {
     Uploadfile(file)
       .then((res) => {
         setImgFile({ ...imgFile, previewImage: res.url });
-        onSuccess(res);
+        onSuccess(res.secure_url);
       })
       .catch((err) => {
         const error = new Error("Some error");
@@ -93,13 +93,14 @@ const AddMovie = () => {
     movie.date_start = FormatDateRequest(new Date(movie.date_start._d));
     const newMovie = {
       ...movie,
-      image_mv: imgFile.previewImage,
+      image_lage: imgFile.fileList[0].url || imgFile.fileList[0].response,
+      image_medium: imgFile.fileList[1].url || imgFile.fileList[1].response,
       detail: description,
       rate: "5",
       date_end: "",
-      banner: "tthm.jpg",
+      banner: imgFile.fileList[2].url || imgFile.fileList[2].response,
     };
-    // console.log(newMovie);
+    console.log(newMovie);
     try {
       message.loading({ content: "Đang tạo mới phim", key: "upload" });
       const rs = await MovieService.createMovie(newMovie);
@@ -115,7 +116,7 @@ const AddMovie = () => {
 
       setDescription("");
     } catch (error) {
-      console.log(error.message);
+      console.log(error);
     }
   };
 
