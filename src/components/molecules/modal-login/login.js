@@ -24,13 +24,17 @@ const Login = () => {
     history.replace("/");
   }
 
-  const onFinish = async (values) => {
+  const onFinish = (values) => {
+    onLogin({
+      username: values.email,
+      password: values.password,
+    });
+  };
+
+  const onLogin = async (value, type = null) => {
     try {
       setLoading(true);
-      const rs = await authService.login({
-        username: values.email,
-        password: values.password,
-      });
+      const rs = await authService.login(value, type);
       if (rs.status === "success") {
         dispatch(LoginAction(rs.data));
         message.success(`Hi, ${rs.data.full_name}`);
@@ -42,11 +46,13 @@ const Login = () => {
       setLoading(false);
     } catch (error) {
       setLoading(false);
-      console.log(error.message);
+      console.log(error);
     }
   };
-  const onLoginSuccess = (res) => {
+
+  const onLoginSuccess = async (res) => {
     console.log("Login Success:", res.profileObj);
+    onLogin(res.profileObj, "gg");
     // setShowloginButton(false);
     // setShowlogoutButton(true);
   };
@@ -56,6 +62,7 @@ const Login = () => {
   };
   const responseFacebook = (response) => {
     console.log(response);
+    onLogin(response, "fb");
   };
 
   return (
