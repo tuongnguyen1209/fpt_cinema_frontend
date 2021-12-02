@@ -51,13 +51,13 @@ const ListUser = () => {
     { title: "Số điện thoại", dataIndex: "phone", key: "phone" },
     {
       title: "Chức vụ",
- 
+
       dataIndex: "administration",
       key: "administration",
       sort: true,
       render: (administration) =>
         administration === "1" ? (
-           <Tag color="#f50"> Admin</Tag>
+          <Tag color="#f50"> Admin</Tag>
         ) : (
           <Tag color="#87d068"> Khách hàng</Tag>
         ),
@@ -67,9 +67,8 @@ const ListUser = () => {
       dataIndex: "status",
       key: "status",
       render: (status) =>
- 
         status !== 0 ? (
-           <Tag color="green">Đang hoạt động</Tag>
+          <Tag color="green">Đang hoạt động</Tag>
         ) : (
           <Tag color="red">Bị khóa</Tag>
         ),

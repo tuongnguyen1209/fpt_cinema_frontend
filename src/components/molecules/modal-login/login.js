@@ -1,14 +1,15 @@
-import {
-  FacebookFilled,
-  GooglePlusSquareFilled,
-  LockOutlined,
-  UserOutlined,
-} from "@ant-design/icons";
+import { FacebookFilled, LockOutlined, UserOutlined } from "@ant-design/icons";
 import { Button, Checkbox, Form, Input, message, Space } from "antd";
 import React, { useState } from "react";
+import ReactFacebookLogin from "react-facebook-login";
+import GoogleLogin from "react-google-login";
 import { useDispatch, useSelector } from "react-redux";
 import { Link, useHistory } from "react-router-dom";
 import { AUTH_PREFIX_PATH } from "../../../config/app.config";
+import {
+  FACEBOOK_APP_ID,
+  GOOGL_AUTH_CLIENT_ID,
+} from "../../../config/auth.config";
 import { LoginAction } from "../../../redux/action/user.action";
 import authService from "../../../serivces/auth.service";
 import { LoginStyle } from "./loginStyle";
@@ -43,6 +44,18 @@ const Login = () => {
       setLoading(false);
       console.log(error.message);
     }
+  };
+  const onLoginSuccess = (res) => {
+    console.log("Login Success:", res.profileObj);
+    // setShowloginButton(false);
+    // setShowlogoutButton(true);
+  };
+
+  const onLoginFailure = (res) => {
+    console.log("Login Failed:", res);
+  };
+  const responseFacebook = (response) => {
+    console.log(response);
   };
 
   return (
@@ -121,20 +134,31 @@ const Login = () => {
               </div>
               <div className="login_facebook mt-4 ">
                 <Space align="center" className="w-100 justify-content-center">
-                  <Link to="">
-                    <Button icon={<FacebookFilled />} type="primary">
-                      Facebook
-                    </Button>
-                  </Link>
-                  <Link to="">
-                    <Button
+                  <ReactFacebookLogin
+                    appId={FACEBOOK_APP_ID}
+                    fields="name,email,picture"
+                    size="small"
+                    callback={responseFacebook}
+                    textButton=" Login Facebook"
+                    icon={<FacebookFilled />}
+                  />
+
+                  {/* <Button
                       icon={<GooglePlusSquareFilled />}
                       type="primary"
                       danger
                     >
                       Google
-                    </Button>
-                  </Link>
+                    </Button> */}
+                  <GoogleLogin
+                    clientId={GOOGL_AUTH_CLIENT_ID}
+                    buttonText="LOGIN GOOGLE"
+                    onSuccess={onLoginSuccess}
+                    onFailure={onLoginFailure}
+                    cookiePolicy={"single_host_origin"}
+                    className="btn-google"
+                    style={{ color: "black" }}
+                  />
                 </Space>
               </div>
               <div className="text-center">
