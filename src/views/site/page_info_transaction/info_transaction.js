@@ -1,3 +1,4 @@
+import { Spin } from "antd";
 import Title from "antd/lib/skeleton/Title";
 import axios from "axios";
 import React, { useEffect, useState } from "react";
@@ -7,6 +8,14 @@ import styled from "styled-components";
 import TicketService from "../../../serivces/ticket.service";
 
 const PageTransactionStyle = styled.div`
+    .example {
+    margin: 20px 0;
+    margin-bottom: 20px;
+    padding: 30px 50px;
+    text-align: center;
+    background: transparent;
+    border-radius: 4px;
+    }
     .container_custom_transaction {
         width: 100%;
         margin-left: -1px;
@@ -38,6 +47,8 @@ const PageTransactionStyle = styled.div`
     }
 `
 const PageTransaction = () => {
+
+    const [spin,setSpin] = useState(true);
 
     // const [listMovie, setListMovie] = useState([]);
     // const [idMovie, setIdMovie] = useState();
@@ -82,6 +93,7 @@ const PageTransaction = () => {
               const response = await TicketService.getTicketByUser(idUser);
               console.log(response.data.ticket);
               setBillTicket(response.data.ticket);
+              setSpin(false);
             }catch (error) {
               console.log("Failed to fetch id user: ",error);
             }
@@ -175,6 +187,9 @@ const PageTransaction = () => {
                 </table>
             </div>
             <Title title1={"THÔNG TIN THÀNH VIÊN"} title2={"GIAO DỊCH CỦA TÔI"} />
+            <div className="example">
+                <Spin spinning={spin} size="large"/>
+            </div>,
         </PageTransactionStyle>
     );
 }

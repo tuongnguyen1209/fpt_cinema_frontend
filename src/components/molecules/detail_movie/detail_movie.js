@@ -6,7 +6,9 @@ import { Link, useParams } from "react-router-dom";
 import MovieService from '../../../serivces/movie.service';
 import MovieCPN from '../movie_component/list_movie';
 import { DetailMovieCPNStyle } from "./detail_movieStyle";
-
+import sessionService from "../../../serivces/session.service";
+import {useDispatch,useSelector } from "react-redux";
+import { saveTicketList } from "../../../redux/action/saveTicket";
 const { Option } = Select;
 const dateFormat = 'YYYY-MM-DD';
 
@@ -19,15 +21,13 @@ const openMessage = () => {
   }, 1000);
 };
 const DetailMovieCPN = () => {
-  
-    // redux -------------------------------------------
-    // const idMovie = useSelector(state => state.findIdMovie);
+    // lấy id phim
     const idMovie = useParams().id;
-    // console.log(idMovie)
-    // redux -------------------------------------------
-
-    const [listMovie, setListMovie] = useState([]);
+  
     
+    
+    const [listMovie, setListMovie] = useState([]);
+    const [listSession, setListSession] = useState([]);
     useEffect(() => {
       const fetchMovieList = async () => {
         try {
@@ -39,36 +39,39 @@ const DetailMovieCPN = () => {
         }
       }
       fetchMovieList();
-
-      // axios.get(`https://61966cdbaf46280017e7e07c.mockapi.io/detail_movie/${idMovie.id}`) 
-      // .then(function (response) {
-      //   setListMovie(response.data)
-      // })
-      // .catch(function (error) {
-      //   // handle error
-      //   console.log(error);
-      // })
-
+      
+      const fetchSessionList = async () => {
+        try {
+          const response = await sessionService.getAll({id_movie : idMovie});
+          console.log(response.data.session);
+          setListSession(response.data.session);
+        }catch (error) {
+          console.log("Failed to fetch movie list: ",error);
+        }
+      }
+      fetchSessionList();
+      
+      
     },[idMovie])
     // console.log(listMovie);
-
+    
     // bật tắt đánh giá  
     const [toggleStar, setToggleStar] = useState(false);
-
+    
     const handleToggleStar = () => {
       setToggleStar(toggleStar === false ? true : false );
     }
     // end bật tắt đánh giá
-
+    
     // đường dẫn từng trang
     const routes = [
-        {
-          path: '/',
-          breadcrumbName: 'Trang Chủ',
-        },
-        {
-          path: 'pagemovie',
-          breadcrumbName: 'Phim đang chiếu',
+      {
+        path: '/',
+        breadcrumbName: 'Trang Chủ',
+      },
+      {
+        path: 'pagemovie',
+        breadcrumbName: 'Phim đang chiếu',
         },
         {
           path: 'detailmovie',
@@ -81,7 +84,7 @@ const DetailMovieCPN = () => {
           <span>{route.breadcrumbName}</span>
         ) : (
           <Link to={paths.join('/')}>{route.breadcrumbName}</Link>
-        );
+          );
       }
       // end đường dẫn từng trang
       
@@ -89,18 +92,43 @@ const DetailMovieCPN = () => {
       const iframeRef = useRef();
 
       const [isModalVisible, setIsModalVisible] = useState(false);
-    
+      
       const showModal = () => {
           setIsModalVisible(true);
       };
       
       const handleCancel = () => {
-          setIsModalVisible(false);
-          iframeRef.current.contentWindow.postMessage('{"event":"command","func":" pauseVideo ","args":""}', '*');
+        setIsModalVisible(false);
+        iframeRef.current.contentWindow.postMessage('{"event":"command","func":" pauseVideo ","args":""}', '*');
       }
       // thực hiện open traller
 
-    return (
+      // login
+      const loginReducer = useSelector((state) => state.user);
+      const isLogin = loginReducer.isLogin;
+
+      // redux -------------------------------------------
+      const infoTicketList = useSelector((state) => state.saveTicket);
+      const dispatch = useDispatch();
+      console.table([infoTicketList]);
+      
+
+      const handleSaveTicket = e => {
+          console.log(e);
+          const saveNameMovie = {
+            name_mv: listMovie?.name_movie,
+            img: listMovie?.img_medium,
+            rap: "GALAXY QUANG TRUNG",
+            session: e,
+          };
+      const action = saveTicketList(saveNameMovie);
+      dispatch(action);
+      // redux -------------------------------------------
+    }
+    
+    useEffect(handleSaveTicket,[listMovie?.name_movie,listMovie?.img_medium,dispatch])
+
+      return (
         <DetailMovieCPNStyle>
             <div className="container_custom">
                 <div className="main_detail">
@@ -182,11 +210,18 @@ const DetailMovieCPN = () => {
                           </div>
                         <div className="select_time">
                             <div  className="select_time_box">
-                                <p className="tag_rap">{listMovie?.rap}</p>
+                                <p className="tag_rap">{listMovie?.rap || "GALAXY QUANG TRUNG"}</p>
                                 <div className="tag_rap_box">
                                   <p>2D - Phụ đề</p>
                                   <div>
-                                      <Link to="" >{listMovie?.session}</Link>
+                                      {listSession.map((item,index) => (
+                                        <Link 
+                                          key={index} 
+                                          to={isLogin ? "/bookticket-food" : "auth/login"}
+                                          >
+                                            <span onClick={(e) => handleSaveTicket(item?.id_session)}>{item?.time_start}</span>
+                                          </Link>
+                                      ))}
                                   </div>
                                 </div>
                             </div>

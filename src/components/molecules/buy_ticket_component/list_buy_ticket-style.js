@@ -1,6 +1,14 @@
 import styled from "styled-components";
 
 export const ListBuyTicketStyle = styled.div`
+  .example {
+    margin: 20px 0;
+    margin-bottom: 20px;
+    padding: 30px 50px;
+    text-align: center;
+    background: rgba(0, 0, 0, 0.05);
+    border-radius: 4px;
+  }
   .title {
     padding: 50px 0px 50px 0px;
   }
@@ -27,21 +35,13 @@ export const ListBuyTicketStyle = styled.div`
   .row-buyticket {
     display: flex;
     justify-content: space-between;
-<<<<<<< HEAD
-    align-items: center;
-=======
     align-items: flex-start;
->>>>>>> a176b4e597ccc4b1552725ff66ccef8991585b90
     flex-wrap: wrap;
     .row1,
     .row2,
     .row3 {
       width: 32%;
       position: relative;
-<<<<<<< HEAD
-      height: 700px;
-=======
->>>>>>> a176b4e597ccc4b1552725ff66ccef8991585b90
       top: 0%;
     }
     .ant-collapse-content > .ant-collapse-content-box {
@@ -118,11 +118,7 @@ export const ListBuyTicketStyle = styled.div`
       > .ant-collapse-item
       > .ant-collapse-header
       .ant-collapse-arrow {
-<<<<<<< HEAD
-      display: none;
-=======
       /* display: none; */
->>>>>>> a176b4e597ccc4b1552725ff66ccef8991585b90
     }
   }
 `;

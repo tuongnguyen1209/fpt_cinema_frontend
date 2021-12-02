@@ -36,9 +36,21 @@ export const SlideShowStyle = styled.div`
     }
     .option-buy-ticket{
         margin: 10px;
-        background: white;
+        background: black;
         color: black;
     }
+    .ant-select:not(.ant-select-customize-input) .ant-select-selector {
+        background-color: rgba(255,255,255,0.3);
+        color: white;
+    }
+    span.ant-select-arrow {
+        color: white;
+        margin: -5px 0px;
+    }
+    .ant-select-selector::after {
+        color: white;
+        background-color: white;
+    }  
     .tem-box-ticket {
         background: #f26b38;
         padding: 7px 20px;
@@ -70,6 +82,9 @@ export const SlideShowStyle = styled.div`
         display: flex;
         justify-content: center;
         align-items: center;
+        img {
+            /* object-fit: cover; */
+        }
     }
     .btn-play {
         position: absolute;

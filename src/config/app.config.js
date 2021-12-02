@@ -2,7 +2,8 @@
 
 export const URL_API = "https://6189cf9d34b4f400177c425b.mockapi.io/";
 
-export const URL_API_BACKEND = "https://cinemafptproject.herokuapp.com";
+// export const URL_API_BACKEND = "https://cinemafptproject.herokuapp.com";
+export const URL_API_BACKEND = "http://localhost/fpt_cinema_backend";
 export const ADMIN_PREFIX_PATH = "/admin";
 export const AUTH_PREFIX_PATH = "/auth";
 

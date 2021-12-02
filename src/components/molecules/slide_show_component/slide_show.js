@@ -14,9 +14,9 @@ function Slideshow() {
     useEffect(() => {
       // const fetchMovieList = async () => {
       //   try {
-      //     const response = await MovieService.getMovieLimit(6);
-      //     // console.log(response);
-      //     setListMovie(response.movie);
+      //     const response = await MovieService.getMovieLimit(15);
+      //     console.log(response);
+      //     setListMovie(response.data.movie);
       //   } catch (error) {
       //     console.log("Failed to fetch movie list: ", error);
       //   }
@@ -43,7 +43,7 @@ function Slideshow() {
 
         <div className="carousel-div">
               <Carousel effect='fade' autoplay>
-                {listMovie.map((item,index) => (
+                {listMovie?.map((item,index) => (
                     <div key={index}>
                         <SlideItem key={index} props={item}/>
                     </div>

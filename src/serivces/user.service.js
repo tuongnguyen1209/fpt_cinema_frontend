@@ -9,6 +9,9 @@ const userService = {
   getAll: () => {
     return axiosClient.get(url);
   },
+  getUserById: (idUser) => {
+    return axiosClient.get(`${url}?id_user=${idUser}`);
+  }
 };
 
 export default userService;

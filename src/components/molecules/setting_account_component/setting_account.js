@@ -1,4 +1,4 @@
-import { Breadcrumb, Checkbox, Input, message } from "antd";
+import { Breadcrumb, Checkbox, Input, message, Skeleton } from "antd";
 import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { Link } from "react-router-dom";
@@ -6,9 +6,11 @@ import PageTransaction from "../../../views/site/page_info_transaction/info_tran
 import MovieCPN from "../movie_component/list_movie";
 import Title from "../title_component/title";
 import { SettingAccountStyle } from "./setting_acountStyle";
-
+import userService from "../../../serivces/user.service";
 const SettingAccount = () => {     
     
+    const [loading,setLoading] = useState(true);
+
     // đường dẫn từng trang
     const [path,setPath] = useState("Cập nhật tài khoản")
     const routes = [
@@ -65,7 +67,23 @@ const SettingAccount = () => {
     // console.log(userReducer.user);
     const userCurrent = userReducer.user; 
 
+    const [infoUser, setInfoUser] = useState("");
+    //get user from API by id user on redux
+    useEffect(() => {
+        const fetchUserById = async () => {
+            try {
+                const response = await userService.getUserById(userCurrent.id_user);
+                console.log(response);
+                setInfoUser(response.data);
+                setLoading(false);
+            } catch (error) {
+                console.log("Failed to fetch user: ", error);
+            }
+        }
 
+
+        fetchUserById();
+    },[userCurrent.id_user])
 
     // kiểm tra pass 
     const [oldPass, setOldPass] = useState(""); 
@@ -137,32 +155,34 @@ const SettingAccount = () => {
                     <Title title1={"THÔNG TIN THÀNH VIÊN"} title2={"GIAO DỊCH CỦA TÔI"} setCheckPage={setCheckPage}/>
                     
                     {checkpage ? <div className="box_setting">
+                    <Skeleton loading={loading}>
                         <form>
                             <div className="form-group_row1">
                                 <div className="form-group">
                                     <label>Họ & tên</label>
-                                    <Input size={'large'} type="text" value={userCurrent?.full_name} disabled/>
+                                    <Input size={'large'} type="text" value={infoUser?.name_user} disabled/>
                                 </div>
                                 
                                 <div className="form-group">
                                     <label>Điểm hiện tại</label>
-                                    <Input size={'large'} type="text" value={userCurrent?.star || "Chưa có số sao"} disabled/>
+                                    <Input size={'large'} type="text" value={infoUser?.point || "Chưa có số sao"} disabled/>
+                                    <span></span>
                                 </div>
 
                                 <div className="form-group">
                                     <label>Tổng chi tiêu</label>
-                                    <Input size={'large'} type="text" value={userCurrent?.total || "Chưa có tổng chi tiêu"} disabled/>
+                                    <Input size={'large'} type="text" value={infoUser?.summ_all || "Chưa có tổng chi tiêu"} disabled/>
                                 </div>
                             </div>
                             <div className="form-group_row2">
                                 <div className="form-group">
                                     <label>Email</label>
-                                    <Input size={'large'} type="text" value={userCurrent.email} disabled/>
+                                    <Input size={'large'} type="text" value={infoUser.email} disabled/>
                                 </div>
 
                                 <div className="form-group">
                                     <label>Số điện thoại</label>
-                                    <Input size={'large'} type="text" value={userCurrent.phone} disabled/>
+                                    <Input size={'large'} type="text" value={infoUser.ST} disabled/>
                                 </div>
 
                                 <div className="form-group">
@@ -212,6 +232,7 @@ const SettingAccount = () => {
                                 <button onClick={handleChangePass}>LƯU LẠI</button>
                             </div>
                         </form>
+                        </Skeleton>
                     </div> : <PageTransaction />}
                     <MovieCPN titleHome={"PHIM ĐANG CHIẾU"}/>
                 </div>

@@ -18,7 +18,7 @@ const Login = () => {
   const [isLoading, setLoading] = useState(false);
   const history = useHistory();
   const userSelector = useSelector((state) => state.user);
-
+  console.log(userSelector);
   if (userSelector.isLogin) {
     history.replace("/");
   }
