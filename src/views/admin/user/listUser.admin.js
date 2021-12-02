@@ -1,7 +1,7 @@
-import { Image, Table, Typography, Tag, Button, Space, Modal } from "antd";
+import { Button, Image, Modal, Space, Table, Tag, Typography } from "antd";
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import { listTicketDefault } from "../../../data/movie.data";
+import TicketService from "../../../serivces/ticket.service";
 import userService from "../../../serivces/user.service";
 import { formatPrice } from "../../../ultil/format";
 
@@ -9,6 +9,8 @@ const ListUser = () => {
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [listUser, setListUser] = useState([]);
   const [loading, setLoading] = useState(false);
+  const [loadingTicket, setLoadingTicket] = useState(false);
+  const [listTicket, setListTicket] = useState([]);
 
   useEffect(() => {
     (async () => {
@@ -19,8 +21,12 @@ const ListUser = () => {
     })();
   }, []);
 
-  const showModal = () => {
+  const showModal = async (record) => {
     setIsModalVisible(true);
+    setLoadingTicket(true);
+    const rs = await TicketService.getTicketByUser(record.id_user);
+    setListTicket(rs.data.ticket);
+    setLoadingTicket(false);
   };
 
   const handleOk = () => {
@@ -51,13 +57,13 @@ const ListUser = () => {
     { title: "Số điện thoại", dataIndex: "phone", key: "phone" },
     {
       title: "Chức vụ",
- 
+
       dataIndex: "administration",
       key: "administration",
       sort: true,
       render: (administration) =>
         administration === "1" ? (
-           <Tag color="#f50"> Admin</Tag>
+          <Tag color="#f50"> Admin</Tag>
         ) : (
           <Tag color="#87d068"> Khách hàng</Tag>
         ),
@@ -67,9 +73,8 @@ const ListUser = () => {
       dataIndex: "status",
       key: "status",
       render: (status) =>
- 
         status !== 0 ? (
-           <Tag color="green">Đang hoạt động</Tag>
+          <Tag color="green">Đang hoạt động</Tag>
         ) : (
           <Tag color="red">Bị khóa</Tag>
         ),
@@ -80,7 +85,7 @@ const ListUser = () => {
       render: (_, record) => (
         <>
           <Space>
-            <Button type="primary" onClick={showModal}>
+            <Button type="primary" onClick={() => showModal(record)}>
               Lịch sử đặt hàng
             </Button>
             <Button type="primary" danger>
@@ -95,26 +100,36 @@ const ListUser = () => {
   const collumsTicket = [
     {
       title: "Tên khách hàng",
-      dataIndex: "customer",
-      key: "customer",
+      dataIndex: "full_name",
+      key: "full_name",
+    },
+    {
+      title: "Tên phim",
+      dataIndex: "name_mv",
+      key: "name_mv",
     },
     {
       title: "Ngày mua",
-      dataIndex: "time",
-      key: "time",
+      dataIndex: "time_create",
+      key: "time_create",
     },
     {
-      title: "Tổng tiền",
-      dataIndex: "price",
-      key: "price",
-      render: (_, record) => {
-        let price = record.quantity * 50000;
-        for (let i = 0; i < record.combo.length; i++) {
-          const element = record.combo[i];
-          price += element.price * element.quantity;
-        }
+      title: "Ngày chiếu",
+      dataIndex: "date",
+      key: "date",
+    },
+    {
+      title: "Thời gian chiếu",
+      dataIndex: "time_start",
+      key: "time_start",
+    },
 
-        return formatPrice(price);
+    {
+      title: "Tổng tiền",
+      dataIndex: "Total_money",
+      key: "Total_money",
+      render: (Total_money) => {
+        return formatPrice(Total_money);
       },
     },
     {
@@ -122,7 +137,7 @@ const ListUser = () => {
       dataIndex: "action",
       key: "action",
       render: (_, record) => (
-        <Link to={`ticket/${record.id}`}>
+        <Link to={`ticket/${record.id_ticket}`}>
           <Button type="primary">Chi tiết</Button>
         </Link>
       ),
@@ -138,17 +153,23 @@ const ListUser = () => {
         <Table
           dataSource={listUser}
           columns={columns}
-          loading={loading}
+          Ticket={loading}
           rowKey="id_user"
+          loading={loading}
         />
       </div>
       <Modal
         title="Lịch sử đặt hàng"
         visible={isModalVisible}
         onOk={handleOk}
+        width={1000}
         onCancel={handleCancel}
       >
-        <Table dataSource={listTicketDefault[0].list} columns={collumsTicket} />
+        <Table
+          dataSource={listTicket}
+          columns={collumsTicket}
+          loading={loadingTicket}
+        />
       </Modal>
     </div>
   );

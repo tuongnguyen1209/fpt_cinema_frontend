@@ -1,14 +1,22 @@
-import { BarcodeOutlined, FontSizeOutlined } from "@ant-design/icons";
+import {
+  FontSizeOutlined,
+  InboxOutlined,
+  QrcodeOutlined,
+} from "@ant-design/icons";
 import {
   Button,
   Col,
   DatePicker,
   Form,
+  Input,
+  Modal,
   Row,
   Select,
   Space,
   Table,
+  Tabs,
   Typography,
+  Upload,
 } from "antd";
 import moment from "moment";
 import React, { useEffect, useState } from "react";
@@ -16,6 +24,17 @@ import { Link } from "react-router-dom";
 import sessionService from "../../../serivces/session.service";
 import ticketService from "../../../serivces/ticket.service";
 import { formatPrice } from "../../../ultil/format";
+
+const { Dragger } = Upload;
+
+const props = {
+  name: "file",
+  multiple: false,
+
+  onDrop(e) {
+    console.log("Dropped files", e.dataTransfer.files);
+  },
+};
 
 const Tickets = () => {
   const [listTicket, setListTicket] = useState([]);
@@ -28,9 +47,10 @@ const Tickets = () => {
     nam_mv: "",
     day: "",
   });
- 
+  const [isModalVisible, setIsModalVisible] = useState(false);
+
   const [form] = Form.useForm();
- 
+
   useEffect(() => {
     (async () => {
       setLoading(true);
@@ -108,7 +128,17 @@ const Tickets = () => {
       day: e.name[1],
     });
   };
+  const showModal = () => {
+    setIsModalVisible(true);
+  };
 
+  const handleOk = () => {
+    setIsModalVisible(false);
+  };
+
+  const handleCancel = () => {
+    setIsModalVisible(false);
+  };
   return (
     <div>
       <Row>
@@ -118,29 +148,38 @@ const Tickets = () => {
 
         <Col span={12} className="text-right mb-3">
           <Space>
-            <Button icon={<BarcodeOutlined />} type="primary" color="#27ae60">
-              Nhập barcode
+            <Button
+              icon={<QrcodeOutlined />}
+              type="primary"
+              color="#27ae60"
+              onClick={showModal}
+            >
+              Nhập QRCode
             </Button>
-            <Button icon={<FontSizeOutlined />} type="primary" color="#27ae60">
+            <Button
+              icon={<FontSizeOutlined />}
+              type="primary"
+              color="#27ae60"
+              onClick={showModal}
+            >
               Nhập mã vé
             </Button>
           </Space>
         </Col>
         <Col span={24}>
- 
           <Form form={form} onFinish={onFinish}>
             <Space className="w-100 justify-content-end">
               <Form.Item name="data">
-                 <DatePicker
+                <DatePicker
                   placeholder="Chọn ngày"
                   onChange={(e) => {
                     setDate(moment(e).format("YYYY-MM-DD"));
                   }}
                 />
               </Form.Item>
- 
+
               <Form.Item name="time">
-                 <Select
+                <Select
                   placeholder="Chọn thời gian"
                   onChange={(e) => setTime(e)}
                 >
@@ -156,13 +195,12 @@ const Tickets = () => {
                   loading={loadingSession}
                   style={{ width: "300px" }}
                 >
- 
                   {listSession.map((el, ind) => (
                     <Select.Option key={ind} value={[el.name_mv, el.day]}>
                       {el.name_mv}
                     </Select.Option>
                   ))}
-                 </Select>
+                </Select>
               </Form.Item>
               <Form.Item>
                 <Button type="primary" htmlType="submit">
@@ -170,7 +208,6 @@ const Tickets = () => {
                 </Button>
               </Form.Item>
               <Form.Item>
- 
                 <Button
                   type="primary"
                   onClick={() => {
@@ -184,13 +221,12 @@ const Tickets = () => {
                 >
                   Đặt lại
                 </Button>
-               </Form.Item>
+              </Form.Item>
             </Space>
           </Form>
         </Col>
       </Row>
 
- 
       <Table
         dataSource={listTicket.filter(
           (el) =>
@@ -202,7 +238,40 @@ const Tickets = () => {
         columns={collums}
         loading={loading}
       />
- 
+      <Modal
+        title="Nhập vé"
+        visible={isModalVisible}
+        onOk={handleOk}
+        onCancel={handleCancel}
+        footer={null}
+      >
+        <Tabs defaultActiveKey="1">
+          <Tabs.TabPane tab="QRCode" key="1">
+            <Dragger {...props}>
+              <p className="ant-upload-drag-icon">
+                <InboxOutlined />
+              </p>
+              <p className="ant-upload-text">
+                Click or drag file to this area to upload
+              </p>
+              <p className="ant-upload-hint">
+                Support for a single or bulk upload. Strictly prohibit from
+                uploading company data or other band files
+              </p>
+            </Dragger>
+          </Tabs.TabPane>
+          <Tabs.TabPane tab="Nhập mã" key="2">
+            <Form>
+              <Form.Item name="code">
+                <Input placeholder="Nhập mã vé" />
+              </Form.Item>
+              <Form.Item className="text-center">
+                <Button type="primary">Kiểm tra</Button>
+              </Form.Item>
+            </Form>
+          </Tabs.TabPane>
+        </Tabs>
+      </Modal>
     </div>
   );
 };

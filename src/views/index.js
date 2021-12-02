@@ -1,10 +1,12 @@
-import React from "react";
+import React, { Suspense } from "react";
 import { useSelector } from "react-redux";
-import { Route, Switch, Redirect } from "react-router-dom";
+import { Redirect, Route, Switch } from "react-router-dom";
+import LoadingAdmin from "../components/molecules/loadingAdmin/LoadingAdmin";
 import { ADMIN_PREFIX_PATH, AUTH_PREFIX_PATH } from "../config/app.config";
-import Admin from "./admin";
 import Auth from "./auth";
 import Site from "./site";
+
+const Admin = React.lazy(() => import("./admin"));
 
 const PrivateRoute = ({ children, isAuthenticated, ...rest }) => {
   return (
@@ -28,9 +30,8 @@ const PrivateRoute = ({ children, isAuthenticated, ...rest }) => {
 
 function Views() {
   const user = useSelector((state) => state.user);
-  console.log(user);
   return (
-    <>
+    <Suspense fallback={<LoadingAdmin />}>
       <Switch>
         <PrivateRoute
           path={ADMIN_PREFIX_PATH}
@@ -46,7 +47,7 @@ function Views() {
           <Site />
         </Route>
       </Switch>
-    </>
+    </Suspense>
   );
 }
 
