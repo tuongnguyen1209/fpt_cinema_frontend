@@ -11,25 +11,24 @@ import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import { saveTicketList } from "../../../redux/action/saveTicket";
 import { BookTicketFoodStyle } from "./bookticket_foodStyle";
-import TicketService from '../../../serivces/ticket.service'
+import TicketService from "../../../serivces/ticket.service";
 import sessionService from "../../../serivces/session.service";
 import SeatService from "../../../serivces/tk_seat.service";
 import ComboService from "../../../serivces/combo.service";
 // const axios = require("axios").default;
 
 const BookTicketFood = () => {
-
   const error = () => {
     message.error("Bạn chưa mua vé!");
-  } 
+  };
 
   const error2 = () => {
     message.error("Ghế đã có người đặt!");
-  } 
+  };
 
   const error3 = () => {
     message.error("Đăng nhập để tiếp tục đặt vé!");
-  } 
+  };
 
   const [checkChangeTotallTicket, setCheckChangeTotallTicket] = useState(false);
 
@@ -140,14 +139,14 @@ const BookTicketFood = () => {
   }, [totalPriceTicket, totalPriceTicket_member]);
 
   // ----------------------------------------------------------------------------
-  // fetch combo 
+  // fetch combo
   const [listCombo, setListCombo] = useState([]);
 
   useEffect(() => {
     const fetchCombo = async () => {
       try {
         const response = await ComboService.getComBoAll();
-        console.log(response.data.combo);
+        console.log(response.data.combo, listCombo);
         setListCombo(response.data.combo);
       } catch (error) {
         console.log("Failed to fetch combo list: ", error);
@@ -445,27 +444,28 @@ const BookTicketFood = () => {
   //     console.log("Don't get data seat", error);
   //   })
 
-
   // },[])
   useEffect(() => {
     const fetchSeatList = async () => {
       try {
-        const response = await SeatService.getSeatByIdSession(infoTicketList.session);
+        const response = await SeatService.getSeatByIdSession(
+          infoTicketList.session
+        );
         // console.log(response);
         setArraySeatBooked(response.data.tk_seat);
-      console.log(response.data.tk_seat.tk_seat);
-    } catch (error) {
-      console.log("Failed to fetch seat list: ", error);
-    }
-  };
-  fetchSeatList();
-  },[])
-  
+        console.log(response.data.tk_seat.tk_seat);
+      } catch (error) {
+        console.log("Failed to fetch seat list: ", error);
+      }
+    };
+    fetchSeatList();
+  }, []);
+
   useEffect(() => {
     for (let id = 0; id < arraySeatBooked.length; id++) {
       let idItem = document.getElementById(arraySeatBooked[id]);
       // console.log(idItem);
-      if(idItem) {
+      if (idItem) {
         idItem.style.backgroundColor = "red";
         idItem.style.color = "white";
         // console.log(idItem);
@@ -482,7 +482,7 @@ const BookTicketFood = () => {
   const handleChooseSeat = (e) => {
     for (let id = 0; id < arraySeatBooked.length; id++) {
       let idItem = document.getElementById(arraySeatBooked[id]);
-      if(idItem){
+      if (idItem) {
         if (e.target.name === idItem.name) {
           error2();
           return;
@@ -538,7 +538,7 @@ const BookTicketFood = () => {
     const saveSeat = {
       seat: ArraySeat,
       Total_money: `${totalAll}.000`,
-      id_combo: [2,3],
+      id_combo: [2, 3],
       ticket_information: `Vé thành viên (${counting_member}), Vé thường (${counting})`,
       full_name: loginReducer.user.full_name,
       id_room: room_random,
@@ -551,12 +551,14 @@ const BookTicketFood = () => {
   };
   // redux ------------------------------------------------------
 
-  const [idSession,setIdSession] = useState([]);
+  const [idSession, setIdSession] = useState([]);
   // gọi API lấy ngày, giờ trong session
-  useEffect(()=> {
+  useEffect(() => {
     const fetchSessionList = async () => {
       try {
-        const response = await sessionService.getAll({id_session : infoTicketList.session});
+        const response = await sessionService.getAll({
+          id_session: infoTicketList.session,
+        });
         // console.log(response);
         setIdSession(response.data);
         // console.log(response);
@@ -565,14 +567,13 @@ const BookTicketFood = () => {
       }
     };
     fetchSessionList();
-
-  },[])
+  }, []);
 
   // message
   const success = () => {
     message
-    .loading('Đang đặt vé...', 2.5)
-    .then(() => message.success('Đặt vé thành công!', 2.5))
+      .loading("Đang đặt vé...", 2.5)
+      .then(() => message.success("Đặt vé thành công!", 2.5));
   };
 
   // post data lên sever
@@ -580,39 +581,39 @@ const BookTicketFood = () => {
     saveInfoTicket();
 
     try {
-      const response = TicketService.createTicket({
-        // name_mv: infoTicketList.name_mv,
-        // full_name: infoTicketList.full_name,
-        // time_start: "10:30",
-        // id_combo: infoTicketList.id_combo,
-        // seat: infoTicketList.seat,
-        // id_room: infoTicketList.id_room,
-        // ticket_information: infoTicketList.ticket_information,
-        // status: infoTicketList.status,
-        // Total_money: infoTicketList.Total_money,
-        // quantity: "5",
-        // unit_price: "8000",
+      const response = TicketService.createTicket(
+        {
+          // name_mv: infoTicketList.name_mv,
+          // full_name: infoTicketList.full_name,
+          // time_start: "10:30",
+          // id_combo: infoTicketList.id_combo,
+          // seat: infoTicketList.seat,
+          // id_room: infoTicketList.id_room,
+          // ticket_information: infoTicketList.ticket_information,
+          // status: infoTicketList.status,
+          // Total_money: infoTicketList.Total_money,
+          // quantity: "5",
+          // unit_price: "8000",
 
-        "id_session": infoTicketList.session,
-        "Total_money": infoTicketList.Total_money,
-        "id_user":infoTicketList.id_user,
-        "id_promotion":"3",
-        "time_create":"",
-        "status":"1",
-        "ticket_information": infoTicketList.ticket_information,
-        "id_seat" : infoTicketList.seat,
-        "id_combo": infoTicketList.id_combo,
-        "quantity": [quantityCombo1,quantityCombo2,quantityCombo3],
-        "unit_price":[8000,9000]
-      },
-      {
-        headers: {'Content-Type': 'application/json'}
-      }
-        )
+          id_session: infoTicketList.session,
+          Total_money: infoTicketList.Total_money,
+          id_user: infoTicketList.id_user,
+          id_promotion: "3",
+          time_create: "",
+          status: "1",
+          ticket_information: infoTicketList.ticket_information,
+          id_seat: infoTicketList.seat,
+          id_combo: infoTicketList.id_combo,
+          quantity: [quantityCombo1, quantityCombo2, quantityCombo3],
+          unit_price: [8000, 9000],
+        },
+        {
+          headers: { "Content-Type": "application/json" },
+        }
+      );
       console.log(response);
       success();
-    }
-    catch {
+    } catch {
       console.log("Error", message);
     }
     // axios.post("https://cinemafptproject.herokuapp.com/v1.php/ticket", {
@@ -635,15 +636,14 @@ const BookTicketFood = () => {
     //   });
   };
 
-
   // check login
   const loginReducer = useSelector((state) => state.user);
   const isLogin = loginReducer.isLogin;
   // console.log(loginReducer)
   useEffect(() => {
-    if(isLogin === false) {
+    if (isLogin === false) {
       error3();
-      return window.location="/auth/login";
+      return (window.location = "/auth/login");
     }
   }, [isLogin]);
   // mảng ghế
@@ -1372,15 +1372,25 @@ const BookTicketFood = () => {
                 </div>
                 <div className="form-group">
                   <label>Họ và tên</label>
-                  <input placeholder="Nhập họ và tên..." value={loginReducer.user.full_name}/>
+                  <input
+                    placeholder="Nhập họ và tên..."
+                    value={loginReducer.user.full_name}
+                  />
                 </div>
                 <div className="form-group">
                   <label>Địa chỉ email</label>
-                  <input type="email" placeholder="Nhập địa chỉ email..." value={loginReducer.user.email}/>
+                  <input
+                    type="email"
+                    placeholder="Nhập địa chỉ email..."
+                    value={loginReducer.user.email}
+                  />
                 </div>
                 <div className="form-group">
                   <label>Số điện thoại</label>
-                  <input placeholder="Nhập số điện thoại..." value={loginReducer.user.phone}/>
+                  <input
+                    placeholder="Nhập số điện thoại..."
+                    value={loginReducer.user.phone}
+                  />
                 </div>
 
                 <div className="form-group-btn">

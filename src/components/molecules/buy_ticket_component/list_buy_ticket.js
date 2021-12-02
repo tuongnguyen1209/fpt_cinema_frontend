@@ -12,13 +12,15 @@ const axios = require("axios");
 const BuyTicketCPN = () => {
   // change color btn
   const [time, setTime] = useState(["Vui lòng chọn suất chiếu"]);
-  const [arraySession,setArraySession] = useState(["Vui lòng chọn suất chiếu"]);
+  const [arraySession, setArraySession] = useState([
+    "Vui lòng chọn suất chiếu",
+  ]);
   const [check, setCheck] = useState(false);
   const [listMovie2, setlistMovie2] = useState([]);
   const [rap, setRap] = useState(["Vui lòng chọn rạp"]);
   const [state, setState] = useState("span");
   const [state2, setState2] = useState("span2");
-  const [loading,setLoading] = useState(true);
+  const [loading, setLoading] = useState(true);
 
   const ChangeBtn = () => {
     setState("span");
@@ -35,8 +37,9 @@ const BuyTicketCPN = () => {
   console.table([infoTicketList]);
   // redux ----------------------------------------------------------------------
   // event handle show rap
-  const handleShowrap = (e,idMovie) => {
-    console.log(idMovie);
+  const handleShowrap = (e, idMovie) => {
+    console.log(idMovie, time);
+
     // lấy thông tin (tên phim, hình ảnh) lưu vào redux
     const saveNameMovie = {
       name_mv: e.target.parentElement.innerText,
@@ -52,37 +55,33 @@ const BuyTicketCPN = () => {
 
     // lấy dữ liệu từ api rap
     try {
-      axios.get('https://618ca5c8ded7fb0017bb9657.mockapi.io/rap')
-      .then(function (response) {
-        setRap(response.data);
-      })
-      .catch(function (error) {
-        console.log(error);
-      });
-    }
-    catch {
-      console.log("ERRO", message)
+      axios
+        .get("https://618ca5c8ded7fb0017bb9657.mockapi.io/rap")
+        .then(function (response) {
+          setRap(response.data);
+        })
+        .catch(function (error) {
+          console.log(error);
+        });
+    } catch {
+      console.log("ERRO", message);
     }
 
     // lấy dữ liệu từ api session
     const fetchSessionList = async () => {
       try {
-        const response = await sessionService.getAll({id_movie: idMovie});
-          console.log(response.data.session);
-          setArraySession(response.data.session);
-          setTime(response.data.session);
-        }
-        catch (error) {
-          console.log("Failed to fetch session list: ", error);
+        const response = await sessionService.getAll({ id_movie: idMovie });
+        console.log(response.data.session);
+        setArraySession(response.data.session);
+        setTime(response.data.session);
+      } catch (error) {
+        console.log("Failed to fetch session list: ", error);
       }
     };
     fetchSessionList();
-    
-  
-      
-      setCheck(true)
-      
-    };
+
+    setCheck(true);
+  };
   // thay đổi style
   const resetStyleRap = () => {
     if (!document.getElementById("resetStyleRap")) {
@@ -119,7 +118,7 @@ const BuyTicketCPN = () => {
 
   const error = () => {
     message.error("Bạn phải chọn phim!");
-  } 
+  };
 
   // event handle showtime
   const handleShowtime = (e) => {
@@ -141,10 +140,10 @@ const BuyTicketCPN = () => {
   };
 
   // login
-    const loginReducer = useSelector((state) => state.user);
-    const isLogin = loginReducer.isLogin;
+  const loginReducer = useSelector((state) => state.user);
+  const isLogin = loginReducer.isLogin;
 
-  const handleLogin = (id_session,room_number) => {
+  const handleLogin = (id_session, room_number) => {
     // redux --------------------------------------------------
     const saveShowtime = {
       session: id_session,
@@ -176,75 +175,84 @@ const BuyTicketCPN = () => {
         </div>
       </div>
       <Skeleton loading={loading}>
-      <div className="row-buyticket">
-        <div className="row1">
-          <Collapse
-            defaultActiveKey={["1"]}
-            collapsible={true}
-            accordion={true}
-          >
-            <Panel className="panel" header="CHỌN PHIM" key="1">
-              {listMovie2.map((item, index) => (
-                <div className="collapse1" key={index} onClick={(e) => handleShowrap(e,item.id_movie)}>
-                  <div className="panel-box">
-                    <img
-                      src={item.img_medium}
-                      width="70px"
-                      height="50px"
-                      alt="img"
-                    />
-                    <h4>{item.name}</h4>
+        <div className="row-buyticket">
+          <div className="row1">
+            <Collapse
+              defaultActiveKey={["1"]}
+              collapsible={true}
+              accordion={true}
+            >
+              <Panel className="panel" header="CHỌN PHIM" key="1">
+                {listMovie2.map((item, index) => (
+                  <div
+                    className="collapse1"
+                    key={index}
+                    onClick={(e) => handleShowrap(e, item.id_movie)}
+                  >
+                    <div className="panel-box">
+                      <img
+                        src={item.img_medium}
+                        width="70px"
+                        height="50px"
+                        alt="img"
+                      />
+                      <h4>{item.name}</h4>
+                    </div>
                   </div>
-                </div>
-              ))}
-            </Panel>
-          </Collapse>
-        </div>
+                ))}
+              </Panel>
+            </Collapse>
+          </div>
 
-        <div className="row2">
-          <Collapse defaultActiveKey={["1"]}>
-            <Panel className="panel" header="CHỌN RẠP" key="1">
-              {rap.map((item, index) => (
-                <div key={index}>
-                  <div className="panel-box-rap" onClick={handleShowtime}>
-                    {item.name || rap[0]}
+          <div className="row2">
+            <Collapse defaultActiveKey={["1"]}>
+              <Panel className="panel" header="CHỌN RẠP" key="1">
+                {rap.map((item, index) => (
+                  <div key={index}>
+                    <div className="panel-box-rap" onClick={handleShowtime}>
+                      {item.name || rap[0]}
+                    </div>
                   </div>
-                </div>
-              ))}
-            </Panel>
-          </Collapse>
-        </div>
+                ))}
+              </Panel>
+            </Collapse>
+          </div>
 
-        <div className="row3">
-          <Collapse defaultActiveKey={["1"]}>
-            <Panel className="panel" header="CHỌN SUẤT" key="1">
-              {arraySession.map((item, index) => (
-                <div key={index}>
-                  <div className="panel-box-session">
-                    {check ? (
-                      <div className="session_box">
-                        <p>
-                          {item.day}
-                        </p>
-                        <p className="row_show_time">
-                          Vé {item.type}
-                          <Link to={isLogin ? "bookticket-food" : "auth/login"}>
-                            <span className="box_time" onClick={() => handleLogin(item.id_session,item.room_number)}>
-                              {item.time_start} 
-                            </span>
-                          </Link>
-                        </p>
-                      </div>
-                    ) : (
-                      "Vui lòng chọn suất chiếu"
-                    )}
+          <div className="row3">
+            <Collapse defaultActiveKey={["1"]}>
+              <Panel className="panel" header="CHỌN SUẤT" key="1">
+                {arraySession.map((item, index) => (
+                  <div key={index}>
+                    <div className="panel-box-session">
+                      {check ? (
+                        <div className="session_box">
+                          <p>{item.day}</p>
+                          <p className="row_show_time">
+                            Vé {item.type}
+                            <Link
+                              to={isLogin ? "bookticket-food" : "auth/login"}
+                            >
+                              <span
+                                className="box_time"
+                                onClick={() =>
+                                  handleLogin(item.id_session, item.room_number)
+                                }
+                              >
+                                {item.time_start}
+                              </span>
+                            </Link>
+                          </p>
+                        </div>
+                      ) : (
+                        "Vui lòng chọn suất chiếu"
+                      )}
+                    </div>
                   </div>
-                </div>
-              ))}
-            </Panel>
-          </Collapse>
+                ))}
+              </Panel>
+            </Collapse>
+          </div>
         </div>
-      </div>
       </Skeleton>
     </ListBuyTicketStyle>
   );
