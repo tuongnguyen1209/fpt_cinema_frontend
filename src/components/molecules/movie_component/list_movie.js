@@ -1,9 +1,11 @@
 import { RightOutlined } from "@ant-design/icons";
-import { Card, Col, Row } from "antd";
+import { Card, Col, message, Row } from "antd";
+import axios from "axios";
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import MovieService from "../../../serivces/movie.service";
 import { ListMovieStyle } from "./list_movie-style";
+import { Skeleton } from 'antd';
 
 const { Meta } = Card;
 
@@ -19,6 +21,7 @@ function MovieCPN({
 
   const [state, setState] = useState("span");
   const [state2, setState2] = useState("span2");
+  const [loading,setLoading] = useState(true);
 
   const ChangeBtn = (e) => {
     e.preventDefault();
@@ -35,11 +38,13 @@ function MovieCPN({
   const [listMovie, setListMovie] = useState([]);
 
   useEffect(() => {
+
     const fetchMovieList = async () => {
       try {
         const response = await MovieService.getMovieLimit(limit);
         // console.log(response);
         setListMovie(response.data.movie);
+        setLoading(false);
       } catch (error) {
         console.log("Failed to fetch movie list: ", error);
       }
@@ -49,18 +54,20 @@ function MovieCPN({
     // try {
     //   axios.get('https://61966cdbaf46280017e7e07c.mockapi.io/movie_2')
     //   .then(function (response) {
-    //     setListMovie(response.data)
+    //     setListMovie(response.data);
+    //     setLoading(false);
     //   })
     //   .catch(function (error) {
     //     // handle error
     //     console.log(error);
+    //     setLoading(false);
     //   });
     // }
     // catch {
     //   console.log("ERRO", message)
     // }
 
-    return;
+    // return;
   }, [limit]);
 
   // redux -------------------------------------------------------
@@ -103,7 +110,7 @@ function MovieCPN({
             <div className="line2"></div>
           </div>
         </div>
-
+        <Skeleton loading={loading}>
         <Row className="flex-card">
           {listMovie.map((item, index) => (
             <div key={index}>
@@ -130,12 +137,13 @@ function MovieCPN({
                     className="meta-title"
                     title={item.name}
                     description={item.name_vn}
-                  />
+                    />
                 </Card>
               </Col>
             </div>
           ))}
         </Row>
+        </Skeleton>
 
         <div className="view-more">
           <Link to="/pagemovie">

@@ -14,6 +14,7 @@ import { BookTicketFoodStyle } from "./bookticket_foodStyle";
 import TicketService from '../../../serivces/ticket.service'
 import sessionService from "../../../serivces/session.service";
 import SeatService from "../../../serivces/tk_seat.service";
+import ComboService from "../../../serivces/combo.service";
 // const axios = require("axios").default;
 
 const BookTicketFood = () => {
@@ -139,6 +140,22 @@ const BookTicketFood = () => {
   }, [totalPriceTicket, totalPriceTicket_member]);
 
   // ----------------------------------------------------------------------------
+  // fetch combo 
+  const [listCombo, setListCombo] = useState([]);
+
+  useEffect(() => {
+    const fetchCombo = async () => {
+      try {
+        const response = await ComboService.getComBoAll();
+        console.log(response.data.combo);
+        setListCombo(response.data.combo);
+      } catch (error) {
+        console.log("Failed to fetch combo list: ", error);
+      }
+    };
+    fetchCombo();
+  }, []);
+
   const combo_1 = [
     {
       name_combo: "Combo 1 Big",

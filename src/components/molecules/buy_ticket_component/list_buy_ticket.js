@@ -1,11 +1,11 @@
-import { Collapse } from "antd";
+import { Collapse, message, Skeleton } from "antd";
 import React, { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
-import { ListBuyTicketStyle } from "./list_buy_ticket-style";
-import MovieService from "../../../serivces/movie.service";
 import { useDispatch, useSelector } from "react-redux";
+import { Link } from "react-router-dom";
 import { saveTicketList } from "../../../redux/action/saveTicket";
-import { message } from 'antd';
+import MovieService from "../../../serivces/movie.service";
+import { ListBuyTicketStyle } from "./list_buy_ticket-style";
+import sessionService from "../../../serivces/session.service";
 const { Panel } = Collapse;
 const axios = require("axios");
 
@@ -18,6 +18,7 @@ const BuyTicketCPN = () => {
   const [rap, setRap] = useState(["Vui lòng chọn rạp"]);
   const [state, setState] = useState("span");
   const [state2, setState2] = useState("span2");
+  const [loading,setLoading] = useState(true);
 
   const ChangeBtn = () => {
     setState("span");
@@ -34,7 +35,8 @@ const BuyTicketCPN = () => {
   console.table([infoTicketList]);
   // redux ----------------------------------------------------------------------
   // event handle show rap
-  const handleShowrap = (e) => {
+  const handleShowrap = (e,idMovie) => {
+    console.log(idMovie);
     // lấy thông tin (tên phim, hình ảnh) lưu vào redux
     const saveNameMovie = {
       name_mv: e.target.parentElement.innerText,
@@ -48,37 +50,39 @@ const BuyTicketCPN = () => {
     e.target.parentElement.style.backgroundColor = "rgba(223, 228, 234,1.0)";
     e.target.parentElement.setAttribute("id", "styleTicket");
 
-    // lấy dữ liệu từ api session
-    Promise.all([axios({
-      method: "get",
-      url: "https://618ca5c8ded7fb0017bb9657.mockapi.io/rap",
-    }), axios({
-      method: "get",
-      url: "https://cinemafptproject.herokuapp.com/v1.php/session",
-    })])
-    
-    .then(function (response) {
-      // handle success
-      setRap(response[0].data);
-      time.shift(time[0]);
-      for(let i = 0 ; i < response[1].data.data.session.length; i++) {
-        if(response[1].data.data.session[i].name_mv === e.target.parentElement.innerText) {
-          time.push(response[1].data.data.session[i]);
-          setTime([response[1].data.data.session[i]]);
-          // console.log(response[1].data.data.session);
-          setArraySession(time);
-        }
-      }
-      })  
+    // lấy dữ liệu từ api rap
+    try {
+      axios.get('https://618ca5c8ded7fb0017bb9657.mockapi.io/rap')
+      .then(function (response) {
+        setRap(response.data);
+      })
       .catch(function (error) {
-        console.log("DONT GET DATA MOVIE!");
-        return Promise.reject(error);
+        console.log(error);
       });
+    }
+    catch {
+      console.log("ERRO", message)
+    }
+
+    // lấy dữ liệu từ api session
+    const fetchSessionList = async () => {
+      try {
+        const response = await sessionService.getAll({id_movie: idMovie});
+          console.log(response.data.session);
+          setArraySession(response.data.session);
+          setTime(response.data.session);
+        }
+        catch (error) {
+          console.log("Failed to fetch session list: ", error);
+      }
+    };
+    fetchSessionList();
+    
+  
       
       setCheck(true)
       
     };
-    // console.log(time)
   // thay đổi style
   const resetStyleRap = () => {
     if (!document.getElementById("resetStyleRap")) {
@@ -96,6 +100,7 @@ const BuyTicketCPN = () => {
         const response = await MovieService.getMovieLimit(15);
         console.log(response);
         setlistMovie2(response.data.movie);
+        setLoading(false);
       } catch (error) {
         console.log("Failed to fetch movie list: ", error);
       }
@@ -170,7 +175,7 @@ const BuyTicketCPN = () => {
           <div className="line2"></div>
         </div>
       </div>
-
+      <Skeleton loading={loading}>
       <div className="row-buyticket">
         <div className="row1">
           <Collapse
@@ -180,7 +185,7 @@ const BuyTicketCPN = () => {
           >
             <Panel className="panel" header="CHỌN PHIM" key="1">
               {listMovie2.map((item, index) => (
-                <div className="collapse1" key={index} onClick={handleShowrap}>
+                <div className="collapse1" key={index} onClick={(e) => handleShowrap(e,item.id_movie)}>
                   <div className="panel-box">
                     <img
                       src={item.img_medium}
@@ -225,7 +230,7 @@ const BuyTicketCPN = () => {
                           Vé {item.type}
                           <Link to={isLogin ? "bookticket-food" : "auth/login"}>
                             <span className="box_time" onClick={() => handleLogin(item.id_session,item.room_number)}>
-                              {item.date_start}
+                              {item.time_start} 
                             </span>
                           </Link>
                         </p>
@@ -240,6 +245,7 @@ const BuyTicketCPN = () => {
           </Collapse>
         </div>
       </div>
+      </Skeleton>
     </ListBuyTicketStyle>
   );
 };
