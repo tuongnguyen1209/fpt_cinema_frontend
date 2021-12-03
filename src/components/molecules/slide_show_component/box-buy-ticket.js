@@ -13,11 +13,30 @@ const BoxBuyTicket = () => {
     console.log(`selected ${value}`);
   }
 
-  const [listMovie, setListMovie] = useState([]);
-  const [listDay, setListDay] = useState([]);
-  const [listTime, setListTime] = useState([]);
-  const [listRap, setListRap] = useState([]);
-  const [idMovie, setIdMovie] = useState("");
+       function handleChange(value) {
+            console.log(`selected ${value}`);
+      }
+
+      const [listMovie, setListMovie] = useState([]);
+      const [listDay, setListDay] = useState([]);
+      const [listTime, setListTime] = useState([]);
+      const [listRap, setListRap] = useState([]);
+      const [idMovie,setIdMovie] = useState("");
+
+      useEffect(() => {
+            setIdMovie("");
+            const fetchMovieList = async () => {
+                  try {
+                        const response = await MovieService.getMovieLimit(6);
+                        // console.log("data Movie",response);
+                        setListMovie(response.data.movie);
+                  }catch (error) {
+                        console.log("Failed to fetch movie list: ",error);
+                  }
+            }
+            fetchMovieList();
+      },[])
+ 
 
   useEffect(() => {
     setIdMovie("");

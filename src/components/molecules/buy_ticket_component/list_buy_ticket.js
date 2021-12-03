@@ -84,6 +84,7 @@ const BuyTicketCPN = () => {
   };
   // thay đổi style
   const resetStyleRap = () => {
+    console.log(time);
     if (!document.getElementById("resetStyleRap")) {
       return;
     } else {
