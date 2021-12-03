@@ -110,7 +110,7 @@ export const HomePage = styled.div`
                     width: 150px;
                     height: 100px;
 
-                }
+                }   
                 .img-mask {
                     height: 100%;
                     button {

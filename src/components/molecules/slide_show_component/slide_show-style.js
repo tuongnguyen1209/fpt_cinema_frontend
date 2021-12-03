@@ -99,4 +99,11 @@ export const SlideShowStyle = styled.div`
         }
     }
 
+    @media screen and (max-width: 480px) {
+        .ant-select:not(.ant-select-customize-input) .ant-select-selector {
+        background-color: rgba(255,255,255,0.3);
+        color: black;
+    }
+    }
+
 `

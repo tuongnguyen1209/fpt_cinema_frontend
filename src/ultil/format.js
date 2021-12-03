@@ -16,3 +16,9 @@ export const formatPrice = (tien) => {
     maximumFractionDigits: 1,
   }).format(tien);
 };
+
+export const formatPrice2 = (tien) => {
+  return new Intl.NumberFormat("it-IT", {
+    maximumFractionDigits: 1,
+  }).format(tien);
+};

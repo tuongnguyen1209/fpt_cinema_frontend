@@ -44,6 +44,29 @@ const PageTransactionStyle = styled.div`
             padding: 10px;
             text-align: center;
         }
+        .paid {
+            font-size: 0.7rem;
+            background-color: gray;
+            color: white;
+            padding: 5px;
+            width: 120px;
+            border: none;
+            outline: none;
+            cursor: pointer;
+        }
+        .unpaid {
+            font-size: 0.7rem;
+            background-color: red;
+            color: white;
+            padding: 5px;
+            width: 120px;
+            border: none;
+            outline: none;
+            cursor: pointer;
+        }
+        .unpaid:hover {
+            opacity: 0.8;
+        }
     }
 `
 const PageTransaction = () => {
@@ -111,7 +134,11 @@ const PageTransaction = () => {
             console.log(error);
           })  
     },[idUser])
+    
 
+    const handleRouter = () => {
+        
+    }
 
     // useEffect(() => {
 
@@ -180,7 +207,7 @@ const PageTransaction = () => {
                             ))}
                         </td>
                         <td>{item?.ticket_information}</td>
-                        <td>{item?.status === '1' ? "Sắp chiếu" : "Đã chiếu"}</td>
+                        <td>{item?.status === '1' ? <button className="paid">Đã Thanh Toán</button> : <button onClick={handleRouter} className="unpaid">Chưa Thanh Toán</button>}</td>
                         <td>{item?.Total_money} VNĐ</td>
                     </tr>
                 ))}
