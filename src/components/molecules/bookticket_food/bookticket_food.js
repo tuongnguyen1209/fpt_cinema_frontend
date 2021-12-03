@@ -537,9 +537,9 @@ const BookTicketFood = () => {
     let room_random = Math.trunc(Math.random() * 9 + 1);
     const saveSeat = {
       seat: ArraySeat,
-       Total_money: totalAll,
-      id_combo: [2,3],
- 
+      Total_money: totalAll,
+      id_combo: [2, 3],
+
       ticket_information: `Vé thành viên (${counting_member}), Vé thường (${counting})`,
       full_name: loginReducer.user.full_name,
       id_room: room_random,
@@ -583,25 +583,24 @@ const BookTicketFood = () => {
     saveInfoTicket();
 
     try {
-       const data={
-
-        "id_session": infoTicketList.session,
-        "Total_money": infoTicketList.Total_money,
-        "id_user":infoTicketList.id_user,
-        "id_promotion":"3",
-        "time_create":"",
-        "status":"1",
-        "ticket_information": infoTicketList.ticket_information,
-        "id_seat" : infoTicketList.seat,
-        "id_combo": infoTicketList.id_combo,
-        "quantity": [quantityCombo1,quantityCombo2,quantityCombo3],
-        "unit_price":[8000,9000]
-      }
+      const data = {
+        id_session: infoTicketList.session,
+        Total_money: infoTicketList.Total_money,
+        id_user: infoTicketList.id_user,
+        id_promotion: "3",
+        time_create: "",
+        status: "1",
+        ticket_information: infoTicketList.ticket_information,
+        id_seat: infoTicketList.seat,
+        id_combo: infoTicketList.id_combo,
+        quantity: [quantityCombo1, quantityCombo2, quantityCombo3],
+        unit_price: [8000, 9000],
+      };
       console.log(data);
-      const response = await TicketService.createTicket(data)
- 
+      const response = await TicketService.createTicket(data);
+
       console.log(response);
-      window.open(response.payment.data,"_self");
+      window.open(response.payment.data, "_self");
       success();
     } catch {
       console.log("Error", message);
