@@ -15,9 +15,14 @@ import TicketService from '../../../serivces/ticket.service'
 import sessionService from "../../../serivces/session.service";
 import SeatService from "../../../serivces/tk_seat.service";
 import ComboService from "../../../serivces/combo.service";
+import {formatPrice, formatPrice2} from "../../../ultil/format";
+import { Skeleton } from 'antd';
+
 // const axios = require("axios").default;
 
 const BookTicketFood = () => {
+
+  const [loading, setLoading] = useState(true); 
 
   const error = () => {
     message.error("Bạn chưa mua vé!");
@@ -42,7 +47,7 @@ const BookTicketFood = () => {
   ];
 
   // lấy giá
-
+  
   let price_ticket;
   for (let i = 0; i < ticket_adults.length; i++) {
     price_ticket = ticket_adults[i].price_ticket;
@@ -143,12 +148,14 @@ const BookTicketFood = () => {
   // fetch combo 
   const [listCombo, setListCombo] = useState([]);
   console.log(listCombo);
+
   useEffect(() => {
     const fetchCombo = async () => {
       try {
         const response = await ComboService.getComBoAll();
         console.log(response.data.combo);
         setListCombo(response.data.combo);
+        setLoading(false); 
       } catch (error) {
         console.log("Failed to fetch combo list: ", error);
       }
@@ -158,11 +165,10 @@ const BookTicketFood = () => {
 
   const combo_1 = [
     {
-      name_combo: "Combo 1 Big",
-      img_combo:
-        "https://www.galaxycine.vn/media/2021/4/7/combo1_1617790472299.jpg",
+      name_combo: listCombo[0]?.name_combo,
+      img_combo: listCombo[0]?.img_combo,
       detail_combo: "1 BẮP VÀ 1 NƯỚC COCA",
-      price_combo: 65,
+      price_combo: listCombo[0]?.price,
     },
   ];
 
@@ -206,7 +212,7 @@ const BookTicketFood = () => {
       setCounting_combo1(counting_combo1 + 1);
       // tinh tong
       setTotalPriceCombo1(
-        (totalPriceCombo1) => totalPriceCombo1 + price_combo1
+        (totalPriceCombo1) => parseInt(totalPriceCombo1) + parseInt(price_combo1)
       );
       setGetCombo1(name_combo1.current.innerHTML);
       SetQuantityCombo1((quantityCombo1) => quantityCombo1 + 1);
@@ -217,14 +223,12 @@ const BookTicketFood = () => {
 
   const combo_2 = [
     {
-      name_combo: "Combo 2 Big",
-      img_combo:
-        "https://www.galaxycine.vn/media/2021/4/7/combo2_1617790465669.jpg",
+      name_combo: listCombo[1]?.name_combo,
+      img_combo: listCombo[1]?.img_combo,
       detail_combo: "1 BẮP VÀ 2 NƯỚC COCA",
-      price_combo: 75,
+      price_combo: listCombo[1]?.price,
     },
-  ];
-
+  ]
   // lấy giá
 
   let price_combo2;
@@ -265,7 +269,7 @@ const BookTicketFood = () => {
       setCounting_combo2(counting_combo2 + 1);
       // tinh tong
       setTotalPriceCombo2(
-        (totalPriceCombo2) => totalPriceCombo2 + price_combo2
+        (totalPriceCombo2) => parseInt(totalPriceCombo2) + parseInt(price_combo2)
       );
       setGetCombo2(name_combo2.current.innerHTML);
       SetQuantityCombo2((quantityCombo2) => quantityCombo2 + 1);
@@ -276,11 +280,10 @@ const BookTicketFood = () => {
 
   const combo_3 = [
     {
-      name_combo: "Combo 3 Big",
-      img_combo:
-        "https://www.galaxycine.vn/media/2021/4/7/combo2_1617790465669.jpg",
+      name_combo: listCombo[2]?.name_combo,
+      img_combo: listCombo[2]?.img_combo,
       detail_combo: "2 BẮP VÀ 4 NƯỚC COCA",
-      price_combo: 150,
+      price_combo: listCombo[2]?.price,
     },
   ];
 
@@ -324,7 +327,7 @@ const BookTicketFood = () => {
       setCounting_combo3(counting_combo3 + 1);
       // tinh tong
       setTotalPriceCombo3(
-        (totalPriceCombo3) => totalPriceCombo3 + price_combo3
+        (totalPriceCombo3) => parseInt(totalPriceCombo3) + parseInt(price_combo3)
       );
       setGetCombo3(name_combo3.current.innerHTML);
       SetQuantityCombo3((quantityCombo3) => quantityCombo3 + 1);
@@ -669,8 +672,10 @@ const BookTicketFood = () => {
     <BookTicketFoodStyle>
       <div className="container_custom">
         <div className={TogglePageBookTicket}>
+          <Skeleton loading={loading}>
           <div className="box_bookticket">
             <h3>CHỌN VÉ/THỨC ĂN</h3>
+
             <div className="table_book">
               <table>
                 <tr>
@@ -682,9 +687,9 @@ const BookTicketFood = () => {
                 {ticket_adults.map((item, index) => (
                   <tr key={index}>
                     <td>
-                      <span>{item.category_ticket}</span>
+                      <span>{item?.category_ticket}</span>
                       <br></br>
-                      <span>{item.category_ticket2}</span>
+                      <span>{item?.category_ticket2}</span>
                     </td>
                     <td>
                       {" "}
@@ -696,16 +701,16 @@ const BookTicketFood = () => {
                         <PlusCircleFilled onClick={handlePluss} />
                       </span>{" "}
                     </td>
-                    <td>{item.price_ticket},000</td>
-                    <td>{totalPriceTicket},000</td>
+                    <td>{item?.price_ticket?.toLocaleString('vi-VN')}</td>
+                    <td>{totalPriceTicket?.toLocaleString('vi-VN')}</td>
                   </tr>
                 ))}
                 {ticket_member.map((item, index) => (
                   <tr key={index}>
                     <td>
-                      <span>{item.category_ticket}</span>
+                      <span>{item?.category_ticket}</span>
                       <br></br>
-                      <span>{item.category_ticket2}</span>
+                      <span>{item?.category_ticket2}</span>
                     </td>
                     <td>
                       {" "}
@@ -717,15 +722,15 @@ const BookTicketFood = () => {
                         <PlusCircleFilled onClick={handlePluss_member} />
                       </span>{" "}
                     </td>
-                    <td>{item.price_ticket},000</td>
-                    <td>{totalPriceTicket_member},000</td>
+                    <td>{item?.price_ticket?.toLocaleString('vi-VN')}</td>
+                    <td>{totalPriceTicket_member?.toLocaleString('vi-VN')}</td>
                   </tr>
                 ))}
                 <tr>
                   <td>Tổng</td>
                   <td></td>
                   <td></td>
-                  <td>{totalTableTicket},000</td>
+                  <td>{totalTableTicket?.toLocaleString('vi-VN')}</td>
                 </tr>
               </table>
 
@@ -737,14 +742,15 @@ const BookTicketFood = () => {
                   <th>Giá(VNĐ)</th>
                   <th>Tổng(VNĐ)</th>
                 </tr>
+
                 {combo_1.map((item, index) => (
                   <tr key={index}>
                     <td className="td_combo">
-                      <img src={item.img_combo} alt="combo" />
+                      <img src={item?.img_combo} alt="combo" />
                       <p>
-                        <span ref={name_combo1}>{item.name_combo}</span>
+                        <span ref={name_combo1}>{item?.name_combo}</span>
                         <br></br>
-                        <span>{item.detail_combo}</span>
+                        <span>{item?.detail_combo}</span>
                       </p>
                     </td>
                     <td>
@@ -757,18 +763,18 @@ const BookTicketFood = () => {
                         <PlusCircleFilled onClick={handlePluss_combo1} />
                       </span>{" "}
                     </td>
-                    <td>{item.price_combo},000</td>
-                    <td>{totalPriceCombo1},000</td>
+                    <td>{formatPrice2(item?.price_combo)}</td>
+                    <td>{totalPriceCombo1?.toLocaleString('vi-VN')}</td>
                   </tr>
                 ))}
                 {combo_2.map((item, index) => (
                   <tr key={index}>
                     <td className="td_combo">
-                      <img src={item.img_combo} alt="combo" />
+                      <img src={item?.img_combo} alt="combo" />
                       <p>
-                        <span ref={name_combo2}>{item.name_combo}</span>
+                        <span ref={name_combo2}>{item?.name_combo}</span>
                         <br></br>
-                        <span>{item.detail_combo}</span>
+                        <span>{item?.detail_combo}</span>
                       </p>
                     </td>
                     <td>
@@ -781,18 +787,18 @@ const BookTicketFood = () => {
                         <PlusCircleFilled onClick={handlePluss_combo2} />
                       </span>{" "}
                     </td>
-                    <td>{item.price_combo},000</td>
-                    <td>{totalPriceCombo2},000</td>
+                    <td>{formatPrice2(item?.price_combo)}</td>
+                    <td>{totalPriceCombo2?.toLocaleString('vi-VN')}</td>
                   </tr>
                 ))}
                 {combo_3.map((item, index) => (
                   <tr key={index}>
                     <td className="td_combo">
-                      <img src={item.img_combo} alt="combo" />
+                      <img src={item?.img_combo} alt="combo" />
                       <p>
-                        <span ref={name_combo3}>{item.name_combo}</span>
+                        <span ref={name_combo3}>{item?.name_combo}</span>
                         <br></br>
-                        <span>{item.detail_combo}</span>
+                        <span>{item?.detail_combo}</span>
                       </p>
                     </td>
                     <td>
@@ -805,19 +811,20 @@ const BookTicketFood = () => {
                         <PlusCircleFilled onClick={handlePluss_combo3} />
                       </span>{" "}
                     </td>
-                    <td>{item.price_combo},000</td>
-                    <td>{totalPriceCombo3},000</td>
+                    <td>{formatPrice2(item?.price_combo)}</td>
+                    <td>{totalPriceCombo3?.toLocaleString('vi-VN')}</td>
                   </tr>
                 ))}
                 <tr>
                   <td>Tổng</td>
                   <td></td>
                   <td></td>
-                  <td>{totalTableCombo},000</td>
+                  <td>{totalTableCombo?.toLocaleString('vi-VN')}</td>
                 </tr>
               </table>
             </div>
           </div>
+          </Skeleton>
         </div>
 
         <div className={TogglePageSeat}>
@@ -1422,7 +1429,7 @@ const BookTicketFood = () => {
             </p>
             <p className="total">
               <b>Tổng:</b>{" "}
-              <span style={{ "padding-left": "10px" }}>{totalAll}</span>
+              <span style={{ "padding-left": "10px" }}>{formatPrice(totalAll)}</span>
             </p>
 
             <div className="view-more">
