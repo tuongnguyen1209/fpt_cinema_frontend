@@ -19,7 +19,7 @@ function MovieCPN({
 
   const [state, setState] = useState("span");
   const [state2, setState2] = useState("span2");
-  const [loading,setLoading] = useState(true);
+  const [loading, setLoading] = useState(true);
 
   const ChangeBtn = (e) => {
     e.preventDefault();
@@ -36,7 +36,6 @@ function MovieCPN({
   const [listMovie, setListMovie] = useState([]);
 
   useEffect(() => {
-
     const fetchMovieList = async () => {
       try {
         const response = await MovieService.getMovieLimit(limit);
@@ -109,38 +108,38 @@ function MovieCPN({
           </div>
         </div>
         <Skeleton loading={loading}>
-        <Row className="flex-card">
-          {listMovie.map((item, index) => (
-            <div key={index}>
-              <Col>
-                <Card
-                  className="box-card"
-                  cover={
-                    <div className="box-mask">
-                      <img
-                        className="img_medium"
-                        width="400px"
-                        src={imgSize ? item.image_large : item.img_medium}
-                        alt="img"
-                      />
-                      <div className="img-mask">
-                        <Link to={`/detailmovie/${item.id_movie}`}>
-                          <button>Mua Vé</button>
-                        </Link>
+          <Row className="flex-card">
+            {listMovie.map((item, index) => (
+              <div key={index}>
+                <Col>
+                  <Card
+                    className="box-card"
+                    cover={
+                      <div className="box-mask">
+                        <img
+                          className="img_medium"
+                          width="400px"
+                          src={imgSize ? item.image_large : item.img_medium}
+                          alt="img"
+                        />
+                        <div className="img-mask">
+                          <Link to={`/detailmovie/${item.id_movie}`}>
+                            <button>Mua Vé</button>
+                          </Link>
+                        </div>
                       </div>
-                    </div>
-                  }
-                >
-                  <Meta
-                    className="meta-title"
-                    title={item.name}
-                    description={item.name_vn}
+                    }
+                  >
+                    <Meta
+                      className="meta-title"
+                      title={item.name}
+                      description={item.name_vn}
                     />
-                </Card>
-              </Col>
-            </div>
-          ))}
-        </Row>
+                  </Card>
+                </Col>
+              </div>
+            ))}
+          </Row>
         </Skeleton>
 
         <div className="view-more">
