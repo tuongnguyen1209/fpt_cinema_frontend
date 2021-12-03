@@ -22,6 +22,7 @@ const BoxBuyTicket = () => {
       const [idMovie,setIdMovie] = useState("");
 
       useEffect(() => {
+            setIdMovie("");
             const fetchMovieList = async () => {
                   try {
                         const response = await MovieService.getMovieLimit(6);

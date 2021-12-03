@@ -37,7 +37,7 @@ const BookTicketFood = () => {
     {
       category_ticket: "Người lớn",
       category_ticket2: "Vé 2D",
-      price_ticket: 65,
+      price_ticket: 65000,
     },
   ];
 
@@ -85,7 +85,7 @@ const BookTicketFood = () => {
     {
       category_ticket: "Thành viên",
       category_ticket2: "Vé 2D",
-      price_ticket: 55,
+      price_ticket: 55000,
     },
   ];
 
@@ -142,7 +142,7 @@ const BookTicketFood = () => {
   // ----------------------------------------------------------------------------
   // fetch combo 
   const [listCombo, setListCombo] = useState([]);
-
+  console.log(listCombo);
   useEffect(() => {
     const fetchCombo = async () => {
       try {
@@ -537,7 +537,7 @@ const BookTicketFood = () => {
     let room_random = Math.trunc(Math.random() * 9 + 1);
     const saveSeat = {
       seat: ArraySeat,
-      Total_money: `${totalAll}.000`,
+      Total_money: totalAll,
       id_combo: [2,3],
       ticket_information: `Vé thành viên (${counting_member}), Vé thường (${counting})`,
       full_name: loginReducer.user.full_name,
@@ -576,22 +576,12 @@ const BookTicketFood = () => {
   };
 
   // post data lên sever
-  const PostDataTicket = async () => {
+  const PostDataTicket = async (e) => {
+    e.preventDefault();
     saveInfoTicket();
 
     try {
-      const response = TicketService.createTicket({
-        // name_mv: infoTicketList.name_mv,
-        // full_name: infoTicketList.full_name,
-        // time_start: "10:30",
-        // id_combo: infoTicketList.id_combo,
-        // seat: infoTicketList.seat,
-        // id_room: infoTicketList.id_room,
-        // ticket_information: infoTicketList.ticket_information,
-        // status: infoTicketList.status,
-        // Total_money: infoTicketList.Total_money,
-        // quantity: "5",
-        // unit_price: "8000",
+      const data={
 
         "id_session": infoTicketList.session,
         "Total_money": infoTicketList.Total_money,
@@ -604,12 +594,11 @@ const BookTicketFood = () => {
         "id_combo": infoTicketList.id_combo,
         "quantity": [quantityCombo1,quantityCombo2,quantityCombo3],
         "unit_price":[8000,9000]
-      },
-      {
-        headers: {'Content-Type': 'application/json'}
       }
-        )
+      console.log(data);
+      const response = await TicketService.createTicket(data)
       console.log(response);
+      window.open(response.payment.data,"_self");
       success();
     }
     catch {
@@ -1433,7 +1422,7 @@ const BookTicketFood = () => {
             </p>
             <p className="total">
               <b>Tổng:</b>{" "}
-              <span style={{ "padding-left": "10px" }}>{totalAll},000 VNĐ</span>
+              <span style={{ "padding-left": "10px" }}>{totalAll}</span>
             </p>
 
             <div className="view-more">

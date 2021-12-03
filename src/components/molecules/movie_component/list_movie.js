@@ -1,11 +1,9 @@
 import { RightOutlined } from "@ant-design/icons";
-import { Card, Col, message, Row } from "antd";
-import axios from "axios";
+import { Card, Col, Row, Skeleton } from "antd";
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import MovieService from "../../../serivces/movie.service";
 import { ListMovieStyle } from "./list_movie-style";
-import { Skeleton } from 'antd';
 
 const { Meta } = Card;
 

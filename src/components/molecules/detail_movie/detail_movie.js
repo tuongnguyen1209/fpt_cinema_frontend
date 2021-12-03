@@ -9,12 +9,16 @@ import { DetailMovieCPNStyle } from "./detail_movieStyle";
 import sessionService from "../../../serivces/session.service";
 import {useDispatch,useSelector } from "react-redux";
 import { saveTicketList } from "../../../redux/action/saveTicket";
+import { Skeleton } from 'antd';
+
 const { Option } = Select;
 const dateFormat = 'YYYY-MM-DD';
 
 const key = 'updatable';
 
 const openMessage = () => {
+
+  
   message.loading({ content: 'Loading...', key });
   setTimeout(() => {
     message.success({ content: 'Cảm ơn bạn đã đánh giá!', key, duration: 2 });
@@ -23,11 +27,11 @@ const openMessage = () => {
 const DetailMovieCPN = () => {
     // lấy id phim
     const idMovie = useParams().id;
-  
-    
     
     const [listMovie, setListMovie] = useState([]);
     const [listSession, setListSession] = useState([]);
+    const [loading,setLoading] = useState(true);
+
     useEffect(() => {
       const fetchMovieList = async () => {
         try {
@@ -45,6 +49,7 @@ const DetailMovieCPN = () => {
           const response = await sessionService.getAll({id_movie : idMovie});
           console.log(response.data.session);
           setListSession(response.data.session);
+          setLoading(false);
         }catch (error) {
           console.log("Failed to fetch movie list: ",error);
         }
@@ -132,6 +137,7 @@ const DetailMovieCPN = () => {
         <DetailMovieCPNStyle>
             <div className="container_custom">
                 <div className="main_detail">
+                  <Skeleton avatar paragraph={{ rows: 2 }} style={{padding: 20}} loading={loading}>
                     <Breadcrumb itemRender={itemRender} routes={routes} />
                     <div className="container-detail">
                         <div className="box-detail">
@@ -230,6 +236,7 @@ const DetailMovieCPN = () => {
 
                         </div>
                     </div>
+                  </Skeleton>
                 </div>
                 <div className="aside_detail">
                     <div className="box-email">
