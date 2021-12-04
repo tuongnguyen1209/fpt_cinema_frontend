@@ -97,7 +97,7 @@ const BuyTicketCPN = () => {
   useEffect(() => {
     const fetchMovieList = async () => {
       try {
-        const response = await MovieService.getMovieLimit(15);
+        const response = await MovieService.getMovieLimit(100);
         console.log(response);
         setlistMovie2(response.data.movie);
         setLoading(false);

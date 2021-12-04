@@ -6,6 +6,7 @@ import { useSelector } from "react-redux";
 import styled from "styled-components";
 // import MovieService from "../../../serivces/movie.service";
 import TicketService from "../../../serivces/ticket.service";
+import { formatPrice } from "../../../ultil/format";
 
 const PageTransactionStyle = styled.div`
     .example {
@@ -208,7 +209,7 @@ const PageTransaction = () => {
                         </td>
                         <td>{item?.ticket_information}</td>
                         <td>{item?.status === '1' ? <button className="paid">Đã Thanh Toán</button> : <button onClick={handleRouter} className="unpaid">Chưa Thanh Toán</button>}</td>
-                        <td>{item?.Total_money} VNĐ</td>
+                        <td>{formatPrice(item?.Total_money)}</td>
                     </tr>
                 ))}
                 </table>

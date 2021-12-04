@@ -192,11 +192,12 @@ const DropMenuStyle = styled.div`
 `;
 
 const DropMenu = () => {
+
   return (
     <DropMenuStyle>
       <div class="container_custom">
-        <MovieCPN title={"PHIM ĐANG CHIẾU"} limit={4} />
-        <MovieCPN title2={"PHIM SẮP CHIẾU"} limit={4} />
+        <MovieCPN title={"PHIM ĐANG CHIẾU"} limit={4} statusMovieMenu={"congchieu"}/>
+        <MovieCPN title2={"PHIM SẮP CHIẾU"} limit={4} statusMovieMenu={"sapchieu"} />
       </div>
     </DropMenuStyle>
   );
