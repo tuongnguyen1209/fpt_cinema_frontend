@@ -539,15 +539,14 @@ const BookTicketFood = () => {
   // console.table([infoTicketList]);
   const saveInfoTicket = () => {
     // let code_random = Math.trunc(Math.random() * 9000 + 1000);
-    let room_random = Math.trunc(Math.random() * 9 + 1);
+    // let room_random = Math.trunc(Math.random() * 9 + 1);
     const saveSeat = {
       seat: ArraySeat,
       Total_money: totalAll,
-      id_combo: [2, 3],
-
+      id_combo: [1,2,3],
       ticket_information: `Vé thành viên (${counting_member}), Vé thường (${counting})`,
       full_name: loginReducer.user.full_name,
-      id_room: room_random,
+      id_room: "",
       status: "1",
       id_user: loginReducer.user.id_user,
     };
@@ -594,12 +593,12 @@ const BookTicketFood = () => {
         id_user: infoTicketList.id_user,
         id_promotion: "3",
         time_create: "",
-        status: "1",
+        status: "",
         ticket_information: infoTicketList.ticket_information,
         id_seat: infoTicketList.seat,
         id_combo: infoTicketList.id_combo,
         quantity: [quantityCombo1, quantityCombo2, quantityCombo3],
-        unit_price: [8000, 9000],
+        unit_price: [price_combo1,price_combo2,price_combo3],
       };
       console.log(data);
       const response = await TicketService.createTicket(data);
@@ -610,24 +609,6 @@ const BookTicketFood = () => {
     } catch {
       console.log("Error", message);
     }
-    // axios.post("https://cinemafptproject.herokuapp.com/v1.php/ticket", {
-    //     name_mv: infoTicketList.name_mv,
-    //     full_name: infoTicketList.full_name,
-    //     date: "30-11-2021",
-    //     time_start: "10:30",
-    //     combo: infoTicketList.combo,
-    //     seat: infoTicketList.seat,
-    //     id_room: infoTicketList.id_room,
-    //     ticket_information: infoTicketList.ticket_information,
-    //     status: infoTicketList.status,
-    //     Total_money: infoTicketList.Total_money,
-    //   })
-    //   .then(function (response) {
-    //     console.log(response);
-    //   })
-    //   .catch(function (error) {
-    //     console.log(error);
-    //   });
   };
 
   // check login

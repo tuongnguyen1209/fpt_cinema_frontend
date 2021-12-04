@@ -7,6 +7,7 @@ import MovieCPN from "../movie_component/list_movie";
 import Title from "../title_component/title";
 import { SettingAccountStyle } from "./setting_acountStyle";
 import userService from "../../../serivces/user.service";
+import { formatPrice } from "../../../ultil/format";
 const SettingAccount = () => {     
     
     const [loading,setLoading] = useState(true);
@@ -171,7 +172,7 @@ const SettingAccount = () => {
 
                                 <div className="form-group">
                                     <label>Tổng chi tiêu</label>
-                                    <Input size={'large'} type="text" value={infoUser?.summ_all || "Chưa có tổng chi tiêu"} disabled/>
+                                    <Input size={'large'} type="text" value={formatPrice(infoUser?.summ_all) || "Chưa có tổng chi tiêu"} disabled/>
                                 </div>
                             </div>
                             <div className="form-group_row2">
