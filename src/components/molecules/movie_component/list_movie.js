@@ -14,79 +14,55 @@ function MovieCPN({
   titleHome2,
   limit = 6,
   imgSize = false,
+  statusMovieMenu,
 }) {
   // const Photo = React.lazy(() => import('./features/Phto'));
 
   const [state, setState] = useState("span");
   const [state2, setState2] = useState("span2");
   const [loading, setLoading] = useState(true);
+  const [statusMovie,setStatusMovie] = useState("congchieu");
 
   const ChangeBtn = (e) => {
     e.preventDefault();
     setState("span");
     setState2("span2");
+    setStatusMovie("congchieu");
   };
 
   const ChangeBtn2 = (e) => {
     e.preventDefault();
     setState2("span");
     setState("span2");
+    setStatusMovie("sapchieu");
   };
 
   const [listMovie, setListMovie] = useState([]);
 
-  useEffect(() => {
+  useEffect(function movie() {
     const fetchMovieList = async () => {
       try {
-        const response = await MovieService.getMovieLimit(limit);
-        // console.log(response);
-        setListMovie(response.data.movie);
-        setLoading(false);
+        if(statusMovieMenu) {
+          const response = await MovieService.getMovieLimit(limit,statusMovieMenu);
+          setListMovie(response.data.movie);
+          setLoading(false);
+          // console.log(response);
+        }
+        else {
+          const response = await MovieService.getMovieLimit(limit,statusMovie);
+          setListMovie(response.data.movie);
+          setLoading(false);
+        }
       } catch (error) {
         console.log("Failed to fetch movie list: ", error);
       }
     };
     fetchMovieList();
 
-    // try {
-    //   axios.get('https://61966cdbaf46280017e7e07c.mockapi.io/movie_2')
-    //   .then(function (response) {
-    //     setListMovie(response.data);
-    //     setLoading(false);
-    //   })
-    //   .catch(function (error) {
-    //     // handle error
-    //     console.log(error);
-    //     setLoading(false);
-    //   });
-    // }
-    // catch {
-    //   console.log("ERRO", message)
-    // }
 
-    // return;
-  }, [limit]);
+  }, [limit,statusMovie,statusMovieMenu]);
+  
 
-  // redux -------------------------------------------------------
-
-  // const idMovie = useSelector(state => state.findIdMovie);
-  // const dispatch = useDispatch();
-
-  // console.log(idMovie);
-
-  // const handleGetId = e => {
-
-  //   console.log(e.target.value);
-  //   const saveIdMovie = {
-  //     id: e.target.value,
-  //   }
-
-  //   const action = findDetailMovie(saveIdMovie);
-  //   console.log(action)
-  //   dispatch(action)
-  // }
-
-  // redux -------------------------------------------------------
   return (
     <ListMovieStyle>
       <div className="row-movie">

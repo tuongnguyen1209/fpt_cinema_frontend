@@ -7,8 +7,8 @@ const MovieService = {
   getMovieById: (id) => {
     return axiosClient.get(`/v1.php/movie`, { params: { id_movie: id } });
   },
-  getMovieLimit: (param) => {
-    return axiosClient.get(`/v1.php/movie?limit=${param}`);
+  getMovieLimit: (limit,sort) => {
+    return axiosClient.get(`/v1.php/movie?limit=${limit}&sort=${sort || "congchieu"}`);
     // return axiosClient.get(`/v1.php/movie`, { params: { id_movie: id } });
   },
   createMovie: (data) => {
