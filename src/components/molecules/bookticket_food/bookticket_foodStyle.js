@@ -307,7 +307,7 @@ export const BookTicketFoodStyle = styled.div`
                   text-transform: uppercase;
                   color: white;
                   border: 1px solid #f26b38;
-                  padding: 12px 17px;
+                  padding: 12px 2px;
                   text-decoration: none;
                   line-height: 1;
                   transition: all 0.3s;
@@ -367,6 +367,8 @@ export const BookTicketFoodStyle = styled.div`
           }
           .btn_prev_show {
             display: block;
+            width: 130px;
+            padding: 12px 2px;
           }
           button {
             margin: 0px 10px;
