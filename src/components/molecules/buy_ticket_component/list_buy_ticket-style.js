@@ -31,7 +31,14 @@ export const ListBuyTicketStyle = styled.div`
   }
 
   // css buy ticket
-
+  #styleTicket {
+    h4 {
+      color: red;
+    }
+  }
+  #resetStyleRap {
+      color: red;
+  }
   .row-buyticket {
     display: flex;
     justify-content: space-between;
@@ -60,6 +67,9 @@ export const ListBuyTicketStyle = styled.div`
       cursor: pointer;
       border-bottom: 1px solid rgba(0, 0, 0, 0.1);
       flex-wrap: wrap;
+      &:hover {
+        background: rgba(189, 195, 199,0.3);
+      }
       h4 {
         width: 75%;
         padding: 5px;
@@ -80,6 +90,9 @@ export const ListBuyTicketStyle = styled.div`
       cursor: pointer;
       border-bottom: 1px solid rgba(0, 0, 0, 0.1);
       font-size: 0.86rem;
+      &:hover {
+        background: rgba(189, 195, 199,0.3);
+      }
     }
     .panel-box-session {
       width: 100%;
