@@ -4,6 +4,7 @@ import axios from "axios";
 import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import styled from "styled-components";
+import PaymentService from "../../../serivces/payment.service";
 // import MovieService from "../../../serivces/movie.service";
 import TicketService from "../../../serivces/ticket.service";
 import { formatPrice } from "../../../ultil/format";
@@ -111,62 +112,52 @@ const PageTransaction = () => {
 
     const [billTicket,setBillTicket] = useState([]);
     const [nameRoom,setNameRoom] = useState([]);
-    useEffect(() => {
-    const fetchTransactionUser = async () => {
-            try {
-              const response = await TicketService.getTicketByUser(idUser);
-              console.log(response.data.ticket);
-              setBillTicket(response.data.ticket);
-              setSpin(false);
-            }catch (error) {
-              console.log("Failed to fetch id user: ",error);
-            }
-          }
-          fetchTransactionUser();
+    const [idTicket, setIdTicket] = useState();
+    const [linkPayment,setLinkPayment] = useState();
 
-          axios.get('https://cinemafptproject.herokuapp.com/v1.php/room')
-          .then(function (response) {
-            // handle success
-            // console.log(response.data.data.room);
-            setNameRoom(response.data.data.room);
-          })
-          .catch(function (error) {
-            // handle error
-            console.log(error);
-          })  
-    },[idUser])
     
 
-    const handleRouter = () => {
+    useEffect(() => {
+    const fetchTransactionUser = async () => {
         
+            try {
+                const response = await TicketService.getTicketByUser(idUser);
+                // console.log(response.data.ticket);
+                setBillTicket(response.data.ticket);
+                setSpin(false);
+            }catch (error) {
+                console.log("Failed to fetch id user: ",error);
+            }
+        }
+        fetchTransactionUser();
+
+        const fetchLinkPayment = async () => {
+            try {
+                const response = await PaymentService.getLinkPayment(idTicket);
+                console.log(response);
+                setLinkPayment(response.payment.data);
+            }catch (error) {
+                console.log("Failed to fetch link payment: ",error);
+            }
+        }
+        fetchLinkPayment();
+
+        
+        
+        axios.get('https://cinemafptproject.herokuapp.com/v1.php/room')
+        .then(function (response) {
+            // console.log(response.data.data.room);
+        setNameRoom(response.data.data.room);
+        })
+        .catch(function (error) {
+        console.log(error);
+    })  
+    },[idTicket,idUser])
+    
+    const handleGetIdTicket = (id_ticket) => {
+        setIdTicket(id_ticket);
+        console.log(id_ticket);
     }
-
-    // useEffect(() => {
-
-    //     axios.get('https://cinemafptproject.herokuapp.com/v1.php/ticket')
-    //     .then(function (response) {
-    //       // handle success
-    //       console.log(response.data.data.ticket);
-    //       setBillTicket(response.data.data.ticket);
-    //     })
-    //     .catch(function (error) {
-    //       // handle error
-    //       console.log(error);
-    //     })
-        
-    //     axios.get('https://cinemafptproject.herokuapp.com/v1.php/room')
-    //     .then(function (response) {
-    //       // handle success
-    //       console.log(response.data.data.room);
-    //       setNameRoom(response.data.data.room);
-    //     })
-    //     .catch(function (error) {
-    //       // handle error
-    //       console.log(error);
-    //     })  
-
-    // },[])
-
     
     return (  
         <PageTransactionStyle>
@@ -208,7 +199,7 @@ const PageTransaction = () => {
                             ))}
                         </td>
                         <td>{item?.ticket_information}</td>
-                        <td>{item?.status === '1' ? <button className="paid">Đã Thanh Toán</button> : <button onClick={handleRouter} className="unpaid">Chưa Thanh Toán</button>}</td>
+                        <td>{item?.status === '1' ? <button className="paid">Đã Thanh Toán</button> : <button className="unpaid" onClick={() => handleGetIdTicket(item.id_ticket)}><a href={linkPayment} style={{color: "white"}}>Chưa Thanh Toán</a></button>}</td>
                         <td>{formatPrice(item?.Total_money)}</td>
                     </tr>
                 ))}
