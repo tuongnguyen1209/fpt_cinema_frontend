@@ -3,21 +3,29 @@ import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import ticketService from "../../../serivces/ticket.service";
 import { formatPrice } from "../../../ultil/format";
+import queryString from "query-string";
+
+import { useLocation } from "react-router-dom";
 
 const TicketDetail = () => {
   const [data, setData] = useState();
   const [loading, setLoading] = useState(false);
   const { id } = useParams();
+  const location = useLocation();
+  const query = queryString.parse(location.search);
 
   useEffect(() => {
     (async () => {
       setLoading(true);
-      const rs = await ticketService.getAll({ code: id, type: "id_ticket" });
+      const rs = await ticketService.getAll({
+        code: id,
+        type: query.type ? "TK_code" : "id_ticket",
+      });
       console.log(rs);
       setData(rs.data.ticket[0]);
       setLoading(false);
     })();
-  }, [id]);
+  }, [id, query]);
 
   const columns = [
     {
