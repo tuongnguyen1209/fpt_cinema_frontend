@@ -1,6 +1,6 @@
 import {
+  ExclamationCircleOutlined,
   FontSizeOutlined,
-  InboxOutlined,
   QrcodeOutlined,
 } from "@ant-design/icons";
 import {
@@ -16,25 +16,14 @@ import {
   Table,
   Tabs,
   Typography,
-  Upload,
 } from "antd";
 import moment from "moment";
-import React, { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
+import React, { useEffect, useRef, useState } from "react";
+import QrReader from "react-qr-reader";
+import { Link, useHistory } from "react-router-dom";
 import sessionService from "../../../serivces/session.service";
 import ticketService from "../../../serivces/ticket.service";
 import { formatPrice } from "../../../ultil/format";
-
-const { Dragger } = Upload;
-
-const props = {
-  name: "file",
-  multiple: false,
-
-  onDrop(e) {
-    console.log("Dropped files", e.dataTransfer.files);
-  },
-};
 
 const Tickets = () => {
   const [listTicket, setListTicket] = useState([]);
@@ -48,7 +37,8 @@ const Tickets = () => {
     day: "",
   });
   const [isModalVisible, setIsModalVisible] = useState(false);
-
+  const qrcodeRef = useRef();
+  const history = useHistory();
   const [form] = Form.useForm();
 
   useEffect(() => {
@@ -139,6 +129,37 @@ const Tickets = () => {
   const handleCancel = () => {
     setIsModalVisible(false);
   };
+
+  const onScanFile = (result) => {
+    if (result) {
+      if (`${result}`.includes("polycinema")) {
+        handleChangePage(result.split("/")[1]);
+      }
+    }
+  };
+
+  const onSubmitForm = (value) => {
+    handleChangePage(value.code);
+  };
+
+  const handleChangePage = (id) => {
+    Modal.confirm({
+      title: "Xác nhận chuyển trang",
+      icon: <ExclamationCircleOutlined />,
+      content:
+        "Đã tìm thấy thông tin vé xem phim, bạn có muốn chuyển đến trang chi tiết",
+      okText: "Có",
+      cancelText: "Không",
+      onOk: () => {
+        history.push(`/admin/ticket/${id}?type=qrcode`);
+      },
+    });
+  };
+
+  const onChoneFile = () => {
+    qrcodeRef.current.openImageDialog();
+  };
+
   return (
     <div>
       <Row>
@@ -247,26 +268,27 @@ const Tickets = () => {
       >
         <Tabs defaultActiveKey="1">
           <Tabs.TabPane tab="QRCode" key="1">
-            <Dragger {...props}>
-              <p className="ant-upload-drag-icon">
-                <InboxOutlined />
-              </p>
-              <p className="ant-upload-text">
-                Click or drag file to this area to upload
-              </p>
-              <p className="ant-upload-hint">
-                Support for a single or bulk upload. Strictly prohibit from
-                uploading company data or other band files
-              </p>
-            </Dragger>
+            <Button type="primary" onClick={onChoneFile}>
+              Chọn hình
+            </Button>
+            <QrReader
+              ref={qrcodeRef}
+              style={{ width: "100%" }}
+              delay={300}
+              legacyMode
+              onError={(e) => console.log(e)}
+              onScan={onScanFile}
+            />
           </Tabs.TabPane>
           <Tabs.TabPane tab="Nhập mã" key="2">
-            <Form>
+            <Form onFinish={onSubmitForm}>
               <Form.Item name="code">
                 <Input placeholder="Nhập mã vé" />
               </Form.Item>
               <Form.Item className="text-center">
-                <Button type="primary">Kiểm tra</Button>
+                <Button type="primary" htmlType="submit">
+                  Kiểm tra
+                </Button>
               </Form.Item>
             </Form>
           </Tabs.TabPane>

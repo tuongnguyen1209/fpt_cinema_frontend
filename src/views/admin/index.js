@@ -14,7 +14,6 @@ import ListSession from "./session/listSession.admin";
 import Tickets from "./ticket/ticket.admin";
 import TicketDetail from "./ticket/ticketDetail.admin";
 import ListUser from "./user/listUser.admin";
- 
 
 const { Content } = Layout;
 
