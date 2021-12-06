@@ -14,7 +14,7 @@ const Home = () => {
       <HomePage >
         <Slideshow />
         <div className="container_custom">
-          <MovieCPN titleHome={"PHIM SẮP CHIẾU"} titleHome2={"PHIM ĐANG CHIẾU"}/>
+          <MovieCPN titleHome={"PHIM ĐANG CHIẾU"} titleHome2={"PHIM SẮP CHIẾU"}/>
           <BlogCPN />
           <PromotionCPN />
           <RuleCPN />
