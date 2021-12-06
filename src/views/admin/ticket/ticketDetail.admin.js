@@ -25,7 +25,8 @@ const TicketDetail = () => {
       setData(rs.data.ticket[0]);
       setLoading(false);
     })();
-  }, [id, query]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [id]);
 
   const columns = [
     {

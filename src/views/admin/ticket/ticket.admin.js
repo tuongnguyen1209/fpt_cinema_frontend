@@ -32,9 +32,14 @@ const Tickets = () => {
   const [date, setDate] = useState();
   const [time, setTime] = useState();
   const [loadingSession, setLoadingSession] = useState(false);
-  const [sort, setSort] = useState({
-    nam_mv: "",
-    day: "",
+  // const [sort, setSort] = useState({
+  //   nam_mv: "",
+  //   day: "",
+  // });
+  const [pangitantion, setPangitation] = useState({
+    pageSize: 10,
+    current: 1,
+    total: 10,
   });
   const [isModalVisible, setIsModalVisible] = useState(false);
   const qrcodeRef = useRef();
@@ -44,12 +49,21 @@ const Tickets = () => {
   useEffect(() => {
     (async () => {
       setLoading(true);
-      const rs = await ticketService.getAll();
+      const rs = await ticketService.getAll({
+        page: pangitantion.current,
+        limit: pangitantion.pageSize,
+      });
       console.log(rs);
+      const newPan = { ...pangitantion };
+      setPangitation({
+        ...newPan,
+        total: rs.data[0].total_ticket,
+      });
       setListTicket(rs.data.ticket);
       setLoading(false);
     })();
-  }, []);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [pangitantion.current, pangitantion.pageSize]);
 
   useEffect(() => {
     (async () => {
@@ -113,10 +127,10 @@ const Tickets = () => {
   ];
   const onFinish = (e) => {
     console.log(e);
-    setSort({
-      nam_mv: e.name[0],
-      day: e.name[1],
-    });
+    // setSort({
+    //   nam_mv: e.name[0],
+    //   day: e.name[1],
+    // });
   };
   const showModal = () => {
     setIsModalVisible(true);
@@ -234,10 +248,10 @@ const Tickets = () => {
                   onClick={() => {
                     setListSession([]);
                     form.resetFields();
-                    setSort({
-                      day: "",
-                      nam_mv: "",
-                    });
+                    // setSort({
+                    //   day: "",
+                    //   nam_mv: "",
+                    // });
                   }}
                 >
                   Đặt lại
@@ -249,13 +263,13 @@ const Tickets = () => {
       </Row>
 
       <Table
-        dataSource={listTicket.filter(
-          (el) =>
-            !sort.day ||
-            !sort.nam_mv ||
-            (el.name_mv === sort.nam_mv && el.date === sort.day)
-        )}
+        dataSource={listTicket}
+        onChange={(pan) => {
+          // console.log(pan);
+          setPangitation(pan);
+        }}
         rowKey="id_ticket"
+        pagination={pangitantion}
         columns={collums}
         loading={loading}
       />
