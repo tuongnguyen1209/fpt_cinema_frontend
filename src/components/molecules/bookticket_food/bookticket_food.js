@@ -86,7 +86,6 @@ const BookTicketFood = () => {
 
   // ---------------------------------------------------------------------------
 
-
   // tong tien bang mua ve
 
   const [totalTableTicket, setTotalTableTicket] = useState(0);
@@ -435,7 +434,7 @@ const BookTicketFood = () => {
   }, [arraySeatBooked.length]);
 
   // tinh tong so ve
-  const totalTicketBought = counting
+  const totalTicketBought = counting;
 
   const [ArraySeat, setArraySeat] = useState([]);
   // chon ghe
@@ -498,8 +497,8 @@ const BookTicketFood = () => {
     const saveSeat = {
       seat: ArraySeat,
       Total_money: totalAll,
-      id_combo: [1,2,3],
-      ticket_information:  `Vé (${counting})`,
+      id_combo: [1, 2, 3],
+      ticket_information: `Vé (${counting})`,
       full_name: loginReducer.user.full_name,
       id_room: "",
       status: "1",
@@ -611,61 +610,21 @@ const BookTicketFood = () => {
       <div className="container_custom">
         <div className={TogglePageBookTicket}>
           <Skeleton loading={loading}>
-          <div className="box_bookticket">
-            <h3>CHỌN VÉ/THỨC ĂN</h3>
+            <div className="box_bookticket">
+              <h3>CHỌN VÉ/THỨC ĂN</h3>
 
-            <div className="table_book">
-              <table>
-                <tr>
-                  <th>Loại vé</th>
-                  <th>Số lượng</th>
-                  <th>Giá(VNĐ)</th>
-                  <th>Tổng(VNĐ)</th>
-                </tr>
-                {ticket_adults.map((item, index) => (
-                  <tr key={index}>
-                    <td>
-                      <span>{item?.category_ticket}</span>
-                      <br></br>
-                      <span>{item?.category_ticket2}</span>
-                    </td>
-                    <td>
-                      {" "}
-                      <span>
-                        <MinusCircleFilled onClick={handleMinus} />
-                      </span>{" "}
-                      <input disabled value={counting} />{" "}
-                      <span>
-                        <PlusCircleFilled onClick={handlePluss} />
-                      </span>{" "}
-                    </td>
-                    <td>{item?.price_ticket?.toLocaleString('vi-VN')}</td>
-                    <td>{totalPriceTicket?.toLocaleString('vi-VN')}</td>
+              <div className="table_book">
+                <table>
+                  <tr>
+                    <th>Loại vé</th>
+                    <th>Số lượng</th>
+                    <th>Giá(VNĐ)</th>
+                    <th>Tổng(VNĐ)</th>
                   </tr>
-                ))}
-                <tr>
-                  <td>Tổng</td>
-                  <td></td>
-                  <td></td>
-                  <td>{totalTableTicket?.toLocaleString('vi-VN')}</td>
-                </tr>
-              </table>
-
-              {/* table food */}
-              <table>
-                <tr>
-                  <th>Combo</th>
-                  <th>Số lượng</th>
-                  <th>Giá(VNĐ)</th>
-                  <th>Tổng(VNĐ)</th>
-                </tr>
-
-                {combo_1.map((item, index) => (
-                  <tr key={index}>
-                    <td className="td_combo">
-                      <img src={item?.img_combo} alt="combo" />
-                      <p>
-                        <span ref={name_combo1}>{item?.name_combo}</span>
+                  {ticket_adults.map((item, index) => (
+                    <tr key={index}>
+                      <td>
+                        <span>{item?.category_ticket}</span>
                         <br></br>
                         <span>{item?.category_ticket2}</span>
                       </td>
@@ -681,29 +640,6 @@ const BookTicketFood = () => {
                       </td>
                       <td>{item?.price_ticket?.toLocaleString("vi-VN")}</td>
                       <td>{totalPriceTicket?.toLocaleString("vi-VN")}</td>
-                    </tr>
-                  ))}
-                  {ticket_member.map((item, index) => (
-                    <tr key={index}>
-                      <td>
-                        <span>{item?.category_ticket}</span>
-                        <br></br>
-                        <span>{item?.category_ticket2}</span>
-                      </td>
-                      <td>
-                        {" "}
-                        <span>
-                          <MinusCircleFilled onClick={handleMinus_member} />
-                        </span>{" "}
-                        <input disabled value={counting_member} />{" "}
-                        <span>
-                          <PlusCircleFilled onClick={handlePluss_member} />
-                        </span>{" "}
-                      </td>
-                      <td>{item?.price_ticket?.toLocaleString("vi-VN")}</td>
-                      <td>
-                        {totalPriceTicket_member?.toLocaleString("vi-VN")}
-                      </td>
                     </tr>
                   ))}
                   <tr>
