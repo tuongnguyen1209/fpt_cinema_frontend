@@ -15,16 +15,14 @@ import TicketService from "../../../serivces/ticket.service";
 import sessionService from "../../../serivces/session.service";
 import SeatService from "../../../serivces/tk_seat.service";
 import ComboService from "../../../serivces/combo.service";
-import {formatPrice, formatPrice2} from "../../../ultil/format";
-import { Skeleton } from 'antd';
+import { formatPrice, formatPrice2 } from "../../../ultil/format";
+import { Skeleton } from "antd";
 
 // const axios = require("axios").default;
 
 const BookTicketFood = () => {
- 
-  const [loading, setLoading] = useState(true); 
+  const [loading, setLoading] = useState(true);
 
-  
   const error = () => {
     message.error("Bạn chưa mua vé!");
   };
@@ -48,7 +46,7 @@ const BookTicketFood = () => {
   ];
 
   // lấy giá
-  
+
   let price_ticket;
   for (let i = 0; i < ticket_adults.length; i++) {
     price_ticket = ticket_adults[i].price_ticket;
@@ -88,7 +86,6 @@ const BookTicketFood = () => {
 
   // ---------------------------------------------------------------------------
 
-
   // tong tien bang mua ve
 
   const [totalTableTicket, setTotalTableTicket] = useState(0);
@@ -110,7 +107,7 @@ const BookTicketFood = () => {
         const response = await ComboService.getComBoAll();
         // console.log(response.data.combo, listCombo);
         setListCombo(response.data.combo);
-        setLoading(false); 
+        setLoading(false);
       } catch (error) {
         console.log("Failed to fetch combo list: ", error);
       }
@@ -167,7 +164,8 @@ const BookTicketFood = () => {
       setCounting_combo1(counting_combo1 + 1);
       // tinh tong
       setTotalPriceCombo1(
-        (totalPriceCombo1) => parseInt(totalPriceCombo1) + parseInt(price_combo1)
+        (totalPriceCombo1) =>
+          parseInt(totalPriceCombo1) + parseInt(price_combo1)
       );
       setGetCombo1(name_combo1.current.innerHTML);
       SetQuantityCombo1((quantityCombo1) => quantityCombo1 + 1);
@@ -183,7 +181,7 @@ const BookTicketFood = () => {
       detail_combo: "1 BẮP VÀ 2 NƯỚC COCA",
       price_combo: listCombo[1]?.price,
     },
-  ]
+  ];
   // lấy giá
 
   let price_combo2;
@@ -224,7 +222,8 @@ const BookTicketFood = () => {
       setCounting_combo2(counting_combo2 + 1);
       // tinh tong
       setTotalPriceCombo2(
-        (totalPriceCombo2) => parseInt(totalPriceCombo2) + parseInt(price_combo2)
+        (totalPriceCombo2) =>
+          parseInt(totalPriceCombo2) + parseInt(price_combo2)
       );
       setGetCombo2(name_combo2.current.innerHTML);
       SetQuantityCombo2((quantityCombo2) => quantityCombo2 + 1);
@@ -282,7 +281,8 @@ const BookTicketFood = () => {
       setCounting_combo3(counting_combo3 + 1);
       // tinh tong
       setTotalPriceCombo3(
-        (totalPriceCombo3) => parseInt(totalPriceCombo3) + parseInt(price_combo3)
+        (totalPriceCombo3) =>
+          parseInt(totalPriceCombo3) + parseInt(price_combo3)
       );
       setGetCombo3(name_combo3.current.innerHTML);
       SetQuantityCombo3((quantityCombo3) => quantityCombo3 + 1);
@@ -434,7 +434,7 @@ const BookTicketFood = () => {
   }, [arraySeatBooked.length]);
 
   // tinh tong so ve
-  const totalTicketBought = counting
+  const totalTicketBought = counting;
 
   const [ArraySeat, setArraySeat] = useState([]);
   // chon ghe
@@ -497,8 +497,8 @@ const BookTicketFood = () => {
     const saveSeat = {
       seat: ArraySeat,
       Total_money: totalAll,
-      id_combo: [1,2,3],
-      ticket_information:  `Vé (${counting})`,
+      id_combo: [1, 2, 3],
+      ticket_information: `Vé (${counting})`,
       full_name: loginReducer.user.full_name,
       id_room: "",
       status: "1",
@@ -552,7 +552,7 @@ const BookTicketFood = () => {
         id_seat: infoTicketList.seat,
         id_combo: infoTicketList.id_combo,
         quantity: [quantityCombo1, quantityCombo2, quantityCombo3],
-        unit_price: [price_combo1,price_combo2,price_combo3],
+        unit_price: [price_combo1, price_combo2, price_combo3],
       };
       // console.log(data);
       const response = await TicketService.createTicket(data);
@@ -610,136 +610,136 @@ const BookTicketFood = () => {
       <div className="container_custom">
         <div className={TogglePageBookTicket}>
           <Skeleton loading={loading}>
-          <div className="box_bookticket">
-            <h3>CHỌN VÉ/THỨC ĂN</h3>
+            <div className="box_bookticket">
+              <h3>CHỌN VÉ/THỨC ĂN</h3>
 
-            <div className="table_book">
-              <table>
-                <tr>
-                  <th>Loại vé</th>
-                  <th>Số lượng</th>
-                  <th>Giá(VNĐ)</th>
-                  <th>Tổng(VNĐ)</th>
-                </tr>
-                {ticket_adults.map((item, index) => (
-                  <tr key={index}>
-                    <td>
-                      <span>{item?.category_ticket}</span>
-                      <br></br>
-                      <span>{item?.category_ticket2}</span>
-                    </td>
-                    <td>
-                      {" "}
-                      <span>
-                        <MinusCircleFilled onClick={handleMinus} />
-                      </span>{" "}
-                      <input disabled value={counting} />{" "}
-                      <span>
-                        <PlusCircleFilled onClick={handlePluss} />
-                      </span>{" "}
-                    </td>
-                    <td>{item?.price_ticket?.toLocaleString('vi-VN')}</td>
-                    <td>{totalPriceTicket?.toLocaleString('vi-VN')}</td>
+              <div className="table_book">
+                <table>
+                  <tr>
+                    <th>Loại vé</th>
+                    <th>Số lượng</th>
+                    <th>Giá(VNĐ)</th>
+                    <th>Tổng(VNĐ)</th>
                   </tr>
-                ))}
-                <tr>
-                  <td>Tổng</td>
-                  <td></td>
-                  <td></td>
-                  <td>{totalTableTicket?.toLocaleString('vi-VN')}</td>
-                </tr>
-              </table>
+                  {ticket_adults.map((item, index) => (
+                    <tr key={index}>
+                      <td>
+                        <span>{item?.category_ticket}</span>
+                        <br></br>
+                        <span>{item?.category_ticket2}</span>
+                      </td>
+                      <td>
+                        {" "}
+                        <span>
+                          <MinusCircleFilled onClick={handleMinus} />
+                        </span>{" "}
+                        <input disabled value={counting} />{" "}
+                        <span>
+                          <PlusCircleFilled onClick={handlePluss} />
+                        </span>{" "}
+                      </td>
+                      <td>{item?.price_ticket?.toLocaleString("vi-VN")}</td>
+                      <td>{totalPriceTicket?.toLocaleString("vi-VN")}</td>
+                    </tr>
+                  ))}
+                  <tr>
+                    <td>Tổng</td>
+                    <td></td>
+                    <td></td>
+                    <td>{totalTableTicket?.toLocaleString("vi-VN")}</td>
+                  </tr>
+                </table>
 
-              {/* table food */}
-              <table>
-                <tr>
-                  <th>Combo</th>
-                  <th>Số lượng</th>
-                  <th>Giá(VNĐ)</th>
-                  <th>Tổng(VNĐ)</th>
-                </tr>
+                {/* table food */}
+                <table>
+                  <tr>
+                    <th>Combo</th>
+                    <th>Số lượng</th>
+                    <th>Giá(VNĐ)</th>
+                    <th>Tổng(VNĐ)</th>
+                  </tr>
 
-                {combo_1.map((item, index) => (
-                  <tr key={index}>
-                    <td className="td_combo">
-                      <img src={item?.img_combo} alt="combo" />
-                      <p>
-                        <span ref={name_combo1}>{item?.name_combo}</span>
-                        <br></br>
-                        <span>{item?.detail_combo}</span>
-                      </p>
-                    </td>
-                    <td>
-                      {" "}
-                      <span>
-                        <MinusCircleFilled onClick={handleMinus_combo1} />
-                      </span>{" "}
-                      <input disabled value={counting_combo1} />{" "}
-                      <span>
-                        <PlusCircleFilled onClick={handlePluss_combo1} />
-                      </span>{" "}
-                    </td>
-                    <td>{formatPrice2(item?.price_combo)}</td>
-                    <td>{totalPriceCombo1?.toLocaleString('vi-VN')}</td>
+                  {combo_1.map((item, index) => (
+                    <tr key={index}>
+                      <td className="td_combo">
+                        <img src={item?.img_combo} alt="combo" />
+                        <p>
+                          <span ref={name_combo1}>{item?.name_combo}</span>
+                          <br></br>
+                          <span>{item?.detail_combo}</span>
+                        </p>
+                      </td>
+                      <td>
+                        {" "}
+                        <span>
+                          <MinusCircleFilled onClick={handleMinus_combo1} />
+                        </span>{" "}
+                        <input disabled value={counting_combo1} />{" "}
+                        <span>
+                          <PlusCircleFilled onClick={handlePluss_combo1} />
+                        </span>{" "}
+                      </td>
+                      <td>{formatPrice2(item?.price_combo)}</td>
+                      <td>{totalPriceCombo1?.toLocaleString("vi-VN")}</td>
+                    </tr>
+                  ))}
+                  {combo_2.map((item, index) => (
+                    <tr key={index}>
+                      <td className="td_combo">
+                        <img src={item?.img_combo} alt="combo" />
+                        <p>
+                          <span ref={name_combo2}>{item?.name_combo}</span>
+                          <br></br>
+                          <span>{item?.detail_combo}</span>
+                        </p>
+                      </td>
+                      <td>
+                        {" "}
+                        <span>
+                          <MinusCircleFilled onClick={handleMinus_combo2} />
+                        </span>{" "}
+                        <input disabled value={counting_combo2} />{" "}
+                        <span>
+                          <PlusCircleFilled onClick={handlePluss_combo2} />
+                        </span>{" "}
+                      </td>
+                      <td>{formatPrice2(item?.price_combo)}</td>
+                      <td>{totalPriceCombo2?.toLocaleString("vi-VN")}</td>
+                    </tr>
+                  ))}
+                  {combo_3.map((item, index) => (
+                    <tr key={index}>
+                      <td className="td_combo">
+                        <img src={item?.img_combo} alt="combo" />
+                        <p>
+                          <span ref={name_combo3}>{item?.name_combo}</span>
+                          <br></br>
+                          <span>{item?.detail_combo}</span>
+                        </p>
+                      </td>
+                      <td>
+                        {" "}
+                        <span>
+                          <MinusCircleFilled onClick={handleMinus_combo3} />
+                        </span>{" "}
+                        <input disabled value={counting_combo3} />{" "}
+                        <span>
+                          <PlusCircleFilled onClick={handlePluss_combo3} />
+                        </span>{" "}
+                      </td>
+                      <td>{formatPrice2(item?.price_combo)}</td>
+                      <td>{totalPriceCombo3?.toLocaleString("vi-VN")}</td>
+                    </tr>
+                  ))}
+                  <tr>
+                    <td>Tổng</td>
+                    <td></td>
+                    <td></td>
+                    <td>{totalTableCombo?.toLocaleString("vi-VN")}</td>
                   </tr>
-                ))}
-                {combo_2.map((item, index) => (
-                  <tr key={index}>
-                    <td className="td_combo">
-                      <img src={item?.img_combo} alt="combo" />
-                      <p>
-                        <span ref={name_combo2}>{item?.name_combo}</span>
-                        <br></br>
-                        <span>{item?.detail_combo}</span>
-                      </p>
-                    </td>
-                    <td>
-                      {" "}
-                      <span>
-                        <MinusCircleFilled onClick={handleMinus_combo2} />
-                      </span>{" "}
-                      <input disabled value={counting_combo2} />{" "}
-                      <span>
-                        <PlusCircleFilled onClick={handlePluss_combo2} />
-                      </span>{" "}
-                    </td>
-                    <td>{formatPrice2(item?.price_combo)}</td>
-                    <td>{totalPriceCombo2?.toLocaleString('vi-VN')}</td>
-                  </tr>
-                ))}
-                {combo_3.map((item, index) => (
-                  <tr key={index}>
-                    <td className="td_combo">
-                      <img src={item?.img_combo} alt="combo" />
-                      <p>
-                        <span ref={name_combo3}>{item?.name_combo}</span>
-                        <br></br>
-                        <span>{item?.detail_combo}</span>
-                      </p>
-                    </td>
-                    <td>
-                      {" "}
-                      <span>
-                        <MinusCircleFilled onClick={handleMinus_combo3} />
-                      </span>{" "}
-                      <input disabled value={counting_combo3} />{" "}
-                      <span>
-                        <PlusCircleFilled onClick={handlePluss_combo3} />
-                      </span>{" "}
-                    </td>
-                    <td>{formatPrice2(item?.price_combo)}</td>
-                    <td>{totalPriceCombo3?.toLocaleString('vi-VN')}</td>
-                  </tr>
-                ))}
-                <tr>
-                  <td>Tổng</td>
-                  <td></td>
-                  <td></td>
-                  <td>{totalTableCombo?.toLocaleString('vi-VN')}</td>
-                </tr>
-              </table>
+                </table>
+              </div>
             </div>
-          </div>
           </Skeleton>
         </div>
 
@@ -1355,7 +1355,9 @@ const BookTicketFood = () => {
             </p>
             <p className="total">
               <b>Tổng:</b>{" "}
-              <span style={{ "padding-left": "10px" }}>{formatPrice(totalAll)}</span>
+              <span style={{ "padding-left": "10px" }}>
+                {formatPrice(totalAll)}
+              </span>
             </p>
 
             <div className="view-more">

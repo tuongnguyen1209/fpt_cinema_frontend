@@ -6,32 +6,29 @@ import {
 import {
   Button,
   Col,
-  DatePicker,
   Form,
   Input,
   Modal,
   Row,
-  Select,
   Space,
   Table,
   Tabs,
   Typography,
+  Tag,
 } from "antd";
-import moment from "moment";
 import React, { useEffect, useRef, useState } from "react";
 import QrReader from "react-qr-reader";
 import { Link, useHistory } from "react-router-dom";
-import sessionService from "../../../serivces/session.service";
 import ticketService from "../../../serivces/ticket.service";
 import { formatPrice } from "../../../ultil/format";
 
 const Tickets = () => {
   const [listTicket, setListTicket] = useState([]);
-  const [listSession, setListSession] = useState([]);
+  // const [listSession, setListSession] = useState([]);
   const [loading, setLoading] = useState(false);
-  const [date, setDate] = useState();
-  const [time, setTime] = useState();
-  const [loadingSession, setLoadingSession] = useState(false);
+  // const [date, setDate] = useState();
+  // const [time, setTime] = useState();
+  // const [loadingSession, setLoadingSession] = useState(false);
   // const [sort, setSort] = useState({
   //   nam_mv: "",
   //   day: "",
@@ -42,17 +39,27 @@ const Tickets = () => {
     total: 10,
   });
   const [isModalVisible, setIsModalVisible] = useState(false);
+  // const [currentIdSession, setCurrentIDSession] = useState(0);
   const qrcodeRef = useRef();
   const history = useHistory();
-  const [form] = Form.useForm();
+  // const [form] = Form.useForm();
 
   useEffect(() => {
     (async () => {
       setLoading(true);
-      const rs = await ticketService.getAll({
+
+      let params = {
         page: pangitantion.current,
         limit: pangitantion.pageSize,
-      });
+      };
+      // if (currentIdSession)
+      //   params = {
+      //     ...params,
+      //     code: currentIdSession,
+      //     type: "session",
+      //   };
+
+      const rs = await ticketService.getAll(params);
       console.log(rs);
       const newPan = { ...pangitantion };
       setPangitation({
@@ -65,19 +72,19 @@ const Tickets = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [pangitantion.current, pangitantion.pageSize]);
 
-  useEffect(() => {
-    (async () => {
-      if (date && time) {
-        setLoadingSession(true);
-        const rs = await sessionService.getAll({
-          day: date,
-          id_showtimes: time,
-        });
-        setListSession(rs.data.session);
-        setLoadingSession(false);
-      }
-    })();
-  }, [date, time]);
+  // useEffect(() => {
+  //   (async () => {
+  //     if (date && time) {
+  //       setLoadingSession(true);
+  //       const rs = await sessionService.getAll({
+  //         day: date,
+  //         id_showtimes: time,
+  //       });
+  //       setListSession(rs.data.session);
+  //       setLoadingSession(false);
+  //     }
+  //   })();
+  // }, [date, time]);
 
   const collums = [
     {
@@ -102,17 +109,24 @@ const Tickets = () => {
     },
     {
       title: "Tổng tiền",
-      dataIndex: "price",
-      key: "price",
-      render: (_, record) => {
-        let price = record.seat.length * 50000;
-        for (let i = 0; i < record.combo.length; i++) {
-          const element = record.combo[i];
-          price += element.unit_price * element.quantity;
-        }
-
-        return formatPrice(price);
-      },
+      dataIndex: "Total_money",
+      key: "Total_money",
+      render: (Total_money) => formatPrice(Total_money),
+    },
+    {
+      title: "Trạng thái",
+      dataIndex: "status",
+      key: "status",
+      render: (status) =>
+        status === "0" ? (
+          <>
+            <Tag color="red">Chưa thanh toán</Tag>
+          </>
+        ) : (
+          <>
+            <Tag color="green">Đã thanh toán</Tag>
+          </>
+        ),
     },
     {
       title: "Thao tác",
@@ -125,13 +139,10 @@ const Tickets = () => {
       ),
     },
   ];
-  const onFinish = (e) => {
-    console.log(e);
-    // setSort({
-    //   nam_mv: e.name[0],
-    //   day: e.name[1],
-    // });
-  };
+  // const onFinish = (e) => {
+  //   console.log(e);
+  //   setCurrentIDSession(e.name);
+  // };
   const showModal = () => {
     setIsModalVisible(true);
   };
@@ -202,7 +213,7 @@ const Tickets = () => {
           </Space>
         </Col>
         <Col span={24}>
-          <Form form={form} onFinish={onFinish}>
+          {/* <Form form={form} onFinish={onFinish}>
             <Space className="w-100 justify-content-end">
               <Form.Item name="data">
                 <DatePicker
@@ -231,7 +242,7 @@ const Tickets = () => {
                   style={{ width: "300px" }}
                 >
                   {listSession.map((el, ind) => (
-                    <Select.Option key={ind} value={[el.name_mv, el.day]}>
+                    <Select.Option key={ind} value={el.id_session}>
                       {el.name_mv}
                     </Select.Option>
                   ))}
@@ -258,7 +269,7 @@ const Tickets = () => {
                 </Button>
               </Form.Item>
             </Space>
-          </Form>
+          </Form> */}
         </Col>
       </Row>
 

@@ -47,3 +47,14 @@ a {
 svg {
   vertical-align: baseline;
 }
+
+@media print {
+  .hiddent-print {
+    display: none;
+    overflow: hidden;
+    height: 0;
+  }
+  .print-p-3 {
+    padding: 20px;
+  }
+}
