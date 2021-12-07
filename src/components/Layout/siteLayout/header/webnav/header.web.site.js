@@ -33,7 +33,7 @@ const HeaderWebSite = () => {
           </Link>
         </Menu.Item>
         <Menu.Item key="2">
-          <Link to="">
+          <Link to="/member">
             <Button icon={<HistoryOutlined />} type="link">
               Lịch sử mua vé
             </Button>

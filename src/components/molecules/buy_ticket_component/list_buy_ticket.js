@@ -38,7 +38,7 @@ const BuyTicketCPN = () => {
   // redux ----------------------------------------------------------------------
   // event handle show rap
   const handleShowrap = (e, idMovie) => {
-    console.log(idMovie, time);
+    // console.log(idMovie, time);
 
     // lấy thông tin (tên phim, hình ảnh) lưu vào redux
     const saveNameMovie = {
@@ -71,7 +71,7 @@ const BuyTicketCPN = () => {
     const fetchSessionList = async () => {
       try {
         const response = await sessionService.getAll({ id_movie: idMovie });
-        console.log(response.data.session);
+        // console.log(response.data.session);
         setArraySession(response.data.session);
         setTime(response.data.session);
       } catch (error) {
@@ -98,7 +98,7 @@ const BuyTicketCPN = () => {
     const fetchMovieList = async () => {
       try {
         const response = await MovieService.getMovieLimit(100);
-        console.log(response);
+        // console.log(response);
         setlistMovie2(response.data.movie);
         setLoading(false);
       } catch (error) {

@@ -171,6 +171,12 @@ export const DetailMovieCPNStyle = styled.div`
                                     color: black;
                                     border: 1px solid rgba(0,0,0,0.3);
                                 }
+                                .btn_time {
+                                    &:hover {
+                                        color: white;
+                                        background-color: #f26b38;
+                                    }
+                                }
                             }
                         }
                     }

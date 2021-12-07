@@ -47,7 +47,7 @@ const DetailMovieCPN = () => {
       const fetchSessionList = async () => {
         try {
           const response = await sessionService.getAll({id_movie : idMovie});
-          console.log(response.data.session);
+          // console.log(response.data.session);
           setListSession(response.data.session);
           setLoading(false);
         }catch (error) {
@@ -119,7 +119,7 @@ const DetailMovieCPN = () => {
       
 
       const handleSaveTicket = e => {
-          console.log(e);
+          // console.log(e);
           const saveNameMovie = {
             name_mv: listMovie?.name_movie,
             img: listMovie?.img_medium,
@@ -221,7 +221,7 @@ const DetailMovieCPN = () => {
                                   <p>2D - Phụ đề</p>
                                   <div>
                                       {listSession.map((item,index) => (
-                                        <Link 
+                                        <Link className="btn_time"
                                           key={index} 
                                           to={isLogin ? "/bookticket-food" : "auth/login"}
                                           >

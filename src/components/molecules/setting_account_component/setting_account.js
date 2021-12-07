@@ -110,17 +110,17 @@ const SettingAccount = () => {
     };
 
     const checkOldPass = e => {
-        console.log(e.target.value);
+        // console.log(e.target.value);
         setOldPass(e.target.value);
     }
 
     const checkNewPass = e => {
-        console.log(e.target.value);
+        // console.log(e.target.value);
         setNewPass(e.target.value);
     }
 
     const checkAgainNewPass = e => {
-        console.log(e.target.value);
+        // console.log(e.target.value);
         setNewPass2(e.target.value);
     }
 
