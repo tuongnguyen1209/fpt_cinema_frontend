@@ -134,7 +134,7 @@ const PageTransaction = () => {
         const fetchLinkPayment = async () => {
             try {
                 const response = await PaymentService.getLinkPayment(idTicket);
-                console.log(response);
+                // console.log(response);
                 setLinkPayment(response.payment.data);
             }catch (error) {
                 console.log("Failed to fetch link payment: ",error);
