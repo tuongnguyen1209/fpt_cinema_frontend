@@ -1,4 +1,15 @@
-import { Button, Image, Modal, Space, Table, Tag, Typography } from "antd";
+import { HistoryOutlined } from "@ant-design/icons";
+import {
+  Button,
+  Image,
+  message,
+  Modal,
+  Popconfirm,
+  Space,
+  Table,
+  Tag,
+  Typography,
+} from "antd";
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import TicketService from "../../../serivces/ticket.service";
@@ -11,6 +22,7 @@ const ListUser = () => {
   const [loading, setLoading] = useState(false);
   const [loadingTicket, setLoadingTicket] = useState(false);
   const [listTicket, setListTicket] = useState([]);
+  const [num, setNum] = useState(1);
 
   useEffect(() => {
     (async () => {
@@ -19,7 +31,7 @@ const ListUser = () => {
       setListUser(rs.data.user);
       setLoading(false);
     })();
-  }, []);
+  }, [num]);
 
   const showModal = async (record) => {
     setIsModalVisible(true);
@@ -37,16 +49,30 @@ const ListUser = () => {
     setIsModalVisible(false);
   };
 
+  const handleChangeRole = async (id, role) => {
+    try {
+      let data = {};
+      if (`${role}` === "0") {
+        data = { administration: 1 };
+      } else {
+        data = { administration: 0 };
+      }
+      await userService.changeRole(id, data);
+      setNum(num + 1);
+      message.success("Thay đổi quyền thành công");
+    } catch (error) {
+      message.error("Có lỗi xảy ra, vui lòng thử lại sau!");
+    }
+  };
+
   const columns = [
     {
       title: "Hình ảnh",
-      dataIndex: "image",
-      key: "image",
-      render: (image) => (
+      dataIndex: "img_user",
+      key: "img_user",
+      render: (img_user) => (
         <Image
-          src={
-            "https://thumbs.dreamstime.com/b/no-image-available-icon-flat-vector-no-image-available-icon-flat-vector-illustration-132482953.jpg"
-          }
+          src={img_user}
           width="50px"
           fallback="https://thumbs.dreamstime.com/b/no-image-available-icon-flat-vector-no-image-available-icon-flat-vector-illustration-132482953.jpg"
         />
@@ -85,12 +111,25 @@ const ListUser = () => {
       render: (_, record) => (
         <>
           <Space>
-            <Button type="primary" onClick={() => showModal(record)}>
+            <Button
+              type="primary"
+              icon={<HistoryOutlined />}
+              onClick={() => showModal(record)}
+            >
               Lịch sử đặt hàng
             </Button>
-            <Button type="primary" danger>
-              Khóa tài khoản
-            </Button>
+            <Popconfirm
+              okText="Có"
+              cancelText="Không"
+              title="Bạn có muốn thay đổi quyền của người dùng này?"
+              onConfirm={() =>
+                handleChangeRole(record.id_user, record.administration)
+              }
+            >
+              <Button type="primary" danger>
+                Thay đổi quyền
+              </Button>
+            </Popconfirm>
           </Space>
         </>
       ),
@@ -131,6 +170,21 @@ const ListUser = () => {
       render: (Total_money) => {
         return formatPrice(Total_money);
       },
+    },
+    {
+      title: "Trạng thái",
+      dataIndex: "status",
+      key: "status",
+      render: (status) =>
+        status === "0" ? (
+          <>
+            <Tag color="red">Chưa thanh toán</Tag>
+          </>
+        ) : (
+          <>
+            <Tag color="green">Đã thanh toán</Tag>
+          </>
+        ),
     },
     {
       title: "Thao tác",

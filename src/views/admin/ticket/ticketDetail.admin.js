@@ -1,9 +1,19 @@
-import { Col, Descriptions, Image, Row, Spin, Table, Typography } from "antd";
-import React, { useEffect, useState } from "react";
+import {
+  Button,
+  Col,
+  Descriptions,
+  Image,
+  Row,
+  Spin,
+  Table,
+  Typography,
+} from "antd";
+import React, { useEffect, useRef, useState } from "react";
 import { useParams } from "react-router-dom";
 import ticketService from "../../../serivces/ticket.service";
 import { formatPrice } from "../../../ultil/format";
 import queryString from "query-string";
+import { useReactToPrint } from "react-to-print";
 
 import { useLocation } from "react-router-dom";
 
@@ -13,6 +23,7 @@ const TicketDetail = () => {
   const { id } = useParams();
   const location = useLocation();
   const query = queryString.parse(location.search);
+  const currentRef = useRef();
 
   useEffect(() => {
     (async () => {
@@ -38,7 +49,7 @@ const TicketDetail = () => {
       title: "Giá",
       dataIndex: "price",
       key: "price",
-      render: () => formatPrice(50000),
+      render: () => formatPrice(65000),
     },
   ];
   const columns1 = [
@@ -74,14 +85,25 @@ const TicketDetail = () => {
     },
   ];
 
+  const print = useReactToPrint({
+    content: () => currentRef.current,
+  });
+
   return (
     <div>
       <Spin spinning={loading}>
-        <Row>
+        <Row ref={currentRef} className="print-p-3">
           <Col span={24} className="text-center">
             <Typography.Title level={5} type="secondary">
               Chi tiết vé xem phim
             </Typography.Title>
+          </Col>
+          <Col span={24} className=" ">
+            <div className="hiddent-print text-right">
+              <Button type="primary" onClick={print} className="hiddent-print">
+                In hóa đơn
+              </Button>
+            </div>
           </Col>
           <Col span={12}>
             <Descriptions title="Thông tin khách hàng" column={1}>
@@ -98,7 +120,9 @@ const TicketDetail = () => {
                 <Typography.Text strong> {data?.seat.length}</Typography.Text>
               </Descriptions.Item>
               <Descriptions.Item label="Tổng hóa đơn">
-                <Typography.Text strong> 120.000VND</Typography.Text>
+                <Typography.Text strong>
+                  {data?.Total_money && formatPrice(data?.Total_money)}
+                </Typography.Text>
               </Descriptions.Item>
             </Descriptions>
           </Col>

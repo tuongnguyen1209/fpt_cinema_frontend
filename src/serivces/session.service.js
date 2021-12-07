@@ -9,6 +9,7 @@ const sessionService = {
   create: (data) => {
     return axiosClient.post(url, data);
   },
+  delete: (data) => axiosClient.delete(url, { params: data }),
 };
 
 export default sessionService;

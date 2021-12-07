@@ -1,4 +1,8 @@
-import { DeleteOutlined, PlusCircleOutlined } from "@ant-design/icons";
+import {
+  DeleteOutlined,
+  ExclamationCircleOutlined,
+  PlusCircleOutlined,
+} from "@ant-design/icons";
 import {
   Button,
   Form,
@@ -6,6 +10,7 @@ import {
   Modal,
   Select,
   Space,
+  message,
   Table,
   Typography,
 } from "antd";
@@ -37,6 +42,7 @@ const handleResult = (arr = []) => {
       newArr.push({
         key: i,
         name: element.name_mv,
+        id_movie: element.id_movie,
         date: element.day,
         session: [
           {
@@ -63,6 +69,7 @@ const ListSession = () => {
   const [listRoom, setListRoom] = useState([]);
   const [listTimeByRoom, setListTimeByRoom] = useState([]);
   const [currentRoom, setCurrentRoom] = useState();
+  const [loadingAdd, setLoadingAdd] = useState(false);
 
   useEffect(() => {
     (async () => {
@@ -101,7 +108,6 @@ const ListSession = () => {
       title: "Tên phim",
       dataIndex: "name",
       key: "name",
-      render: (_, element) => <Link to="/move/">{element.name}</Link>,
     },
     { title: "Ngày chiếu", dataIndex: "date", key: "date" },
     {
@@ -136,7 +142,16 @@ const ListSession = () => {
             icon={<DeleteOutlined />}
             type="primary"
             danger
-            onClick={(e) => e.preventDefault()}
+            onClick={() =>
+              Modal.confirm({
+                title: "Bạn có muốn xóa suất chiếu này",
+                icon: <ExclamationCircleOutlined />,
+                content: "Những thay đổi của bạn có thể ảnh hưởng đến dữ liệu",
+                okText: "Có",
+                cancelText: "Không",
+                onOk: () => onDeleteSession(record.id),
+              })
+            }
           >
             Xóa
           </Button>
@@ -144,6 +159,19 @@ const ListSession = () => {
       ),
     },
   ];
+
+  const onDeleteSession = async (id) => {
+    try {
+      await sessionService.delete({ id_session: id });
+      message.success("Xóa thành công");
+      setLoading(true);
+      const listSession = await sessionService.getAll();
+      setSessions(handleResult(listSession.data.session));
+      setLoading(false);
+    } catch (error) {
+      message.error("Có lỗi xảy ra, vui lòng kiểm tra lại");
+    }
+  };
 
   const checkShowTime = (item) => {
     if (!currentRoom || !item) return false;
@@ -159,6 +187,30 @@ const ListSession = () => {
       `${item.id_showtimes}`
     );
     return check;
+  };
+
+  const onFinish = async (value) => {
+    console.log(currentRecord);
+    setLoadingAdd(true);
+    try {
+      const data = {
+        ...value,
+        day: currentRecord?.date,
+        id_movie: currentRecord?.id_movie,
+      };
+      console.log(data);
+
+      await sessionService.create(data);
+
+      setLoading(true);
+      const listSession = await sessionService.getAll();
+      setSessions(handleResult(listSession.data.session));
+      setLoading(false);
+      handleCancel();
+    } catch (error) {
+      message.error("Có lỗi xảy ra, vui lòng thử lại sau");
+    }
+    setLoadingAdd(false);
   };
 
   return (
@@ -178,6 +230,7 @@ const ListSession = () => {
         expandable={{
           expandedRowRender: (record) => (
             <Table
+              rowKey="id"
               columns={columns1}
               dataSource={record.session}
               pagination={false}
@@ -192,9 +245,10 @@ const ListSession = () => {
         visible={isModalVisible}
         onOk={handleCancel}
         width={700}
+        footer={false}
         onCancel={handleCancel}
       >
-        <Form>
+        <Form onFinish={onFinish}>
           <Form.Item label="Tên phim">
             <Input disabled value={currentRecord?.name} />
           </Form.Item>
@@ -203,7 +257,7 @@ const ListSession = () => {
           </Form.Item>
           <Form.Item
             label="Phòng"
-            name={"room"}
+            name={"id_room"}
             rules={[
               {
                 required: true,
@@ -221,7 +275,7 @@ const ListSession = () => {
           </Form.Item>
           <Form.Item
             label="Khung Thời gian"
-            name={"time"}
+            name={"id_showtimes"}
             rules={[
               {
                 required: true,
@@ -249,6 +303,29 @@ const ListSession = () => {
                 )
               )}
             </Select>
+          </Form.Item>
+          <Form.Item
+            name="type"
+            label="Loại chiếu"
+            rules={[
+              {
+                required: true,
+                message: "Bạn phải chọn loại chiếu",
+              },
+            ]}
+          >
+            <Select style={{ width: 200 }}>
+              <Select.Option value="2d">2D</Select.Option>
+              <Select.Option value="3d">3D</Select.Option>
+            </Select>
+          </Form.Item>
+          <Form.Item className="text-right">
+            <Button danger type="primary" onClick={handleCancel}>
+              Đóng
+            </Button>
+            <Button htmlType="submit" type="primary" loading={loadingAdd}>
+              Lưu
+            </Button>
           </Form.Item>
         </Form>
       </Modal>

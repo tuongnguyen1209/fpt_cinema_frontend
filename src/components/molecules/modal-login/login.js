@@ -62,7 +62,7 @@ const Login = () => {
   };
   const responseFacebook = (response) => {
     console.log(response);
-    onLogin(response, "fb");
+    if (response.userID) onLogin(response, "fb");
   };
 
   return (
@@ -128,7 +128,10 @@ const Login = () => {
                 </Button>
               </Form.Item>
 
-              <Link className="login-form-forgot" to="/forgot">
+              <Link
+                className="login-form-forgot"
+                to={`${AUTH_PREFIX_PATH}/fogot`}
+              >
                 Quên mật khẩu ?
               </Link>
               <div className="text_register">

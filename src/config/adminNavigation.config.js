@@ -48,11 +48,11 @@ const adminNavigation = [
         title: "Thêm lịch chiếu phim",
         path: `${ADMIN_PREFIX_PATH}/session/addsession`,
       },
-      {
-        key: "room",
-        title: "Phòng chiếu",
-        path: `${ADMIN_PREFIX_PATH}/room`,
-      },
+      // {
+      //   key: "room",
+      //   title: "Phòng chiếu",
+      //   path: `${ADMIN_PREFIX_PATH}/room`,
+      // },
     ],
   },
   {

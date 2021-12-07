@@ -1,31 +1,28 @@
 import { Grid, Layout } from "antd";
 import React from "react";
+import { useSelector } from "react-redux";
 import { Route, Switch } from "react-router-dom";
 import FooterSite from "../../components/Layout/siteLayout/footer/footer.site";
 import HeaderSite from "../../components/Layout/siteLayout/header";
-import BuyTicketSite from "./page_buyticket/buy_ticket.site";
+import Register from "../../components/molecules/modal-register/register";
+import NotFound from "../site/page_not-found";
 import Home from "./home/home.site";
-import PageMovie from "./page_movie/page_movie";
-import PageSupport from "./page_support/page_support";
+import PageBlog from "./page_blog/page_blog";
+import PageBookTicketFood from "./page_bookticket_food/page_bookticket_food";
+import BuyTicketSite from "./page_buyticket/buy_ticket.site";
 import PageDetailMovie from "./page_detailmovie/page_detailmovie";
 import PageMember from "./page_member/page_member";
-import PageBlog from "./page_blog/page_blog";
+import PageMovie from "./page_movie/page_movie";
 import PageSettingAccount from "./page_setting_account/page_setting_account";
-import PageBookTicketFood from "./page_bookticket_food/page_bookticket_food";
-import Register from "../../components/molecules/modal-register/register";
-import Forgot from "../../components/molecules/modal-forgotpassword/forgot";
-import NotFound from "../site/page_not-found";
-import { useSelector } from "react-redux";
+import PageSupport from "./page_support/page_support";
 const { Header, Content, Footer } = Layout;
 
 const { useBreakpoint } = Grid;
 
-
-
 const Site = () => {
   const screens = useBreakpoint();
   const isMobile = !screens.md;
-  
+
   // check login toggle page member
   const loginReducer = useSelector((state) => state.user);
   const isLogin = loginReducer.isLogin;
@@ -66,9 +63,9 @@ const Site = () => {
           <Route path="/register">
             <Register />
           </Route>
-          <Route path="/forgot">
+          {/* <Route path="/forgot">
             <Forgot />
-          </Route>
+          </Route> */}
           <Route>
             <NotFound />
           </Route>

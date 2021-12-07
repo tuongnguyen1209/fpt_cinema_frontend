@@ -1,4 +1,4 @@
-import { DashboardOutlined } from "@ant-design/icons";
+import { CloseOutlined, DashboardOutlined } from "@ant-design/icons";
 import { faBars, faTimes } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { Button, Col, Drawer, Row, Menu } from "antd";
@@ -47,6 +47,10 @@ const HeaderMobileSite = () => {
           visible={isVisible}
           onClose={() => setIsVisible(false)}
           placement="left"
+          closeIcon={<CloseOutlined style={{ color: "white" }} />}
+          headerStyle={{
+            backgroundColor: "black",
+          }}
           bodyStyle={{
             background: "#000",
           }}

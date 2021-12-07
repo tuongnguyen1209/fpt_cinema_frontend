@@ -81,7 +81,7 @@ const HeaderWebSite = () => {
 
           {userdata.isLogin ? (
             <>
-              <Dropdown overlay={menuUserLogin}>
+              <Dropdown overlay={menuUserLogin} trigger={["click"]}>
                 <Button size="large" type="primary" className="btn-login">
                   {userdata.user?.full_name} <DownOutlined />
                 </Button>

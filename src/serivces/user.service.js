@@ -11,7 +11,10 @@ const userService = {
   },
   getUserById: (idUser) => {
     return axiosClient.get(`${url}?id_user=${idUser}`);
-  }
+  },
+  changeRole: (id, data) => {
+    return axiosClient.put(`/v1.php/changePq?id_user=${id}`, data);
+  },
 };
 
 export default userService;

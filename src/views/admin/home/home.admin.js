@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   Col,
   Row,
@@ -7,6 +7,7 @@ import {
   Select,
   DatePicker,
   Space,
+  Spin,
 } from "antd";
 import {
   ContainerOutlined,
@@ -30,7 +31,8 @@ import {
   XAxis,
   YAxis,
 } from "recharts";
-const data = [
+import dasboardService from "../../../serivces/dasboard.service";
+const data0 = [
   {
     name: "Tháng 1",
     uv: 4000,
@@ -105,51 +107,73 @@ const data = [
   },
 ];
 
-const data01 = [
-  { name: "Khung giờ 1", value: 400 },
-  { name: "Khung giờ 2", value: 300 },
-  { name: "Khung giờ 3", value: 300 },
-  { name: "Khung giờ 4", value: 200 },
-];
 const COLORS = ["#0088FE", "#00C49F", "#FFBB28", "#FF8042"];
 
 const HomeAdmin = () => {
   const [selectOption, setSelectOption] = useState("1");
+  const [data, setData] = useState([
+    { count_all_id_movie: 0 },
+    { count_show_id_movie: 0 },
+    { total_price: 0 },
+    { total_user: 0 },
+  ]);
+  // const [listPriceByShowTime, setListPriceByShowTime] = useState([]);
+  const [loading, setLoading] = useState(false);
+
+  useEffect(() => {
+    (async () => {
+      setLoading(true);
+      const rs = await dasboardService.showAll();
+      const newArr = [];
+      for (let i = 0; i < rs.data.dasboard[5].price_by_showtime.length; i++) {
+        const element = rs.data.dasboard[5].price_by_showtime[i];
+        newArr.push({
+          name: `Khung giờ ${element.shotime}`,
+          value: element.total * 1,
+        });
+      }
+      const newRs = [...rs.data.dasboard];
+      newRs[5] = { price_by_showtime: newArr };
+
+      setData(newRs);
+      setLoading(false);
+    })();
+  }, []);
 
   return (
-    <div>
+    <Spin spinning={loading}>
       <Row>
         <Col span={6} className="text-center">
           <Statistic
             title="Tổng phim hiện có"
-            value={1128}
+            value={data[0] && data[0]?.count_all_id_movie}
             prefix={<ContainerOutlined />}
           />
         </Col>
         <Col span={6} className="text-center">
           <Statistic
             title="Tổng phim đang chiếu"
-            value={1128}
+            value={data[1] && data[1]?.count_show_id_movie}
             prefix={<FileProtectOutlined />}
           />
         </Col>
         <Col span={6} className="text-center">
           <Statistic
             title="Tổng doanh thu trong năm"
-            value={formatPrice(1854)}
+            value={formatPrice(data[2]?.total_price || 0)}
             prefix={<DollarOutlined />}
           />
         </Col>
         <Col span={6} className="text-center">
           <Statistic
             title="Số lượng người dùng mới"
-            value={1128}
+            value={data[3] && data[3]?.total_user}
             prefix={<UsergroupAddOutlined />}
           />
         </Col>
       </Row>
 
-      <div class="mt-5">
+      <div className="mt-5">
         <Row>
           <Col span={12} style={{ height: 500 }}>
             <div className="text-center">
@@ -161,7 +185,7 @@ const HomeAdmin = () => {
               <BarChart
                 width={500}
                 height={300}
-                data={data}
+                data={data[4]?.price_by_month || []}
                 margin={{
                   top: 5,
                   right: 30,
@@ -170,11 +194,11 @@ const HomeAdmin = () => {
                 }}
               >
                 <CartesianGrid strokeDasharray="3 3" />
-                <XAxis dataKey="name" />
+                <XAxis dataKey="date" name="Tháng" />
                 <YAxis />
                 <Tooltip />
                 <Legend />
-                <Bar dataKey="uv" name="Doanh thu" fill="#8884d8" />
+                <Bar dataKey="total" name="Doanh thu" fill="#8884d8" />
                 <Line type="monotone" dataKey="uv" stroke="#82ca9d" />
               </BarChart>
             </ResponsiveContainer>
@@ -182,32 +206,33 @@ const HomeAdmin = () => {
           <Col span={12} style={{ height: 500 }}>
             <div className="text-center">
               <Typography.Title type="secondary" level={5}>
-                Số lượng khách hàng theo từng khung giờ trong tháng 11
+                Số lượng doanh thu theo từng khung giờ
               </Typography.Title>
             </div>
-            <ResponsiveContainer width="100%" height="100%">
-              <PieChart width={400} height={400}>
-                <Pie
-                  dataKey="value"
-                  isAnimationActive={false}
-                  data={data01}
-                  cx="50%"
-                  cy="50%"
-                  outerRadius={"70%"}
-                  fill="#8884d8"
-                  label
-                >
-                  {data.map((entry, index) => (
-                    <Cell
-                      key={`cell-${index}`}
-                      fill={COLORS[index % COLORS.length]}
-                    />
-                  ))}
-                </Pie>
-
-                <Tooltip />
-              </PieChart>
-            </ResponsiveContainer>
+            {data[5]?.price_by_showtime && (
+              <ResponsiveContainer width="100%" height="100%">
+                <PieChart width={400} height={400}>
+                  <Pie
+                    data={data[5]?.price_by_showtime || []}
+                    cx="50%"
+                    cy="50%"
+                    outerRadius={"70%"}
+                    fill="#8884d8"
+                    dataKey="value"
+                    label
+                  >
+                    {data[5]?.price_by_showtime.map((entry, index) => (
+                      <Cell
+                        key={`cell-${index}`}
+                        fill={COLORS[index % COLORS.length]}
+                      />
+                    ))}
+                  </Pie>
+                  <Legend />
+                  <Tooltip />
+                </PieChart>
+              </ResponsiveContainer>
+            )}
           </Col>
         </Row>
       </div>
@@ -240,7 +265,7 @@ const HomeAdmin = () => {
           <LineChart
             width={500}
             height={300}
-            data={data}
+            data={data0}
             margin={{
               top: 5,
               right: 30,
@@ -263,7 +288,7 @@ const HomeAdmin = () => {
           </LineChart>
         </ResponsiveContainer>
       </div>
-    </div>
+    </Spin>
   );
 };
 

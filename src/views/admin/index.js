@@ -9,7 +9,7 @@ import AddMovie from "./movie/addMovie.admin";
 import EditMovie from "./movie/editMovie.admin";
 import ListMovie from "./movie/listMovie.admin";
 import AddSession from "./session/addSession.admin";
-import ListRoom from "./session/listRoom.admin";
+// import ListRoom from "./session/listRoom.admin";
 import ListSession from "./session/listSession.admin";
 import Tickets from "./ticket/ticket.admin";
 import TicketDetail from "./ticket/ticketDetail.admin";
@@ -55,11 +55,11 @@ const Admin = () => {
                 component={ListSession}
                 exact
               />
-              <Route
+              {/* <Route
                 path={`${ADMIN_PREFIX_PATH}/room`}
                 component={ListRoom}
                 exact
-              />
+              /> */}
               <Route
                 path={`${ADMIN_PREFIX_PATH}/session/addsession`}
                 component={AddSession}
