@@ -28,6 +28,7 @@ function MovieCPN({
     setState("span");
     setState2("span2");
     setStatusMovie("congchieu");
+    setLoading(true);
   };
 
   const ChangeBtn2 = (e) => {
@@ -35,6 +36,7 @@ function MovieCPN({
     setState2("span");
     setState("span2");
     setStatusMovie("sapchieu");
+    setLoading(true);
   };
 
   const [listMovie, setListMovie] = useState([]);
@@ -119,7 +121,7 @@ function MovieCPN({
         </Skeleton>
 
         <div className="view-more">
-          <Link to="/pagemovie">
+          <Link to="/pagemovie" >
             <button>
               Xem Thêm <RightOutlined />
             </button>

@@ -100,7 +100,7 @@ const AddMovie = () => {
       date_end: "",
       banner: imgFile.fileList[2].url || imgFile.fileList[2].response,
     };
-    console.log(newMovie);
+    // console.log(newMovie);
     try {
       message.loading({ content: "Đang tạo mới phim", key: "upload" });
       const rs = await MovieService.createMovie(newMovie);

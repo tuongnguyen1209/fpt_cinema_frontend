@@ -49,10 +49,10 @@ const BoxBuyTicket = () => {
 
   const handleShowRap = () => {
     const fetchSessionList = async () => {
-      console.log(idMovie);
+      // console.log(idMovie);
       try {
         const response = await sessionService.getAll({ id_movie: idMovie }); // pendingggggggggggggggggggg
-        console.log("data sessionDay", response.data.session);
+        // console.log("data sessionDay", response.data.session);
         setListDay(response.data.session);
       } catch (error) {
         console.log("Failed to fetch session list: ", error);

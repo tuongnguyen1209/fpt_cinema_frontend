@@ -87,74 +87,28 @@ const BookTicketFood = () => {
   };
 
   // ---------------------------------------------------------------------------
-  const ticket_member = [
-    {
-      category_ticket: "Thành viên",
-      category_ticket2: "Vé 2D",
-      price_ticket: 55000,
-    },
-  ];
 
-  // lấy giá
-
-  let price_ticket_member;
-  for (let i = 0; i < ticket_member.length; i++) {
-    price_ticket_member = ticket_member[i].price_ticket;
-  }
-
-  // Cộng tổng giá tiền
-  const [totalPriceTicket_member, setTotalPriceTicket_member] = useState(0);
-
-  // Tăng giảm số lượng
-  let [counting_member, setCounting_member] = useState(0);
-
-  const handleMinus_member = () => {
-    let min = 0;
-    if (counting_member <= min) {
-      counting_member = min;
-    } else {
-      setCounting_member(counting_member - 1);
-      // tinh tong
-      setTotalPriceTicket_member(
-        (totalPriceTicket_member) =>
-          totalPriceTicket_member - price_ticket_member
-      );
-    }
-  };
-  const handlePluss_member = () => {
-    let max = 8;
-    if (counting_member >= max) {
-      counting_member = max;
-    } else {
-      setCounting_member(counting_member + 1);
-      // tinh tong
-      setTotalPriceTicket_member(
-        (totalPriceTicket_member) =>
-          totalPriceTicket_member + price_ticket_member
-      );
-    }
-  };
 
   // tong tien bang mua ve
 
   const [totalTableTicket, setTotalTableTicket] = useState(0);
 
   useEffect(() => {
-    setTotalTableTicket(totalPriceTicket + totalPriceTicket_member);
+    setTotalTableTicket(totalPriceTicket);
     setCheckChangeTotallTicket(checkChangeTotallTicket ? false : true);
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [totalPriceTicket, totalPriceTicket_member]);
+  }, [totalPriceTicket]);
 
   // ----------------------------------------------------------------------------
   // fetch combo
   const [listCombo, setListCombo] = useState([]);
-  console.log(listCombo);
+  // console.log(listCombo);
 
   useEffect(() => {
     const fetchCombo = async () => {
       try {
         const response = await ComboService.getComBoAll();
-        console.log(response.data.combo, listCombo);
+        // console.log(response.data.combo, listCombo);
         setListCombo(response.data.combo);
         setLoading(false); 
       } catch (error) {
@@ -480,7 +434,7 @@ const BookTicketFood = () => {
   }, [arraySeatBooked.length]);
 
   // tinh tong so ve
-  const totalTicketBought = counting + counting_member;
+  const totalTicketBought = counting
 
   const [ArraySeat, setArraySeat] = useState([]);
   // chon ghe
@@ -544,7 +498,7 @@ const BookTicketFood = () => {
       seat: ArraySeat,
       Total_money: totalAll,
       id_combo: [1,2,3],
-      ticket_information: `Vé thành viên (${counting_member}), Vé thường (${counting})`,
+      ticket_information:  `Vé (${counting})`,
       full_name: loginReducer.user.full_name,
       id_room: "",
       status: "1",
@@ -600,10 +554,10 @@ const BookTicketFood = () => {
         quantity: [quantityCombo1, quantityCombo2, quantityCombo3],
         unit_price: [price_combo1,price_combo2,price_combo3],
       };
-      console.log(data);
+      // console.log(data);
       const response = await TicketService.createTicket(data);
 
-      console.log(response);
+      // console.log(response);
       window.open(response.payment.data, "_self");
       success();
     } catch {
@@ -686,27 +640,6 @@ const BookTicketFood = () => {
                     </td>
                     <td>{item?.price_ticket?.toLocaleString('vi-VN')}</td>
                     <td>{totalPriceTicket?.toLocaleString('vi-VN')}</td>
-                  </tr>
-                ))}
-                {ticket_member.map((item, index) => (
-                  <tr key={index}>
-                    <td>
-                      <span>{item?.category_ticket}</span>
-                      <br></br>
-                      <span>{item?.category_ticket2}</span>
-                    </td>
-                    <td>
-                      {" "}
-                      <span>
-                        <MinusCircleFilled onClick={handleMinus_member} />
-                      </span>{" "}
-                      <input disabled value={counting_member} />{" "}
-                      <span>
-                        <PlusCircleFilled onClick={handlePluss_member} />
-                      </span>{" "}
-                    </td>
-                    <td>{item?.price_ticket?.toLocaleString('vi-VN')}</td>
-                    <td>{totalPriceTicket_member?.toLocaleString('vi-VN')}</td>
                   </tr>
                 ))}
                 <tr>
