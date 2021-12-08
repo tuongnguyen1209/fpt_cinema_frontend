@@ -1,6 +1,6 @@
 import { Breadcrumb, Layout } from "antd";
 import React, { useState } from "react";
-import { Link, Route, Switch } from "react-router-dom";
+import { Link, Route, Switch, Redirect } from "react-router-dom";
 import HeaderAdmin from "../../components/Layout/adminLayout/headerAdmin";
 import SlideAdmin from "../../components/Layout/adminLayout/slide";
 import { ADMIN_PREFIX_PATH } from "../../config/app.config";
@@ -91,6 +91,9 @@ const Admin = () => {
                 component={ListUser}
                 exact
               />
+              <Route path={`${ADMIN_PREFIX_PATH}/*`} exact>
+                <Redirect to={ADMIN_PREFIX_PATH} />
+              </Route>
             </Switch>
           </div>
         </Content>
