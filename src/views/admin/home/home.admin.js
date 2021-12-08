@@ -155,13 +155,12 @@ const HomeAdmin = () => {
                   bottom: 5,
                 }}
               >
-                <CartesianGrid strokeDasharray="3 3" />
+                <CartesianGrid strokeDasharray="4 3" />
                 <XAxis dataKey="date" name="Tháng" />
                 <YAxis />
                 <Tooltip />
                 <Legend />
                 <Bar dataKey="total" name="Doanh thu" fill="#8884d8" />
-                <Line type="monotone" dataKey="uv" stroke="#82ca9d" />
               </BarChart>
             </ResponsiveContainer>
           </Col>
