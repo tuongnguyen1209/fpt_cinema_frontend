@@ -32,80 +32,7 @@ import {
   YAxis,
 } from "recharts";
 import dasboardService from "../../../serivces/dasboard.service";
-const data0 = [
-  {
-    name: "Tháng 1",
-    uv: 4000,
-    pv: 2400,
-    amt: 2400,
-  },
-  {
-    name: "Tháng 2",
-    uv: 3000,
-    pv: 1398,
-    amt: 2210,
-  },
-  {
-    name: "Tháng 3",
-    uv: 2000,
-    pv: 9800,
-    amt: 2290,
-  },
-  {
-    name: "Tháng 4",
-    uv: 2780,
-    pv: 3908,
-    amt: 2000,
-  },
-  {
-    name: "Tháng 5",
-    uv: 1890,
-    pv: 4800,
-    amt: 2181,
-  },
-  {
-    name: "Tháng 6",
-    uv: 2390,
-    pv: 3800,
-    amt: 2500,
-  },
-  {
-    name: "Tháng 7",
-    uv: 3490,
-    pv: 4300,
-    amt: 2100,
-  },
-  {
-    name: "Tháng 8",
-    uv: 2780,
-    pv: 3908,
-    amt: 2000,
-  },
-  {
-    name: "Tháng 9",
-    uv: 1890,
-    pv: 4800,
-    amt: 2181,
-  },
-  {
-    name: "Tháng 10",
-    uv: 2390,
-    pv: 3800,
-    amt: 2500,
-  },
-  {
-    name: "Tháng 11",
-    uv: 4000,
-    pv: 2400,
-    amt: 2400,
-  },
-  {
-    name: "Tháng 12",
-    uv: 3000,
-    pv: 1398,
-    amt: 2210,
-  },
-];
+import moment from "moment";
 
 const COLORS = ["#0088FE", "#00C49F", "#FFBB28", "#FF8042"];
 
@@ -117,8 +44,15 @@ const HomeAdmin = () => {
     { total_price: 0 },
     { total_user: 0 },
   ]);
-  // const [listPriceByShowTime, setListPriceByShowTime] = useState([]);
+  const [listPriceByTime, setListPriceByTime] = useState([]);
   const [loading, setLoading] = useState(false);
+  const [loadingByTime, setLoadingByTime] = useState(false);
+  const [time, setTime] = useState({
+    month: new Date().getMonth(),
+    year: new Date().getFullYear(),
+    start: moment(new Date()).format("YYYY-MM-DD"),
+    end: moment(new Date()).format("YYYY-MM-DD"),
+  });
 
   useEffect(() => {
     (async () => {
@@ -134,11 +68,39 @@ const HomeAdmin = () => {
       }
       const newRs = [...rs.data.dasboard];
       newRs[5] = { price_by_showtime: newArr };
-
       setData(newRs);
       setLoading(false);
     })();
   }, []);
+
+  useEffect(() => {
+    (async () => {
+      setLoadingByTime(true);
+      if (selectOption === "2") {
+        const rs = await dasboardService.showAll({
+          type: "month",
+          month: time.month,
+          year: time.year,
+        });
+        setListPriceByTime(rs.static);
+      } else if (selectOption === "3") {
+        const rs = await dasboardService.showAll({
+          type: "date",
+          start: time.start,
+          end: time.end,
+        });
+        setListPriceByTime(rs.static);
+      } else {
+        const rs = await dasboardService.showAll({
+          type: "month",
+          month: new Date().getMonth() + 1,
+          year: new Date().getFullYear(),
+        });
+        setListPriceByTime(rs.static);
+      }
+      setLoadingByTime(false);
+    })();
+  }, [time, selectOption]);
 
   return (
     <Spin spinning={loading}>
@@ -237,7 +199,7 @@ const HomeAdmin = () => {
         </Row>
       </div>
 
-      <div style={{ height: "1000px" }} className="mt-5">
+      <div style={{ height: "700px" }} className="mt-5">
         <div className="text-center">
           <Typography.Title type="secondary" level={5}>
             Doanh thu theo thời gian
@@ -255,38 +217,68 @@ const HomeAdmin = () => {
               <Select.Option value="3">Chọn theo thời gian</Select.Option>
             </Select>
 
-            {selectOption === "2" && <DatePicker picker="month" />}
+            {selectOption === "2" && (
+              <DatePicker
+                picker="month"
+                onChange={(e) => {
+                  console.log(
+                    new Date(e).getMonth(),
+                    new Date(e).getFullYear()
+                  );
+                  const newTime = {
+                    ...time,
+                    month: new Date(e).getMonth() + 1,
+                    year: new Date(e).getFullYear(),
+                  };
+                  setTime(newTime);
+                }}
+              />
+            )}
             {selectOption === "3" && (
-              <DatePicker.RangePicker format="YYYY-MM-DD" />
+              <DatePicker.RangePicker
+                format="YYYY-MM-DD"
+                onChange={(e) => {
+                  console.log(e);
+                  const newTime = {
+                    ...time,
+                    start: moment(new Date(e[0])).format("YYYY-MM-DD"),
+                    end: moment(new Date(e[1])).format("YYYY-MM-DD"),
+                  };
+                  setTime(newTime);
+                }}
+              />
             )}
           </Space>
         </div>
-        <ResponsiveContainer width="100%" height="100%">
-          <LineChart
-            width={500}
-            height={300}
-            data={data0}
-            margin={{
-              top: 5,
-              right: 30,
-              left: 20,
-              bottom: 5,
-            }}
-          >
-            <CartesianGrid strokeDasharray="3 3" />
-            <XAxis dataKey="name" />
-            <YAxis />
-            <Tooltip />
-            <Legend />
-            <Line
-              type="monotone"
-              dataKey="pv"
-              stroke="#8884d8"
-              activeDot={{ r: 8 }}
-            />
-            <Line type="monotone" dataKey="uv" stroke="#82ca9d" />
-          </LineChart>
-        </ResponsiveContainer>
+        <Spin spinning={loadingByTime}>
+          <div style={{ height: 500, width: "100%" }}>
+            <ResponsiveContainer width="100%" height="100%">
+              <LineChart
+                width={500}
+                height={300}
+                data={listPriceByTime}
+                margin={{
+                  top: 5,
+                  right: 30,
+                  left: 20,
+                  bottom: 5,
+                }}
+              >
+                <CartesianGrid strokeDasharray="3 3" />
+                <XAxis dataKey="date" />
+                <YAxis />
+                <Tooltip />
+                <Legend />
+                <Line
+                  type="monotone"
+                  dataKey="total"
+                  stroke="#8884d8"
+                  activeDot={{ r: 8 }}
+                />
+              </LineChart>
+            </ResponsiveContainer>
+          </div>
+        </Spin>
       </div>
     </Spin>
   );

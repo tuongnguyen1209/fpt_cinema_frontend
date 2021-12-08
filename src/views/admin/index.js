@@ -1,6 +1,6 @@
 import { Breadcrumb, Layout } from "antd";
-import React from "react";
-import { Route, Switch } from "react-router-dom";
+import React, { useState } from "react";
+import { Link, Route, Switch } from "react-router-dom";
 import HeaderAdmin from "../../components/Layout/adminLayout/headerAdmin";
 import SlideAdmin from "../../components/Layout/adminLayout/slide";
 import { ADMIN_PREFIX_PATH } from "../../config/app.config";
@@ -18,15 +18,26 @@ import ListUser from "./user/listUser.admin";
 const { Content } = Layout;
 
 const Admin = () => {
+  const [title, setTitle] = useState("");
+
+  const getLocaltion = (e) => {
+    console.log(e);
+    setTitle(e.title);
+  };
+
   return (
     <Layout>
-      <SlideAdmin />
+      <SlideAdmin getLocaltion={getLocaltion} />
       <Layout>
         <HeaderAdmin />
         <Content style={{ margin: "0 16px" }}>
           <Breadcrumb style={{ margin: "16px 0" }}>
-            <Breadcrumb.Item>Admin</Breadcrumb.Item>
-            <Breadcrumb.Item>Movie</Breadcrumb.Item>
+            <Breadcrumb.Item>
+              <Link to={`${ADMIN_PREFIX_PATH}`}>Admin</Link>
+            </Breadcrumb.Item>
+            {title && title !== "Dashboard" && (
+              <Breadcrumb.Item>{title}</Breadcrumb.Item>
+            )}
           </Breadcrumb>
           <div style={{ padding: 24, backgroundColor: "#fff", minHeight: 360 }}>
             <Switch>
