@@ -6,7 +6,7 @@ import { LogoWrap } from "./sliderAdmin.style";
 
 const { Sider } = Layout;
 
-const SlideAdmin = () => {
+const SlideAdmin = ({ getLocaltion }) => {
   const [collapsed, setCollapsed] = useState(false);
 
   return (
@@ -41,13 +41,17 @@ const SlideAdmin = () => {
             <Menu.SubMenu key={el.key} icon={el.icon} title={el.title}>
               {el.submenu.map((item) => (
                 <Menu.Item key={item.key} icon={item.icon}>
-                  <Link to={item.path}>{item.title}</Link>
+                  <Link to={item.path} onClick={() => getLocaltion(item)}>
+                    {item.title}
+                  </Link>
                 </Menu.Item>
               ))}
             </Menu.SubMenu>
           ) : (
             <Menu.Item key={el.key} icon={el.icon}>
-              <Link to={el.path}>{el.title}</Link>
+              <Link to={el.path} onClick={() => getLocaltion(el)}>
+                {el.title}
+              </Link>
             </Menu.Item>
           )
         )}

@@ -114,7 +114,7 @@ const ListMovie = () => {
 
   return (
     <div>
-      <Row>
+      <Row className="d-none">
         <Col span={12}>
           <Typography.Title level={4}>Danh sách phim</Typography.Title>
         </Col>
