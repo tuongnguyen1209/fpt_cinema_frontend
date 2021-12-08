@@ -110,27 +110,25 @@ const ListUser = () => {
       key: "acton",
       render: (_, record) => (
         <>
-          <Space>
-            <Button
-              type="primary"
-              icon={<HistoryOutlined />}
-              onClick={() => showModal(record)}
-            >
-              Lịch sử đặt hàng
+          <Button
+            type="primary"
+            icon={<HistoryOutlined />}
+            onClick={() => showModal(record)}
+          >
+            Lịch sử đặt hàng
+          </Button>
+          <Popconfirm
+            okText="Có"
+            cancelText="Không"
+            title="Bạn có muốn thay đổi quyền của người dùng này?"
+            onConfirm={() =>
+              handleChangeRole(record.id_user, record.administration)
+            }
+          >
+            <Button type="primary" danger>
+              Thay đổi quyền
             </Button>
-            <Popconfirm
-              okText="Có"
-              cancelText="Không"
-              title="Bạn có muốn thay đổi quyền của người dùng này?"
-              onConfirm={() =>
-                handleChangeRole(record.id_user, record.administration)
-              }
-            >
-              <Button type="primary" danger>
-                Thay đổi quyền
-              </Button>
-            </Popconfirm>
-          </Space>
+          </Popconfirm>
         </>
       ),
     },
