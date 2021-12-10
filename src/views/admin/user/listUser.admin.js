@@ -77,15 +77,23 @@ const ListUser = () => {
         />
       ),
     },
-    { title: "Tên", dataIndex: "name_user", key: "name_user" },
-    { title: "Email", dataIndex: "email", key: "email" },
+    {
+      title: "Tên",
+      dataIndex: "name_user",
+      key: "name_user",
+      sorter: (a, b) => (a.name_user > b.name_user ? 1 : -1),
+    },
+    { title: "Email", dataIndex: "email", key: "email", filterSearch: true },
     { title: "Số điện thoại", dataIndex: "phone", key: "phone" },
     {
       title: "Chức vụ",
-
       dataIndex: "administration",
       key: "administration",
-      sort: true,
+      filters: [
+        { text: "Admin", value: "1" },
+        { text: "Khách hàng", value: "0" },
+      ],
+      onFilter: (value, record) => record.administration.indexOf(value) === 0,
       render: (administration) =>
         administration === "1" ? (
           <Tag color="#f50"> Admin</Tag>

@@ -11,6 +11,7 @@ const TicketService = {
   getAll: (params) => {
     return axiosClient.get(url, { params });
   },
+  confirmGetTicket: (id) => axiosClient.put(`/v2.php/ticket/conform/${id}`),
 };
 
 export default TicketService;

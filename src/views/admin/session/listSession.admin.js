@@ -108,8 +108,14 @@ const ListSession = () => {
       title: "Tên phim",
       dataIndex: "name",
       key: "name",
+      sorter: true,
     },
-    { title: "Ngày chiếu", dataIndex: "date", key: "date" },
+    {
+      title: "Ngày chiếu",
+      dataIndex: "date",
+      key: "date",
+      sorter: (a, b) => (a.date > b.date ? 1 : -1),
+    },
     {
       title: "Thao Tác",
       dataIndex: "",

@@ -3,6 +3,8 @@ import {
   Col,
   Descriptions,
   Image,
+  message,
+  Popconfirm,
   Row,
   Spin,
   Table,
@@ -32,7 +34,7 @@ const TicketDetail = () => {
         code: id,
         type: query.type ? "TK_code" : "id_ticket",
       });
-      console.log(rs);
+      // console.log(rs);
       setData(rs.data.ticket[0]);
       setLoading(false);
     })();
@@ -89,6 +91,21 @@ const TicketDetail = () => {
     content: () => currentRef.current,
   });
 
+  const conforimTicket = async () => {
+    try {
+      message.loading({ content: "Đang xử lý", key: "conform" });
+      const rs = await ticketService.confirmGetTicket(data?.id_ticket);
+      // console.log(rs);
+      if (rs.status === "Success") {
+        const newData = { ...data, status: "2" };
+        setData(newData);
+        message.success({ content: "Xác nhận thành công", key: "conform" });
+      }
+    } catch (error) {
+      message.error("Opps, Have some error, please try agian!");
+    }
+  };
+
   return (
     <div>
       <Spin spinning={loading}>
@@ -100,7 +117,19 @@ const TicketDetail = () => {
           </Col>
           <Col span={24} className=" ">
             <div className="hiddent-print text-right">
-              <Button type="primary" onClick={print} className="hiddent-print">
+              {data?.status === "1" && (
+                <Popconfirm
+                  title="Bạn có muốn tiếp tục? "
+                  onConfirm={conforimTicket}
+                  okText="Có"
+                  cancelText="Không"
+                >
+                  <Button type="primary" className="hiddent-print mr-3">
+                    Xác nhận nhận vé
+                  </Button>
+                </Popconfirm>
+              )}
+              <Button type="dashed" onClick={print} className="hiddent-print">
                 In hóa đơn
               </Button>
             </div>
@@ -122,6 +151,13 @@ const TicketDetail = () => {
               <Descriptions.Item label="Tổng hóa đơn">
                 <Typography.Text strong>
                   {data?.Total_money && formatPrice(data?.Total_money)}
+                </Typography.Text>
+              </Descriptions.Item>
+              <Descriptions.Item label="Trạng thái">
+                <Typography.Text strong>
+                  {data?.status === "0" && " Chưa thanh toán"}
+                  {data?.status === "1" && " Đã thanh toán"}
+                  {data?.status === "2" && " Đã Nhận vé"}
                 </Typography.Text>
               </Descriptions.Item>
             </Descriptions>
