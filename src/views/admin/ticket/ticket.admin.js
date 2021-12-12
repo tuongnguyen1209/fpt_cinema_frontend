@@ -122,9 +122,13 @@ const Tickets = () => {
           <>
             <Tag color="red">Chưa thanh toán</Tag>
           </>
-        ) : (
+        ) : status === "1" ? (
           <>
             <Tag color="green">Đã thanh toán</Tag>
+          </>
+        ) : (
+          <>
+            <Tag color="blue">Đã nhận vé</Tag>
           </>
         ),
     },
