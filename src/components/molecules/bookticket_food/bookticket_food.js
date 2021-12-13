@@ -322,9 +322,7 @@ const BookTicketFood = () => {
 
   const [btnPrevious, setBtnPrevious] = useState("btn_prev"); // an hien cai btn quay lai
   const [btnNext, setBtnNext] = useState("btn_prev_show"); // an hien cai btn tiep tuc (2 cai btn trùng css nên đặt cùng class btn_prev)
-  const [TogglePageBookTicket, setTogglePageBookTicket] = useState(
-    "main_bookticket_food"
-  ); // an hien trang dat ve va do an;
+  const [TogglePageBookTicket, setTogglePageBookTicket] = useState("main_bookticket_food"); // an hien trang dat ve va do an;
   const [TogglePageSeat, setTogglePageSeat] = useState("hide_page"); // an hien trang chon ghe
   const [TogglePagePayment, setTogglePagePayment] = useState("hide_page"); // an hien trang thanh toan
 

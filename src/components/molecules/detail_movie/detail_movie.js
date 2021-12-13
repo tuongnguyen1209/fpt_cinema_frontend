@@ -223,7 +223,7 @@ const DetailMovieCPN = () => {
                                       {listSession.map((item,index) => (
                                         <Link className="btn_time"
                                           key={index} 
-                                          to={isLogin ? "/bookticket-food" : "auth/login"}
+                                          to={isLogin ? "/bookticket-food" : "/auth/login"}
                                           >
                                             <span onClick={(e) => handleSaveTicket(item?.id_session)}>{item?.time_start}</span>
                                           </Link>
