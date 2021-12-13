@@ -3,11 +3,9 @@ import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import { saveTicketList } from "../../../redux/action/saveTicket";
-import MovieService from "../../../serivces/movie.service";
 import { ListBuyTicketStyle } from "./list_buy_ticket-style";
 import sessionService from "../../../serivces/session.service";
 const { Panel } = Collapse;
-const axios = require("axios");
 
 const BuyTicketCPN = () => {
   // change color btn
@@ -26,6 +24,7 @@ const BuyTicketCPN = () => {
   const ChangeBtn = () => {
     setState("span");
     setState2("span2");
+    console.log(setTime,setRap);
   };
   const ChangeBtn2 = () => {
     setState("span2");
