@@ -7,11 +7,11 @@ const { TextArea } = Input;
 
 const CommentList = ({ comments }) => (
     <StyleComment>
-        <List
+        <List 
             dataSource={comments}
             header={<div className="totalComment">{`${comments.length} Bình luận`}</div>}
             itemLayout="horizontal"
-            renderItem={props => <Comment {...props} />}
+            renderItem={props => <Comment className="box-comment" {...props} />}
         />
     </StyleComment>
 );
@@ -21,7 +21,7 @@ const Editor = ({ onChange, onSubmit, submitting, value }) => (
     <StyleComment>
         <div className="formTop">
             <Form.Item>
-                <TextArea rows={2} onChange={onChange} value={value} className="textArea" placeholder="Viết bình luận..."/>
+                <TextArea rows={1} onChange={onChange} value={value} className="textArea" placeholder="Viết bình luận..."/>
             </Form.Item>
             <Form.Item>
             <Button htmlType="submit" loading={submitting} onClick={onSubmit} type="primary" className="btn_submit_comment">
