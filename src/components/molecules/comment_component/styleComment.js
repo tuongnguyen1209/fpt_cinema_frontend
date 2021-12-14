@@ -5,6 +5,8 @@ export const StyleComment = styled.div`
         margin: 10px 0px;
         padding: 0px 10px;
         border-radius: 30px;
+        background: #57606f;
+        border: none;
     }
     .textArea {
         padding: 5px;
