@@ -5,6 +5,9 @@ import { Link } from "react-router-dom";
 import { saveTicketList } from "../../../redux/action/saveTicket";
 import { ListBuyTicketStyle } from "./list_buy_ticket-style";
 import sessionService from "../../../serivces/session.service";
+const axios = require('axios');
+
+
 const { Panel } = Collapse;
 
 const BuyTicketCPN = () => {
@@ -24,7 +27,7 @@ const BuyTicketCPN = () => {
   const ChangeBtn = () => {
     setState("span");
     setState2("span2");
-    console.log(setTime,setRap);
+    console.log(setTime);
   };
   const ChangeBtn2 = () => {
     setState("span2");
@@ -64,6 +67,18 @@ const BuyTicketCPN = () => {
     };
     const action = saveTicketList(saveNameMovie);
     dispatch(action);
+
+    // lấy api rạp 
+    axios.get('https://618ca5c8ded7fb0017bb9657.mockapi.io/rap')
+      .then(function (response) {
+        setRap(response.data)
+        // console.log(response);
+      })
+      .catch(function (error) {
+        // handle error
+        console.log(error);
+      })
+
 
     // thay đổi style khi click
     resetStyleTicket();

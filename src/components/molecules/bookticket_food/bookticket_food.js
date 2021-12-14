@@ -529,7 +529,7 @@ const BookTicketFood = () => {
   // message
   const success = async () => {
     message
-      .loading("Đang đặt vé...", 3.5)
+      .loading("Đang đặt vé...", 4.5)
   };
 
   // post data lên sever

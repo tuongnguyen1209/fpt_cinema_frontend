@@ -187,7 +187,7 @@ const PageTransaction = () => {
               </td>
               <td>
                 {item?.seat.map((seat, index) => (
-                  <span>{seat.seat}, </span>
+                  <span key={index}>{seat.seat}, </span>
                 ))}
               </td>
               <td>
