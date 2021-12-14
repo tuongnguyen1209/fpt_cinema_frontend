@@ -321,8 +321,8 @@ const ListSession = () => {
             ]}
           >
             <Select style={{ width: 200 }}>
-              <Select.Option value="2d">2D</Select.Option>
-              <Select.Option value="3d">3D</Select.Option>
+              <Select.Option value="2D">2D</Select.Option>
+              <Select.Option value="3D">3D</Select.Option>
             </Select>
           </Form.Item>
           <Form.Item className="text-right">
