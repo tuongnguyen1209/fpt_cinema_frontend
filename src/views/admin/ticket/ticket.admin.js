@@ -118,11 +118,11 @@ const Tickets = () => {
       dataIndex: "status",
       key: "status",
       render: (status) =>
-        status === "0" ? (
+        status === 0 ? (
           <>
             <Tag color="red">Chưa thanh toán</Tag>
           </>
-        ) : status === "1" ? (
+        ) : status === 1 ? (
           <>
             <Tag color="green">Đã thanh toán</Tag>
           </>

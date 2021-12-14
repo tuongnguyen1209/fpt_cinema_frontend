@@ -90,12 +90,12 @@ const ListUser = () => {
       dataIndex: "administration",
       key: "administration",
       filters: [
-        { text: "Admin", value: "1" },
-        { text: "Khách hàng", value: "0" },
+        { text: "Admin", value: 1 },
+        { text: "Khách hàng", value: 0 },
       ],
       onFilter: (value, record) => record.administration.indexOf(value) === 0,
       render: (administration) =>
-        administration === "1" ? (
+        administration === 1 ? (
           <Tag color="#f50"> Admin</Tag>
         ) : (
           <Tag color="#87d068"> Khách hàng</Tag>
