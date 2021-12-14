@@ -118,8 +118,8 @@ const BookTicketFood = () => {
   const combo_1 = [
     {
       name_combo: listCombo[0]?.name_combo,
-      img_combo: listCombo[0]?.img_combo,
-      detail_combo: "1 BẮP VÀ 1 NƯỚC COCA",
+      img_combo: listCombo[0]?.lmage,
+      detail_combo: listCombo[0]?.detail,
       price_combo: listCombo[0]?.price,
     },
   ];
@@ -177,8 +177,8 @@ const BookTicketFood = () => {
   const combo_2 = [
     {
       name_combo: listCombo[1]?.name_combo,
-      img_combo: listCombo[1]?.img_combo,
-      detail_combo: "1 BẮP VÀ 2 NƯỚC COCA",
+      img_combo: listCombo[1]?.lmage,
+      detail_combo: listCombo[1]?.detail,
       price_combo: listCombo[1]?.price,
     },
   ];
@@ -235,8 +235,8 @@ const BookTicketFood = () => {
   const combo_3 = [
     {
       name_combo: listCombo[2]?.name_combo,
-      img_combo: listCombo[2]?.img_combo,
-      detail_combo: "2 BẮP VÀ 4 NƯỚC COCA",
+      img_combo: listCombo[2]?.lmage,
+      detail_combo: listCombo[2]?.detail,
       price_combo: listCombo[2]?.price,
     },
   ];
@@ -322,9 +322,7 @@ const BookTicketFood = () => {
 
   const [btnPrevious, setBtnPrevious] = useState("btn_prev"); // an hien cai btn quay lai
   const [btnNext, setBtnNext] = useState("btn_prev_show"); // an hien cai btn tiep tuc (2 cai btn trùng css nên đặt cùng class btn_prev)
-  const [TogglePageBookTicket, setTogglePageBookTicket] = useState(
-    "main_bookticket_food"
-  ); // an hien trang dat ve va do an;
+  const [TogglePageBookTicket, setTogglePageBookTicket] = useState("main_bookticket_food"); // an hien trang dat ve va do an;
   const [TogglePageSeat, setTogglePageSeat] = useState("hide_page"); // an hien trang chon ghe
   const [TogglePagePayment, setTogglePagePayment] = useState("hide_page"); // an hien trang thanh toan
 
@@ -529,17 +527,17 @@ const BookTicketFood = () => {
   }, []);
 
   // message
-  const success = () => {
+  const success = async () => {
     message
-      .loading("Đang đặt vé...", 2.5)
-      .then(() => message.success("Đặt vé thành công!", 2.5));
+      .loading("Đang đặt vé...", 3.5)
   };
 
   // post data lên sever
   const PostDataTicket = async (e) => {
     e.preventDefault();
     saveInfoTicket();
-
+    await success();  
+    
     try {
       const data = {
         id_session: infoTicketList.session,
@@ -556,10 +554,9 @@ const BookTicketFood = () => {
       };
       // console.log(data);
       const response = await TicketService.createTicket(data);
-
+      
       // console.log(response);
       window.open(response.payment.data, "_self");
-      success();
     } catch {
       console.log("Error", message);
     }

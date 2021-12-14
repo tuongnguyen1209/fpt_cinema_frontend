@@ -106,15 +106,19 @@ export const ListBuyTicketStyle = styled.div`
       font-size: 0.9rem;
       .row_show_time {
         display: flex;
+        flex-direction: row;
         justify-content: space-around;
-        align-items: center;
+        p{
+          padding: 3px 12px 0px 0px;
+        }
         .box_time {
           margin-left: 20px;
           border: 1px solid rgba(0, 0, 0, 0.3);
           font-size: 0.9rem;
-          padding: 3px 12px;
+          padding: 3px 12px;  
           cursor: pointer;
           color: black;
+          display: flex;
           &:hover {
             background-color: #dc4c18;
             color: white;

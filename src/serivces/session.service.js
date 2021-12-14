@@ -10,6 +10,10 @@ const sessionService = {
     return axiosClient.post(url, data);
   },
   delete: (data) => axiosClient.delete(url, { params: data }),
+
+  getAll2: (data) => {
+    return axiosClient.get("v2.php/session/movie", data)
+  }
 };
 
 export default sessionService;

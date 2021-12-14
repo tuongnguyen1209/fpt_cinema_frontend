@@ -3,11 +3,9 @@ import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import { saveTicketList } from "../../../redux/action/saveTicket";
-import MovieService from "../../../serivces/movie.service";
 import { ListBuyTicketStyle } from "./list_buy_ticket-style";
 import sessionService from "../../../serivces/session.service";
 const { Panel } = Collapse;
-const axios = require("axios");
 
 const BuyTicketCPN = () => {
   // change color btn
@@ -22,14 +20,34 @@ const BuyTicketCPN = () => {
   const [state2, setState2] = useState("span2");
   const [loading, setLoading] = useState(true);
 
+  const [arrayTime,setArrayTime] = useState([]);
   const ChangeBtn = () => {
     setState("span");
     setState2("span2");
+    console.log(setTime,setRap);
   };
   const ChangeBtn2 = () => {
     setState("span2");
     setState2("span");
   };
+
+  // data api movie
+  useEffect(() => {
+    
+    const fetchMovieList = async () => {
+      try {
+        const response = await sessionService.getAll2();
+        console.log(response.data.movie);
+        setlistMovie2(response.data.movie);
+        setLoading(false);
+      } catch (error) {
+        console.log("Failed to fetch movie list: ", error);
+      }
+    };
+    fetchMovieList();
+
+  }, []);
+
   // redux ---------------------------------------------------------------------
   const infoTicketList = useSelector((state) => state.saveTicket);
   const dispatch = useDispatch();
@@ -37,8 +55,7 @@ const BuyTicketCPN = () => {
   console.table([infoTicketList]);
   // redux ----------------------------------------------------------------------
   // event handle show rap
-  const handleShowrap = (e, idMovie) => {
-    // console.log(idMovie, time);
+  const handleShowrap = (e, session) => {
 
     // lấy thông tin (tên phim, hình ảnh) lưu vào redux
     const saveNameMovie = {
@@ -53,32 +70,9 @@ const BuyTicketCPN = () => {
     e.target.parentElement.style.backgroundColor = "rgba(223, 228, 234,1.0)";
     e.target.parentElement.setAttribute("id", "styleTicket");
 
-    // lấy dữ liệu từ api rap
-    try {
-      axios
-        .get("https://618ca5c8ded7fb0017bb9657.mockapi.io/rap")
-        .then(function (response) {
-          setRap(response.data);
-        })
-        .catch(function (error) {
-          console.log(error);
-        });
-    } catch {
-      console.log("ERRO", message);
-    }
-
-    // lấy dữ liệu từ api session
-    const fetchSessionList = async () => {
-      try {
-        const response = await sessionService.getAll({ id_movie: idMovie });
-        // console.log(response.data.session);
-        setArraySession(response.data.session);
-        setTime(response.data.session);
-      } catch (error) {
-        console.log("Failed to fetch session list: ", error);
-      }
-    };
-    fetchSessionList();
+    console.log('sesion clieck', session);
+    setArraySession(session.sessions)
+    setArrayTime(session.sessions[0].session)
 
     setCheck(true);
   };
@@ -93,20 +87,7 @@ const BuyTicketCPN = () => {
     }
   };
 
-  // data api movie
-  useEffect(() => {
-    const fetchMovieList = async () => {
-      try {
-        const response = await MovieService.getMovieLimit(100);
-        // console.log(response);
-        setlistMovie2(response.data.movie);
-        setLoading(false);
-      } catch (error) {
-        console.log("Failed to fetch movie list: ", error);
-      }
-    };
-    fetchMovieList();
-  }, []);
+
   // function reset style
   const resetStyleTicket = () => {
     if (!document.getElementById("styleTicket")) {
@@ -188,7 +169,7 @@ const BuyTicketCPN = () => {
                   <div
                     className="collapse1"
                     key={index}
-                    onClick={(e) => handleShowrap(e, item.id_movie)}
+                    onClick={(e) => handleShowrap(e, item)}
                   >
                     <div className="panel-box">
                       <img
@@ -228,21 +209,23 @@ const BuyTicketCPN = () => {
                       {check ? (
                         <div className="session_box">
                           <p>{item.day}</p>
-                          <p className="row_show_time">
-                            Vé {item.type}
-                            <Link
-                              to={isLogin ? "bookticket-food" : "auth/login"}
-                            >
-                              <span
-                                className="box_time"
-                                onClick={() =>
-                                  handleLogin(item.id_session, item.room_number)
-                                }
-                              >
-                                {item.time_start}
-                              </span>
-                            </Link>
-                          </p>
+                          <div className="row_show_time">
+                          <p>Vé 2D</p>
+                          {arrayTime.map((time,index)=> (
+                                <Link key={index}
+                                  to={isLogin ? "bookticket-food" : "auth/login"}
+                                >
+                                  <span
+                                    className="box_time"
+                                    onClick={() =>
+                                      handleLogin(time.id_session, time.room_number)
+                                    }
+                                    >
+                                    {time.time_start}
+                                  </span>
+                                </Link>
+                          ))}
+                          </div>
                         </div>
                       ) : (
                         "Vui lòng chọn suất chiếu"

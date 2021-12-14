@@ -199,10 +199,10 @@ const PageTransaction = () => {
               </td>
               <td>{item?.ticket_information}</td>
               <td>
-                {item?.status === "1" && (
+                {item?.status === 1 && (
                   <button className="paid">Đã Thanh Toán</button>
                 )}
-                {item?.status === "0" && (
+                {item?.status === 0 && (
                   <button
                     className="unpaid"
                     onClick={() => handleGetIdTicket(item.id_ticket)}
@@ -212,7 +212,7 @@ const PageTransaction = () => {
                     </a>
                   </button>
                 )}
-                {item?.status === "2" && "đã nhận vé"}
+                {item?.status === 2 && "đã nhận vé"}
               </td>
               <td>{formatPrice(item?.Total_money)}</td>
             </tr>

@@ -10,6 +10,7 @@ import sessionService from "../../../serivces/session.service";
 import {useDispatch,useSelector } from "react-redux";
 import { saveTicketList } from "../../../redux/action/saveTicket";
 import { Skeleton } from 'antd';
+import { CommentDetailMovie } from '../comment_component/comment';
 
 const { Option } = Select;
 const dateFormat = 'YYYY-MM-DD';
@@ -175,7 +176,13 @@ const DetailMovieCPN = () => {
                             {listMovie?.detail} 
                           </p>
                         </div>
-
+                        <div className="comment">
+                          <h3>Bình Luận</h3>
+                          <div className="line"><span className="line1"></span></div>
+                          <div className="wapperComment">
+                            <CommentDetailMovie />
+                          </div>
+                        </div>
                         <div className="show_time_movie">
                           <h3>Lịch chiếu</h3>
                           <div className="line"><span className="line1"></span></div>
@@ -223,7 +230,7 @@ const DetailMovieCPN = () => {
                                       {listSession.map((item,index) => (
                                         <Link className="btn_time"
                                           key={index} 
-                                          to={isLogin ? "/bookticket-food" : "auth/login"}
+                                          to={isLogin ? "/bookticket-food" : "/auth/login"}
                                           >
                                             <span onClick={(e) => handleSaveTicket(item?.id_session)}>{item?.time_start}</span>
                                           </Link>
