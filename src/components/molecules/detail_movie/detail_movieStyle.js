@@ -109,7 +109,27 @@ export const DetailMovieCPNStyle = styled.div`
                     font-family: 'Roboto', sans-serif;
                 }
             }
-
+            .comment {
+                margin-top: 30px;
+                .wapperComment {
+                    padding: 20px 0px;  
+                }
+                h3 {
+                    font-size: 1.2rem;
+                    font-weight: bold;
+                    text-transform: uppercase;
+                }
+                .line {
+                    height: 5px;
+                    width: 200px;
+                }
+                p {
+                    line-height: 30px;
+                    padding: 15px 0px;
+                    font-size: 1rem;
+                    font-family: 'Roboto', sans-serif;
+                }
+            }
             .show_time_movie {
                 margin-top: 30px;
                 h3 {
