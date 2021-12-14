@@ -35,7 +35,9 @@ function Views() {
       <Switch>
         <PrivateRoute
           path={ADMIN_PREFIX_PATH}
-          isAuthenticated={user.isLogin && user.user.administration === "1"}
+          isAuthenticated={
+            user.isLogin && `${userdata.user.administration}` === "1"
+          }
         >
           <Admin />
         </PrivateRoute>

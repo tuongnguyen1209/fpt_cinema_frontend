@@ -40,7 +40,7 @@ const HeaderWebSite = () => {
           </Link>
         </Menu.Item>
         <Menu.Divider />
-        {userdata.user.administration === "1" && (
+        {`${userdata.user.administration}` === "1" && (
           <Menu.Item key="admin">
             <Link to={`${ADMIN_PREFIX_PATH}/`}>
               <Button icon={<DashboardOutlined />} type="link">
